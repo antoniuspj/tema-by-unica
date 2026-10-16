@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Undangan Pernikahan</title>
+<!--
+  ============================================================================
+  TEMA "INDIGO CHRONICLE" — by-unica HTML theme engine
+  ----------------------------------------------------------------------------
+  Gaya: varian warna Plum Chronicle — toile de Jouy klasik: latar kertas krem, ilustrasi ukiran garis biru indigo (gazebo, kapel,
+  pohon, ranting, kupu-kupu), judul diapit garis tipis, foto polaroid miring, kalender bulan
+  acara, baris acara berkolom, formulir bergaris bawah, tombol pil indigo.
+  Semua ornamen = SVG inline (tanpa berkas gambar).
+  Font: Parisienne (nama) · Cormorant Infant (judul) · Lora (isi) · Montserrat (label kapital).
+  Kerangka & kontrak penanda mengikuti starter-tema.html.
+  Verifikasi sebelum impor:
+   node scripts/cek-tema.mjs themes/indigo-chronicle.html --spec docs/variabel-per-section.mjs
+  ============================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@500;600;700&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4efe4; --bg2:#efe9dc; --paper:#fbf8f1; --card:#e4ddcd; --ink:#1f2b45; --plum:#2e4a7d; --plum-d:#223a66;
+    --muted:#6b7286; --line:rgba(31,43,69,.16);
+    --script:"Parisienne",cursive; --serif:"Cormorant Infant",Georgia,serif; --body:"Lora",Georgia,serif;
+    --sans:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#e6dfd0;color:var(--ink);font:400 14.5px/1.75 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body.locked{overflow:hidden}
+  h1,h2,h3{margin:0;font-weight:400;line-height:1.15}
+  p{margin:0}
+  a{color:inherit}
+  .ic{width:1em;height:1em;fill:currentColor;flex:0 0 auto;vertical-align:-.12em}
+  #ornamen{position:absolute;width:0;height:0;overflow:hidden}
+  .ukir{color:var(--plum);fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---------- KOLOM & SECTION ---------- */
+  main{max-width:430px;margin:0 auto;background:var(--bg);box-shadow:0 0 60px rgba(31,43,69,.12)}
+  .sec{position:relative;overflow:hidden;padding:72px 26px;text-align:center}
+  .sec:nth-of-type(even){background:var(--bg2)}
+  .sec+.sec:before{content:"";position:absolute;top:0;left:18px;right:18px;height:1px;background:var(--line)}
+  .js-rv .rv{opacity:0;transform:translateY(20px);transition:opacity 1s ease,transform 1s ease}
+  .js-rv .rv.in{opacity:1;transform:none}
+  .ranting{position:absolute;width:96px;height:auto;opacity:.32;pointer-events:none}
+  .r-tl{top:10px;left:14px;transform:rotate(-18deg)}
+  .r-br{bottom:12px;right:10px;transform:rotate(160deg)}
+
+  /* ---------- TIPOGRAFI ---------- */
+  .kick{font:600 9.5px/1.6 var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--ink)}
+  .title{position:relative;display:table;margin:8px auto 0;padding:0 40px;font:400 32px/1.15 var(--serif);color:var(--ink)}
+  .title:before,.title:after{content:"";position:absolute;top:50%;width:28px;height:1px;background:var(--line)}
+  .title:before{left:0}
+  .title:after{right:0}
+  .sub{color:var(--muted);font-size:13.5px;margin:14px auto 0;max-width:28em}
+  .note{font-size:12.5px;font-style:italic;color:var(--muted);margin-top:12px}
+  .names{font:400 46px/1.12 var(--script);color:var(--plum);word-break:break-word}
+
+  /* ---------- TOMBOL ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:22px;padding:13px 26px;border:0;border-radius:999px;background:var(--plum);color:#fff;text-decoration:none;font:700 10.5px/1.3 var(--sans);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;cursor:pointer;box-shadow:0 12px 24px -12px rgba(34,58,102,.75);transition:background .25s,transform .2s}
+  .btn:hover{background:var(--plum-d)}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:transparent;color:var(--plum);box-shadow:inset 0 0 0 1.5px var(--plum)}
+  .btn.ghost:hover{background:rgba(90,63,90,.08)}
+  .btn.sm{padding:10px 18px;font-size:9.5px;margin-top:14px}
+  .btn .ic{font-size:13px}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .btns>*{flex:1 1 0;min-width:calc(50% - 4px);margin-top:0;white-space:normal}
+
+  /* ---------- FOTO POLAROID ---------- */
+  .polaroid{background:#fff;padding:8px 8px 26px;box-shadow:0 14px 26px -12px rgba(31,43,69,.45);transition:transform .4s ease}
+  .photo{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:var(--card)}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo .sil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11.5px;padding:8px}
+
+  /* ---------- SAMPUL ---------- */
+  #cover{position:fixed;inset:0;z-index:40;display:flex;justify-content:center;background:#e6dfd0;transition:opacity 1s ease,visibility 0s linear 0s}
+  #cover.open{opacity:0;visibility:hidden;transition:opacity 1s ease,visibility 0s linear 1s}
+  .cv-in{position:relative;width:100%;max-width:430px;height:100%;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px 30px}
+  .cv-in:before{content:"";position:absolute;top:22px;left:22px;right:22px;height:1px;background:var(--line)}
+  .cv-body{position:relative;z-index:1;width:100%;max-width:300px}
+  .gazebo{display:block;width:230px;max-width:100%;height:auto;margin:18px auto 6px}
+  .cv-body .names{font-size:44px;margin:6px 0 10px}
+  .cv-date{font:500 12.5px var(--sans);letter-spacing:.08em;color:var(--ink)}
+  .cv-to{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:20px 0 4px}
+  .cv-to small{display:block;font:600 8.5px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  #guestName{font:500 16px var(--body);margin-top:2px}
+
+  /* ---------- HERO ---------- */
+  [data-section="hero"]{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .hero-names{font:400 54px/1.1 var(--script);color:var(--plum);margin:14px 0 8px;word-break:break-word}
+  .hero-date{font:500 12.5px var(--sans);letter-spacing:.14em;color:var(--ink)}
+  .kupu{width:26px;height:auto;margin:18px auto 0;display:block;opacity:.75}
+
+  /* ---------- KUTIPAN ---------- */
+  .ayat{font:italic 400 16.5px/1.8 var(--body);color:var(--ink);white-space:pre-line;margin-top:16px}
+  .ayat:before{content:"\201C";display:block;font:400 34px/1 var(--serif);color:var(--muted);margin-bottom:4px}
+
+  /* ---------- MEMPELAI (dua polaroid berdampingan) ---------- */
+  .duo{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;align-items:start}
+  .person:first-child .polaroid{transform:rotate(-3deg)}
+  .person:last-child{margin-top:34px}
+  .person:last-child .polaroid{transform:rotate(3deg)}
+  .amp{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font:400 34px/1 var(--script);color:var(--plum);z-index:2;text-shadow:0 0 10px var(--bg)}
+  .p-nick{font:400 32px/1.1 var(--script);color:var(--plum);margin-top:16px}
+  .p-full{font:500 19px/1.2 var(--serif);color:var(--ink);margin-top:2px}
+  .p-ortu-j{font:600 8.5px var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .p-ortu{font-size:12.5px;white-space:pre-line;margin-top:2px}
+  .soc{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font:600 10.5px var(--sans);color:var(--plum);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+
+  /* ---------- ACARA (baris berkolom) ---------- */
+  .kapel{display:block;width:96px;height:auto;margin:0 auto 14px}
+  .evs{margin-top:28px;text-align:left;border-top:1px solid var(--line)}
+  .ev{display:grid;grid-template-columns:88px 1fr;gap:16px;padding:24px 0;border-bottom:1px solid var(--line)}
+  .ev-l{text-align:center;padding-right:14px;border-right:1px solid var(--line)}
+  .ev-l h3{font:600 9.5px/1.6 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+  .ev-time{font:500 11px/1.5 var(--sans);color:var(--muted);margin-top:8px}
+  .ev-loc{font:600 15.5px/1.35 var(--sans);color:var(--ink)}
+  .ev-date{font-size:13px;color:var(--muted);margin-top:4px}
+  .ev-addr{font-size:12.5px;line-height:1.7;color:var(--muted);margin-top:6px;white-space:pre-line}
+
+  /* ---------- COUNTDOWN + KALENDER ---------- */
+  .cal{margin:24px auto 0;max-width:330px;padding:0 4px}
+  .cal-h{font:600 10px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 0;font:500 11.5px var(--sans);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0}
+  .cal-g .w{font-size:8.5px;letter-spacing:.14em;color:var(--muted)}
+  .cal-g span{display:flex;align-items:center;justify-content:center;height:30px}
+  .cal-g .on{width:30px;margin:0 auto;border-radius:50%;border:1.5px solid var(--plum);color:var(--plum);font-weight:700}
+  .cd{display:grid;grid-template-columns:repeat(4,1fr);margin:22px auto 0;max-width:330px}
+  .cd div{border-left:1px solid var(--line);padding:4px 0}
+  .cd div:first-child{border-left:0}
+  .cd b{display:block;font:500 24px/1.2 var(--sans);color:var(--ink)}
+  .cd span{font:600 8px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .cd-photo{width:62%;max-width:230px;margin:32px auto 0;transform:rotate(-2deg)}
+  .cd-quote{font:italic 400 15.5px/1.75 var(--body);margin-top:24px;white-space:pre-line}
+  .cd-by{font:600 9.5px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+  /* ---------- KISAH ---------- */
+  .st{margin-top:28px;text-align:left;border-left:1px solid var(--line);margin-left:6px}
+  .st-item{position:relative;padding:0 0 24px 22px}
+  .st-item:before{content:"";position:absolute;left:-4.5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--plum);box-shadow:0 0 0 4px var(--bg)}
+  .st-year{font:600 9.5px var(--sans);letter-spacing:.3em;color:var(--muted)}
+  .st-item h3{font:500 22px/1.25 var(--serif);margin:2px 0 4px}
+  .st-item p{font-size:13.5px;color:var(--muted);white-space:pre-line}
+
+  /* ---------- VIDEO ---------- */
+  .vframe{margin-top:24px;padding:8px 8px 30px;background:#fff;box-shadow:0 14px 26px -12px rgba(31,43,69,.45);transform:rotate(-1deg)}
+  .vid{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--card)}
+  .vid .vposter,.vid .vposter .sil{position:absolute;inset:0}
+  .vid .vposter .sil{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+  .vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vid iframe,.vid video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border:0;border-radius:50%;background:var(--plum);color:#fff;font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(251,248,241,.6)}
+
+  /* ---------- GALERI POLAROID ---------- */
+  .gal{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;margin-top:26px}
+  .gal .gi{min-width:0;opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+  .gal .gi.in{opacity:1;transform:none}
+  .gal .gi:nth-child(3n+1),.gal .gi:last-child:nth-child(3n+2){grid-column:span 2;padding:0 14%}
+  .gal .gal-item{display:block;width:100%;border:0;padding:7px 7px 22px;background:#fff;cursor:zoom-in;box-shadow:0 14px 24px -12px rgba(31,43,69,.45);transition:transform .4s ease}
+  .gal .gi:nth-child(odd) .gal-item{transform:rotate(-2.5deg)}
+  .gal .gi:nth-child(even) .gal-item{transform:rotate(2.5deg)}
+  .gal .gal-item:hover{transform:rotate(0) scale(1.02)}
+  .gal .ph{display:block;width:100%;aspect-ratio:4/5;position:relative;background:var(--card)}
+  .gal .gi:nth-child(3n+1) .ph{aspect-ratio:5/4}
+  .gal .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .gal .ph.empty:after{content:"Foto";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+  #lb{position:fixed;inset:0;z-index:60;background:rgba(18,27,46,.94);display:none;align-items:center;justify-content:center;padding:18px}
+  #lb.on{display:flex}
+  #lb img{max-width:100%;max-height:86vh;border:8px solid #fff}
+  #lb button{position:absolute;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer}
+  #lbX{top:14px;right:14px}
+  #lbP{left:10px;top:50%;transform:translateY(-50%)}
+  #lbN{right:10px;top:50%;transform:translateY(-50%)}
+
+  /* ---------- KADO / REKENING ---------- */
+  .wl{display:grid;gap:14px;margin-top:26px}
+  .acc{padding:24px 18px;background:var(--card);border-radius:4px}
+  .acc h3{font:500 24px/1.2 var(--serif);letter-spacing:.06em;text-transform:uppercase;color:var(--plum)}
+  .acc .lbl{font:600 9px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .acc .num{font:600 19px/1.4 var(--sans);letter-spacing:.06em}
+  .acc .nm{font-size:13.5px}
+  .gift-box{margin-top:26px;padding:24px 18px;background:var(--card);border-radius:4px}
+  .gift-box .g-name{font:500 22px/1.25 var(--serif);margin-top:2px}
+  .gift-box .g-tel{font:600 11.5px var(--sans);letter-spacing:.06em;color:var(--plum);margin-top:2px}
+  .gift-box .g-addr{font-size:13px;color:var(--muted);white-space:pre-line;margin-top:8px}
+
+  /* ---------- RSVP & UCAPAN (formulir bergaris bawah) ---------- */
+  .frm{display:grid;gap:16px;margin-top:26px;text-align:left}
+  .frm label{font:500 12.5px var(--sans);color:var(--ink);margin-bottom:-12px}
+  .frm input,.frm textarea,.frm select{width:100%;padding:12px 2px;border:0;border-bottom:1px solid rgba(31,43,69,.3);border-radius:0;background:transparent;font:400 15px var(--body);color:var(--ink);outline:none;appearance:none;-webkit-appearance:none}
+  .frm select{background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 12px) 50%,calc(100% - 7px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+  .frm input::placeholder,.frm textarea::placeholder{color:#9aa0ae}
+  .frm input:focus,.frm textarea:focus,.frm select:focus{border-bottom-color:var(--plum)}
+  .frm .btn{width:100%;margin-top:8px}
+  .ok{display:block;text-align:center;color:var(--plum);font-size:13px;font-style:italic}
+  .wishlist{margin-top:26px;text-align:left;max-height:380px;overflow:auto;border-top:1px solid var(--line)}
+  .wish{padding:16px 2px;border-bottom:1px solid var(--line)}
+  .wish b{display:block;font:700 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase}
+  .wish p{font:italic 400 15px/1.6 var(--body);margin-top:4px;white-space:pre-line;word-break:break-word}
+  .wish time{display:flex;align-items:center;gap:6px;font:500 10.5px var(--sans);color:var(--muted);margin-top:6px}
+
+  /* ---------- FOOTER (pohon ukiran di kiri) ---------- */
+  .ft{min-height:520px;display:flex;flex-direction:column;justify-content:center;padding-left:118px}
+  .pohon{position:absolute;left:-22px;bottom:0;width:190px;height:auto;opacity:.85;pointer-events:none}
+  .ft .rv{position:relative;z-index:1}
+  .ft .kick{line-height:1.8}
+  .ft .sub{margin-top:12px}
+  .ft .names{font-size:38px;margin-top:14px}
+  .mcredit{display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;margin:22px auto 0;padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+  .mcredit-ic{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--plum);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+  .mcredit-txt{display:flex;flex-direction:column;min-width:0;text-align:left;line-height:1.35}
+  .mcredit-txt small{font:600 8px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .mcredit-txt b{font:600 12px var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mcredit-txt i{font-size:11px;color:var(--muted)}
+  .mcredit-yt{flex:0 0 26px;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);color:var(--plum);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px}
+
+  /* ---------- KREDIT PEMBUAT ---------- */
+  .unica-credit{display:flex;align-items:center;justify-content:center;gap:6px;margin:26px auto 0;font:600 9px/1.6 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .unica-credit .uc-hati{width:12px;height:12px;fill:var(--plum);animation:detak-hati 1.6s ease-in-out infinite}
+  .unica-credit b{font:400 22px/1 var(--script);letter-spacing:0;text-transform:none;color:var(--plum)}
+  .unica-credit .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @keyframes detak-hati{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.14)}}
+
+  /* ---------- MUSIK, TOAST ---------- */
+  #audio{display:none}
+  #music{position:fixed;right:max(14px,calc(50% - 201px));bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--plum);color:#fff;font-size:18px;cursor:pointer;z-index:31;display:none;align-items:center;justify-content:center;box-shadow:0 10px 22px -8px rgba(34,58,102,.7)}
+  #music.show{display:flex}
+  #music .ic{animation:putar 4s linear infinite}
+  #music.paused{background:#8c97ad}
+  #music.paused .ic{animation-play-state:paused}
+  @keyframes putar{to{transform:rotate(360deg)}}
+  #toast{position:fixed;left:50%;bottom:80px;transform:translate(-50%,20px);background:var(--plum);color:#fff;font:600 12px var(--sans);padding:9px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:70}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+  @media (max-width:370px){
+    .sec{padding:66px 20px}
+    .names,.cv-body .names{font-size:38px}.hero-names{font-size:46px}.title{font-size:28px;padding:0 32px}.title:before,.title:after{width:22px}
+    .ev{grid-template-columns:76px 1fr;gap:12px}
+    .ft{padding-left:100px}.pohon{width:160px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js-rv .rv,.gal .gi{transition:none}
+    #music .ic,.unica-credit .uc-hati{animation:none}
+  }
+
+  /* ---------- ANIMASI-MASUK: elemen muncul bergiliran saat section digulir ---------- */
+  html.ani .rv{opacity:1!important;transform:none!important;transition:none!important}
+  html.ani .ai{opacity:0!important}
+  html.ani .ai-in{animation:var(--ai-n,ai-naik) var(--ai-t,.95s) cubic-bezier(.2,.75,.25,1) var(--ai-d,0s) both}
+  @keyframes ai-naik{from{opacity:0;translate:0 34px}}
+  @keyframes ai-judul{from{opacity:0;translate:0 24px;filter:blur(8px)}}
+  @keyframes ai-kiri{from{opacity:0;translate:-46px 0}}
+  @keyframes ai-kanan{from{opacity:0;translate:46px 0}}
+  @keyframes ai-zoom{from{opacity:0;scale:.86}}
+  @keyframes ai-tirai{from{opacity:0;clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes ai-putar{from{opacity:0;rotate:-14deg;scale:.7}}
+  @keyframes ai-pudar{from{opacity:0}}
+</style>
+</head>
+<body class="locked">
+
+<!-- ============================ ORNAMEN & IKON (SVG bersama) ============================ -->
+<svg id="ornamen" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- ilustrasi ukiran toile (garis) -->
+    <symbol id="o-kupu" viewBox="0 0 40 32"><g stroke-width="1.2"><path d="M20 10v14"/><path d="M20 12C14 2 3 3 5 12c1 5 8 6 15 4ZM20 12C26 2 37 3 35 12c-1 5-8 6-15 4ZM20 17c-6 0-11 4-9 9 2 3 7 1 9-6ZM20 17c6 0 11 4 9 9-2 3-7 1-9-6Z"/><path d="M19 10l-3-6M21 10l3-6"/><path d="M9 9c3 1 6 3 8 5M31 9c-3 1-6 3-8 5" stroke-width=".6"/></g></symbol>
+    <symbol id="o-gazebo" viewBox="0 0 240 200"><g stroke-width="1"><circle cx="120" cy="11" r="2"/><path d="M120 13v10M106 40l14-17 14 17Z"/><rect x="109" y="40" width="22" height="10"/><path d="M112 42v6M116 42v6M120 42v6M124 42v6M128 42v6" stroke-width=".5"/><path d="M58 86 109 50h22l51 36Z"/><path d="M110 51L62 85M111.7 51L71.7 85M113.3 51L81.4 85M115 51L91.1 85M116.6 51L100.8 85M118.3 51L110.5 85M120 51L120.2 85M121.6 51L129.9 85M123.3 51L139.6 85M124.9 51L149.3 85M126.6 51L159 85M128.3 51L168.7 85M129.9 51L178.4 85M98.8 57.2H141.2M88.6 64.4H151.4M78.4 71.6H161.6M68.2 78.8H171.8" stroke-width=".45"/><rect x="54" y="86" width="132" height="8"/><path d="M54 94q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0q4.1 6 8.25 0" stroke-width=".6"/><path d="M62 94V150M66 94V150"/><path d="M90 94V150M94 94V150"/><path d="M118 94V150M122 94V150"/><path d="M146 94V150M150 94V150"/><path d="M174 94V150M178 94V150"/><path d="M66 108q13-10 24 0M94 108q13-10 24 0M122 108q13-10 24 0M150 108q13-10 24 0" stroke-width=".7"/><path d="M60 128H112M128 128H180M60 131H112M128 131H180"/><path d="M66 131V148M71 131V148M76 131V148M81 131V148M86 131V148M91 131V148M96 131V148M101 131V148M106 131V148M111 131V148M130 131V148M135 131V148M140 131V148M145 131V148M150 131V148M155 131V148M160 131V148M165 131V148M170 131V148M175 131V148" stroke-width=".6"/><rect x="54" y="150" width="132" height="7"/><path d="M102 157h36v6h-36ZM96 163h48v6H96ZM90 169h60v6H90Z" stroke-width=".8"/><path d="M198 176c-2-30 1-56-4-80M196 128c8-8 14-10 22-10M195 110c-8-8-14-10-20-12" stroke-width=".9"/><path d="M179.9 104.7A4 3.2 0 1 1 182.1 97M209.5 70.9A2.6 2.1 0 1 1 213.6 67.7M195.6 99.2A4.4 3.5 0 1 1 202.8 104.2M186.5 71.5A2.7 2.2 0 1 1 189.7 75.8M195.2 69.9A4.4 3.5 0 1 1 199.6 62.4M182.4 84.7A4.5 3.6 0 1 1 187.6 91.9M191.2 102.7A3.2 2.6 0 1 1 192 96.4M186 89.1A3.4 2.7 0 1 1 183.4 95.5M193 74.4A3.8 3 0 1 1 197.8 80.2M190.6 103.8A4.5 3.6 0 1 1 186.4 111.8M192.2 111.5A3.6 2.9 0 1 1 191.4 118.7M190.7 85.5A2.4 1.9 0 1 1 195 83.2M194.5 76.9A4.2 3.3 0 1 1 200.9 71.5M191.7 81.4A4.1 3.3 0 1 1 187.7 88.5M199.8 94.6A3.4 2.7 0 1 1 202 88.1M202.2 91.3A3.5 2.8 0 1 1 208 95.2M221.2 91.1A2.9 2.3 0 1 1 226.7 89.5M217.9 83.1A3.3 2.6 0 1 1 212.1 86.2M197.1 99.2A3.7 2.9 0 1 1 200.3 92.6M215.8 74.7A4.1 3.3 0 1 1 211 81.3M185.3 99.9A2.2 1.8 0 1 1 189.5 98.3M194.1 69.6A3.8 3 0 1 1 199.3 75M224.5 88.3A2.4 1.9 0 1 1 229.3 89.3M216.3 100.2A4.5 3.6 0 1 1 215.2 91.3M186.3 77A2.9 2.3 0 1 1 181.2 74.3M215 81A3.1 2.5 0 1 1 210.2 85M217.4 113.8A2 1.6 0 1 1 215.3 110.3M211.7 87.6A4 3.2 0 1 1 212.1 95.6M217.1 91.7A2.3 1.9 0 1 1 216 87.2M215.7 64.7A3.5 2.8 0 1 1 219.8 70.4M203.8 85.8A2 1.6 0 1 1 200.1 84M188.4 98.4A3.8 3 0 1 1 186 91.1M222.4 100A3.1 2.5 0 1 1 222.8 93.8M219.7 85.1A4.4 3.5 0 1 1 211.5 88.5M204.6 109.7A4.4 3.5 0 1 1 203.3 100.9M224.5 103.5A4 3.2 0 1 1 225 111.5M224.9 63A3.8 3.1 0 1 1 221.4 69.9M193.9 86.1A2.8 2.3 0 1 1 192 91.4M212.1 122.8A3.6 2.8 0 1 1 207.8 117.1M212.4 78.6A2.3 1.8 0 1 1 207.9 78.1M196.4 85.9A4.5 3.6 0 1 1 187.6 84.9M186.9 90.2A2.3 1.9 0 1 1 188.1 94.7M211.6 68.5A3.7 3 0 1 1 218.3 65.3M203.5 106.8A2.9 2.3 0 1 1 200.9 112M192.5 106.2A4.4 3.5 0 1 1 193.9 97.5M214.2 76.9A2.1 1.7 0 1 1 216.5 80.4M190 67.4A3 2.4 0 1 1 195.8 69.1M189.7 80.5A2.9 2.3 0 1 1 195.4 81.6M179.6 72.7A4 3.2 0 1 1 182.6 65.2M217.6 74.9A2.5 2 0 1 1 214 71.4M202.1 88.2A4.4 3.5 0 1 1 200.9 97M189.4 87.4A3.8 3 0 1 1 196.2 90.7M201.6 70.8A4.3 3.4 0 1 1 208 65M187.6 99A2.9 2.3 0 1 1 192.8 101.7M184.3 96A3.8 3.1 0 1 1 178 91.7M199.5 101.5A2.8 2.3 0 1 1 202.1 96.5M204.7 90.4A2.9 2.3 0 1 1 209.5 87.4M224.2 97.5A2.9 2.3 0 1 1 229.6 95.8M216.6 102.1A2.7 2.1 0 1 1 211.6 103.9M181.4 75.3A3.5 2.8 0 1 1 187.7 78.4M202.6 75.7A2.9 2.3 0 1 1 196.9 74.5M219.5 62.7A4.6 3.7 0 1 1 218.5 71.8M190 68.6A2 1.6 0 1 1 186 68.5M223.9 101.5A3.5 2.8 0 1 1 217.9 97.8M200.8 88.4A2.1 1.7 0 1 1 199.1 84.7M203.3 73.8A3.2 2.6 0 1 1 208.8 70.3M220.7 73.2A2.2 1.7 0 1 1 216.7 71.4M199.3 112.9A4 3.2 0 1 1 200 120.8M221.9 84.9A3.2 2.6 0 1 1 227.5 81.8M219.7 116.7A2.3 1.8 0 1 1 223.6 114.3" stroke-width="0.6"/><path d="M228 119.1A4.5 3.6 0 1 1 220.2 123.6M205.4 122.1A3.8 3 0 1 1 197.8 122.6M195.7 138.9A2.4 1.9 0 1 1 194.6 143.5M220.8 126.7A2.4 1.9 0 1 1 225.6 127M201.1 123.6A3.2 2.6 0 1 1 194.7 124.7M210.9 140.9A2.9 2.3 0 1 1 208 135.8M201.5 142.5A2.4 1.9 0 1 1 205.4 145.1M207.2 131.1A4.1 3.3 0 1 1 212.8 137.1M214.4 142.2A3.7 2.9 0 1 1 221.8 142.9M215.5 142.4A3.1 2.5 0 1 1 217.4 136.5M193.7 137A3.8 3 0 1 1 200.3 140.6M218.5 134.2A3.4 2.8 0 1 1 212.1 136.7M214.3 121.5A2.8 2.2 0 1 1 211.1 125.9M226.7 124.5A3 2.4 0 1 1 221.2 126.7M206.4 133.6A4.2 3.4 0 1 1 207.4 125.2M203.6 126.4A3.5 2.8 0 1 1 207.9 131.9M212.3 134.7A2.8 2.2 0 1 1 214 140M212 130.6A3.5 2.8 0 1 1 214.5 123.9M195.3 116.3A4.4 3.5 0 1 1 195.2 125.1M202.6 134.7A3.8 3.1 0 1 1 208.4 139.8M200 124.7A3 2.4 0 1 1 198.7 118.9M218.6 131.8A2.9 2.3 0 1 1 215.2 136.5M201.4 128.4A3.2 2.6 0 1 1 202.6 122.1M193.6 121.8A4.1 3.3 0 1 1 201.6 123.5M211.4 120A4.4 3.5 0 1 1 210.9 128.8M224.1 128.5A3 2.4 0 1 1 223.4 134.5" stroke-width="0.6"/><path d="M77.6 161.3A3.2 2.6 0 1 1 82.9 157.5M78.2 163.9A4.4 3.5 0 1 1 79.1 172.7M49.6 157.2A4.4 3.5 0 1 1 57 162M63.3 174.1A4.5 3.6 0 1 1 55.4 169.8M80.5 160.6A2.8 2.2 0 1 1 85.8 162.2M75.1 164.5A2.2 1.8 0 1 1 72.3 167.9M61.1 168.7A2.1 1.7 0 1 1 65.3 169.2M69.8 177.1A2.3 1.8 0 1 1 70.6 172.6M56.5 173.8A3.6 2.9 0 1 1 63.7 173.1M53.9 164.4A2.7 2.2 0 1 1 58.3 167.6M56.8 175.2A3.1 2.5 0 1 1 53.8 169.8M63.4 172.5A3.1 2.4 0 1 1 66.8 177.5M61.3 176A3.9 3.1 0 1 1 53.6 175.6M53.2 163A4.3 3.4 0 1 1 61.3 160.3M80 168.8A3 2.4 0 1 1 82.5 174.3M57.1 168.5A4.3 3.4 0 1 1 49.2 171.6M74.8 158.7A2.1 1.7 0 1 1 77.7 161.8M78 176.6A4 3.2 0 1 1 75.1 169.1M82.8 166.2A2.7 2.1 0 1 1 78.9 162.5M49.4 165.4A2.6 2.1 0 1 1 47.8 170.3M63.7 166.2A2.8 2.3 0 1 1 66.3 161.2M69 156.4A3.5 2.8 0 1 1 69.7 163.3M49.7 178.7A4.6 3.7 0 1 1 44.7 171M64.3 170.7A4.3 3.4 0 1 1 60.7 163M68.8 176A2.4 1.9 0 1 1 72.7 173.2M64.8 178A3.7 3 0 1 1 64.9 170.5M77.8 170.9A3.3 2.6 0 1 1 78 177.5M62.1 170A4 3.2 0 1 1 58.7 162.7M51.8 165.1A4.1 3.3 0 1 1 52.4 156.8M50.5 176.5A2.3 1.9 0 1 1 48.2 172.4" stroke-width="0.7"/><path d="M167.8 170.2A3.9 3.1 0 1 1 165.4 177.6M165.4 161A3.6 2.9 0 1 1 165.6 168.2M175.8 162.8A3.5 2.8 0 1 1 169.9 159M194.3 173.2A3.3 2.6 0 1 1 195.1 166.7M162.4 173.5A4.2 3.4 0 1 1 166.3 166M162.8 172.7A2.9 2.3 0 1 1 166.3 177.2M166.5 170.3A2.1 1.7 0 1 1 163.9 173.5M189.9 175.7A4.1 3.3 0 1 1 191.1 167.5M171.2 166.7A3.6 2.9 0 1 1 168.9 173.6M180.9 166.3A2.5 2 0 1 1 178.1 170.6M163.4 168.1A3.5 2.8 0 1 1 158.2 172.8M167.9 173.3A2.5 2 0 1 1 172.9 173.2M194.6 169.2A2.1 1.7 0 1 1 193 173.1M184.5 165.9A2 1.6 0 1 1 183.3 162M169.8 161.9A2.9 2.4 0 1 1 175.4 160M175.7 158.9A2 1.6 0 1 1 178.3 162M167.4 163.8A2.6 2.1 0 1 1 172.2 165.6M167.8 178.4A3.1 2.4 0 1 1 169.7 172.5M165.7 176.9A3.2 2.5 0 1 1 159.4 176.3M171.4 163.9A2.3 1.9 0 1 1 167.1 165.8M188.1 166.6A4.5 3.6 0 1 1 189.3 175.6M190 156.7A2.8 2.3 0 1 1 190.5 162.4M175.6 170.9A2.3 1.9 0 1 1 173.4 166.8M182.4 172.4A2 1.6 0 1 1 180.2 168.9M167.1 159.3A4 3.2 0 1 1 163 166.2M171.3 171.9A3.7 2.9 0 1 1 165.4 167.5M153.7 166.4A3.3 2.6 0 1 1 160.1 167.7M177.6 162.4A3.5 2.8 0 1 1 172.2 166.7M154.7 164A2.5 2 0 1 1 157.5 159.9M169.5 177.2A2.6 2.1 0 1 1 167 172.7" stroke-width="0.7"/><path d="M43.4 170.2A4 3.2 0 1 1 35.7 172.3M23.4 175.9A2.4 1.9 0 1 1 25.4 180.3M27.8 165.4A4.4 3.5 0 1 1 23.4 173.1M28.4 170.3A3.5 2.8 0 1 1 28.8 177.2M49.1 169.3A2.9 2.3 0 1 1 52.2 174.2M37.1 167.2A3.8 3.1 0 1 1 32.1 173M45.3 176.9A2.3 1.8 0 1 1 44.5 181.4M23.8 179.4A3.4 2.7 0 1 1 30.6 178.7M37.9 174.6A4.1 3.3 0 1 1 39.7 166.6M34.8 174.4A3.8 3 0 1 1 42.3 174M24 179.5A2.9 2.3 0 1 1 24.8 185.3M33.7 181.1A3.6 2.9 0 1 1 28.2 176.6M50.8 185.1A4.2 3.3 0 1 1 45.2 178.9M32 182.6A3.5 2.8 0 1 1 37.3 178.1M51.6 180.8A3.7 2.9 0 1 1 47.3 174.8M40.4 171.4A3.6 2.8 0 1 1 33.4 171M40.7 174.4A3.2 2.5 0 1 1 38.5 180.3M45.8 178.7A3 2.4 0 1 1 49 183.7" stroke-width="0.7"/><path d="M123.5 182q0 -6.4 -0.1 -10.7M176.2 182q-0.4 -4.1 -1.3 -6.8M119.9 182q1.1 -10.8 3.6 -18M63.4 182q0 -10 0.1 -16.6M157.9 182q-0.6 -4.9 -1.9 -8.2M148.2 182q-0.8 -8.7 -2.6 -14.4M67.4 182q1 -8.1 3.3 -13.5M179.4 182q-1.1 -11.9 -3.6 -19.8M162 182q0.2 -10.8 0.5 -18M111 182q0 -5.7 -0.1 -9.5M27.9 182q-0.2 -7.2 -0.8 -12.1M136 182q-0.3 -9.2 -0.9 -15.4M25.8 182q0 -7 0.1 -11.6M157 182q-0.8 -9.4 -2.6 -15.7M34.2 182q1 -11.9 3.3 -19.8M146.3 182q-0.9 -7 -3.2 -11.7M153.8 182q0.5 -4.9 1.7 -8.1M124.5 182q-0.6 -5.8 -1.9 -9.6M25.1 182q-0.3 -9.3 -1 -15.5M81.7 182q0.6 -6.9 2.1 -11.5M132.2 182q-1 -8.8 -3.3 -14.6M127.6 182q0.1 -5.1 0.3 -8.6M194.5 182q-0.7 -7.8 -2.3 -13M171.8 182q0.7 -7.7 2.3 -12.8M165.4 182q-0.5 -9.1 -1.8 -15.2M201.8 182q-1.2 -7.2 -3.9 -12M140.2 182q-0.4 -10.9 -1.4 -18.2M116.4 182q-1.1 -10.6 -3.8 -17.7M190.3 182q-0.5 -10.3 -1.7 -17.2M176.7 182q1 -6.5 3.2 -10.8M107.9 182q-1.1 -4.6 -3.5 -7.7M73.9 182q-0.5 -8.1 -1.6 -13.6M35.1 182q0.2 -7.7 0.8 -12.8M126.3 182q0.8 -10.7 2.8 -17.9M201.1 182q-1.2 -4.9 -3.9 -8.2M148.3 182q-0.3 -6.2 -0.9 -10.3M93 182q1.1 -11.4 3.6 -19.1M32.5 182q0.5 -8.9 1.6 -14.8M41 182q0.6 -11.2 2 -18.6M104.8 182q1.1 -9.4 3.6 -15.7M170.3 182q-0.3 -8.6 -0.8 -14.3M96.5 182q-0.3 -8.2 -0.8 -13.7M187.3 182q0.7 -7.4 2.4 -12.3M37.6 182q-0.3 -7.6 -1 -12.7M190.7 182q-0.3 -4.1 -0.9 -6.9M197.8 182q0 -5.1 -0.1 -8.5M102.3 182q0.2 -7.2 0.5 -12.1M206.4 182q-0.1 -11.3 -0.5 -18.8M147.8 182q0.5 -6.8 1.7 -11.4M101.5 182q-0.7 -8.2 -2.5 -13.6M220.5 182q-0.9 -11 -2.8 -18.3M105.3 182q0.7 -8.2 2.5 -13.6M82.2 182q-0.9 -11.8 -2.8 -19.6M97.2 182q-0.2 -7.7 -0.6 -12.9M73.3 182q0.5 -7.8 1.6 -13M159.5 182q0.6 -7.8 1.8 -13M135.5 182q0.9 -7 2.9 -11.6M28.6 182q0.8 -5.2 2.5 -8.7M55.1 182q0.4 -11.9 1.2 -19.9M226.1 182q0.9 -9.4 3 -15.7M62.3 182q-0.8 -11.4 -2.7 -19M196.6 182q-1.2 -11.3 -4 -18.8M50.9 182q-0.4 -9.8 -1.2 -16.4M225.2 182q-1.2 -7.7 -3.9 -12.9M71.7 182q1.1 -4.4 3.7 -7.4M203 182q-0.2 -4 -0.8 -6.7M61 182q-0.7 -5.6 -2.2 -9.3M229 182q0.7 -11 2.3 -18.4M219 182q-0.1 -9.2 -0.3 -15.4M172.1 182q-0.4 -7.4 -1.3 -12.4" stroke-width=".6"/><g transform="translate(34 182) scale(0.9)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><g transform="translate(46 184) scale(0.7)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><g transform="translate(206 184) scale(0.8)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><g transform="translate(222 182) scale(0.65)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><path d="M14 183H226" stroke-width=".6" opacity=".6"/><g transform="translate(26 116) scale(.5)"><use href="#o-kupu-g"/></g></g></symbol>
+    <symbol id="o-kapel" viewBox="0 0 120 80"><g stroke-width=".9"><path d="M60 6v8M57 9h6M54 26l6-12 6 12ZM54 26h12v12H54ZM58 38v-6q2-3 4 0v6" /><path d="M42 44l18-10 18 10ZM44 44h32v26H44ZM56 70V58q4-6 8 0v12M48 50h5v7h-5ZM67 50h5v7h-5Z"/><path d="M46 45.5V69M49 45.5V69M52 45.5V69M55 45.5V69M58 45.5V69M61 45.5V69M64 45.5V69M67 45.5V69M70 45.5V69M73 45.5V69" stroke-width=".3" opacity=".6"/><path d="M28 72V68M28 68c-5-2-5-8.8-0-22c5 13.2 5 20 0 22Z"/><path d="M28 66V52" stroke-width=".4"/><path d="M92 72V68M92 68c-5-2-5-8.8-0-22c5 13.2 5 20 0 22Z"/><path d="M92 66V52" stroke-width=".4"/><path d="M20 74V70M20 70c-5-2-5-6-0-15c5 9 5 13 0 15Z"/><path d="M20 68V61" stroke-width=".4"/><path d="M100 74V70M100 70c-5-2-5-6-0-15c5 9 5 13 0 15Z"/><path d="M100 68V61" stroke-width=".4"/><path d="M39.3 72.7A3.9 3.1 0 1 1 31.6 72.2M26.8 70.5A4.4 3.5 0 1 1 34.4 74.8M46 73.7A3.2 2.5 0 1 1 42.9 68.2M41.8 72.6A2.6 2.1 0 1 1 43.1 67.5M45.7 77.2A4 3.2 0 1 1 49.6 70.1M27.3 76.3A4.1 3.3 0 1 1 35 73.4M28.7 70.6A3.5 2.8 0 1 1 34.4 74.6M36.1 67.8A2.8 2.3 0 1 1 32.3 72.1M36 69.4A2 1.6 0 1 1 34 73M30.7 70.2A2.5 2 0 1 1 35.6 69.1" stroke-width="0.5"/><path d="M91.7 72.5A3.7 3 0 1 1 84.6 75M86.5 68.6A2.4 1.9 0 1 1 87.3 73.2M73.1 70.2A2.6 2.1 0 1 1 68 70.9M81.2 70.4A3.7 3 0 1 1 88.5 71.4M75.4 74.2A4.4 3.5 0 1 1 77.7 65.8M91.7 69A3.6 2.9 0 1 1 84.7 70.2M84.3 70.9A3 2.4 0 1 1 89.2 74.4M88.3 72.4A2.5 2 0 1 1 89.8 67.8M81.2 66.8A3.9 3.2 0 1 1 84.9 73.8M77.1 75.5A2.9 2.3 0 1 1 75.7 69.9" stroke-width="0.5"/><path d="M8 74H112" stroke-width=".6" opacity=".6"/></g></symbol>
+    <symbol id="o-ranting" viewBox="0 0 120 80"><g stroke-width="1"><path d="M6 74C30 60 62 40 112 8"/><path d="M40 54C46 44 52 40 62 38" stroke-width=".8"/><g transform="translate(18 67) rotate(-40) scale(1)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(30 60) rotate(40) scale(0.95)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(46 49) rotate(-50) scale(1)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(58 41) rotate(30) scale(0.9)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(72 33) rotate(-55) scale(0.95)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(84 25) rotate(20) scale(0.85)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(98 16) rotate(-60) scale(0.8)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(50 41) rotate(-80) scale(0.7)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><g transform="translate(62 38) rotate(-20) scale(0.7)"><path d="M0 0C5-6 14-8 22-4C14 2 5 3 0 0Z"/><path d="M2 0L18-3" stroke-width=".5"/><path d="M6-1l2-3M10-2l2-3M14-2.5l2-2.5M6 0l2 2M10 0l2 2" stroke-width=".35"/></g><circle cx="110" cy="6" r="2" stroke-width=".7"/><circle cx="104" cy="5" r="1.6" stroke-width=".7"/></g></symbol>
+    <symbol id="o-pohon" viewBox="0 0 200 320"><g stroke-width="1.1"><path d="M40 318c8-30 10-60 4-96-6-30 2-50 14-68M60 318c-2-30 4-62 14-94 8-24 24-40 44-52M44 222c-14-12-26-18-36-20M70 190c10-20 30-30 52-32M58 154c-4-20-14-34-28-42M98 150c4-16 14-26 30-32M74 200c20-4 40 2 60 14"/><path d="M51.9 230q4.5 -4.3 8.9 0M46.8 235.5q3.7 -4.4 9.3 0M52.3 241q5.7 -2.3 9.2 0M49.1 246.5q3.9 -4.1 10.9 0M52.3 252q3.9 -3.3 10.9 0M54.1 257.5q3.7 -2 6.6 0M47.9 263q4.4 -4.9 7.8 0M49.4 268.5q5.3 -2 7.9 0M47.4 274q4.1 -4.6 6.8 0M53.6 279.5q4.1 -4.6 7.5 0M54.8 285q4.2 -4.2 8 0M48.1 290.5q6.5 -3.4 8.4 0M55.6 296q6.9 -2.5 8.3 0M50.4 301.5q6.4 -3.4 6.9 0M50.4 307q3.1 -3.2 7.8 0M53.4 312.5q3.9 -4.3 7.9 0" stroke-width=".45"/><path d="M53.2 111.9A2.7 2.2 0 1 1 48.5 109M3.6 114.2A2.7 2.1 0 1 1 2 119.3M14.2 111A3.8 3 0 1 1 18.9 117M7.2 92.1A2.7 2.2 0 1 1 12.5 93M48.7 100.3A3.3 2.7 0 1 1 52.4 94.7M33.5 121.7A4.5 3.6 0 1 1 28.5 114.3M17.4 102.7A3.7 2.9 0 1 1 17 95.4M-1.8 76.2A2.3 1.8 0 1 1 2.7 77M71.6 107.8A4.3 3.5 0 1 1 78.8 112.7M27.4 112.4A4 3.2 0 1 1 25.7 120.2M35.4 114.5A2.3 1.8 0 1 1 38.3 110.9M0.8 83.8A4.3 3.5 0 1 1 3 92.1M17.3 91.3A2.4 2 0 1 1 12.5 92.5M21.3 84.4A2.8 2.3 0 1 1 18 89M53.4 79.4A4.6 3.7 0 1 1 53.4 88.5M50.4 109.6A2.3 1.9 0 1 1 47.3 113.1M4 70.2A2.4 1.9 0 1 1 6.9 74.1M45.4 81.2A3.1 2.5 0 1 1 39.4 82.6M25.5 64.4A3.1 2.5 0 1 1 20.5 67.9M6.8 102.6A4.1 3.3 0 1 1 -0.3 98.5M73.7 108.7A3.4 2.7 0 1 1 66.9 109.1M48.4 121.1A3.3 2.6 0 1 1 42.9 117.6M58.7 99.6A3.2 2.6 0 1 1 59.7 93.2M57.1 114.9A2.2 1.8 0 1 1 59.6 118.5M11.4 95.4A4.4 3.5 0 1 1 2.8 97.2M50.2 69.1A3 2.4 0 1 1 53.8 73.9M57.6 100.5A4.1 3.3 0 1 1 57.1 108.7M33 117.8A4.3 3.4 0 1 1 31.5 109.3M38.5 69.5A2.6 2 0 1 1 36.2 64.9M58.4 105A3.1 2.4 0 1 1 63.5 108.5M13.4 102.6A4 3.2 0 1 1 7.5 108.1M18.4 64.4A2.7 2.2 0 1 1 23.2 66.8M1.2 96.1A4.3 3.4 0 1 1 5.5 103.5M24.8 97.8A2 1.6 0 1 1 24.7 101.8M30.3 83.3A4.1 3.3 0 1 1 26.5 76M78.6 90.2A3.1 2.4 0 1 1 79.4 84.2M60.6 96A2.1 1.7 0 1 1 61.4 100.1M17.6 77.8A2.4 1.9 0 1 1 18.9 82.4M5.1 70.1A4.6 3.7 0 1 1 -4.1 70.4M26.2 79.8A4.4 3.5 0 1 1 18 76.5M7.8 69.1A3.4 2.7 0 1 1 3.1 74M27.7 85.6A2.4 2 0 1 1 26 81M48.3 120.7A2.3 1.8 0 1 1 45.3 117.2M-0.5 74.5A2.1 1.7 0 1 1 1.7 78.2M7.7 100.2A4.3 3.4 0 1 1 10.2 91.9M80.3 67.4A3.7 3 0 1 1 74.8 62.3M23.4 77.3A2.8 2.2 0 1 1 19.7 73.3M75.6 61.9A2.6 2 0 1 1 74 66.7M69.8 95.8A2.6 2.1 0 1 1 71.8 100.6M71.5 106A3.1 2.5 0 1 1 77.1 103.5M29.3 110.9A3.3 2.6 0 1 1 35.9 110.7M18.1 94A2.4 1.9 0 1 1 15.3 97.8M5.4 123.9A2.5 2 0 1 1 5.2 118.8M15.6 92A2.2 1.8 0 1 1 18 88.3M75.6 65.6A3.7 3 0 1 1 79.4 59.3M69 97.3A2.4 1.9 0 1 1 73.7 97.2M71.7 104A2.8 2.2 0 1 1 76.9 102.2M33.7 68A3.8 3.1 0 1 1 29.5 61.6M40 121.3A2.2 1.7 0 1 1 43.1 118.3M43.7 61.8A4.4 3.5 0 1 1 50.5 67.4M75.4 71.9A4.6 3.7 0 1 1 66.2 71.8M8.3 106.6A2.9 2.3 0 1 1 14 105.2M50.8 95A2.8 2.2 0 1 1 52.9 100.1M79.2 120.6A2.6 2.1 0 1 1 80.2 115.5M23.9 108.7A3.2 2.6 0 1 1 21.6 114.6M80 117.9A3.8 3.1 0 1 1 80 125.6M78.2 119.7A2 1.6 0 1 1 79.1 123.7M16.8 60.7A4.3 3.4 0 1 1 24.6 64.3M63.5 64.2A4.5 3.6 0 1 1 54.6 64.6M59.4 103.7A3.4 2.7 0 1 1 64.4 108.3M15.6 115.8A3.7 3 0 1 1 21.5 111.2M26.1 72.9A3 2.4 0 1 1 29.3 77.9M61 105.5A2.8 2.2 0 1 1 55.4 105M76.9 110.1A3.2 2.6 0 1 1 71.1 107.2M50.8 68.8A2.7 2.2 0 1 1 49.1 63.6M9.7 103.2A2.3 1.9 0 1 1 6.8 106.9M1.9 65.7A4.2 3.4 0 1 1 6.7 72.6M65.7 113.5A4.3 3.4 0 1 1 73.5 109.9M70.8 65A3.4 2.8 0 1 1 75.7 69.9M32.5 108.7A2.9 2.3 0 1 1 35.7 113.7M67 79.1A3 2.4 0 1 1 72.6 81M74.7 104.4A3.3 2.6 0 1 1 79 109.3M27.8 78.4A2.6 2.1 0 1 1 32.2 81.2M15.7 75A4.6 3.7 0 1 1 15.9 84.1M47.8 79.9A4.5 3.6 0 1 1 51.7 71.9M23.3 111.3A2.7 2.2 0 1 1 21.7 116.6M59.9 86.7A4.2 3.4 0 1 1 51.4 87.3M20.8 77.2A3.6 2.9 0 1 1 21 84.5M28.2 89A2.8 2.2 0 1 1 25.1 84.4M27.7 117.4A4.4 3.5 0 1 1 25.2 125.8M2.6 85.6A3.6 2.9 0 1 1 8.8 82M43.1 110.6A3.1 2.5 0 1 1 48.1 114.5M69.6 60.4A4.3 3.4 0 1 1 63 65.9M76.7 80.9A3 2.4 0 1 1 81.8 84M45.9 82.8A3.6 2.9 0 1 1 52.9 81.4M27.9 79.4A3.9 3.1 0 1 1 28.4 71.6M59.6 87A2.8 2.2 0 1 1 54 86.4M64.2 65.7A4.2 3.3 0 1 1 72.1 68M65.1 114.4A4.1 3.3 0 1 1 63.9 106.3M6.7 72.3A3.1 2.5 0 1 1 12.4 69.7M41.4 107.9A4.2 3.4 0 1 1 49.2 104.5M5.6 98.6A4.4 3.5 0 1 1 5.9 107.4M31.1 105.2A3.7 3 0 1 1 26.3 110.8M46.4 114.1A2.4 1.9 0 1 1 44 118.2M-0.7 93.2A2.7 2.2 0 1 1 4.5 91.6M18.6 80.6A3.7 3 0 1 1 16.2 73.6M7.8 93A2.1 1.7 0 1 1 10.6 96.1M52 88.4A2 1.6 0 1 1 48.5 90.6M26.8 90A4.4 3.5 0 1 1 25 98.7M8.7 72A3.7 2.9 0 1 1 7.8 79.2M75.2 75.1A3.7 3 0 1 1 72.3 82M51.5 62.7A2.4 1.9 0 1 1 49.1 66.8M64.1 114.3A3.8 3.1 0 1 1 67.9 121M40.5 105.7A4.1 3.3 0 1 1 46.8 110.9M72.6 76.3A2 1.6 0 1 1 71.1 72.5M50.3 86.5A3.9 3.1 0 1 1 57.8 84.4M34.5 80.2A2.5 2 0 1 1 35.8 75.4M46 62.4A4.2 3.4 0 1 1 54.5 62.6M49.2 105.2A3.9 3.2 0 1 1 45.5 112.1M75 94.5A2.5 2 0 1 1 73.3 99.3" stroke-width="0.55"/><path d="M149.9 83.4A3.3 2.7 0 1 1 150.8 76.8M83.8 83.8A3.1 2.5 0 1 1 84 90M104.7 86.7A2.9 2.3 0 1 1 103.4 92.3M138.8 102A2.7 2.2 0 1 1 137.2 107.2M84.3 131.5A2.8 2.2 0 1 1 80.3 135.5M114 113.7A4.5 3.6 0 1 1 109.6 121.6M77.1 86.3A2.8 2.3 0 1 1 82.7 86.7M147 90.2A3.3 2.7 0 1 1 150.7 95.8M112.8 99.7A2.4 1.9 0 1 1 109.4 103M134.4 82.3A2.7 2.2 0 1 1 129.3 84.1M147.4 126A2.9 2.3 0 1 1 144.3 121.1M124.4 125.7A4.2 3.4 0 1 1 116.2 127.5M79.8 129.8A3.3 2.6 0 1 1 79.9 136.3M101.1 126A4.2 3.4 0 1 1 109.2 128.2M93.3 98.6A2.9 2.3 0 1 1 87.5 99.6M98.3 100.8A3.1 2.5 0 1 1 98.6 107.1M134.2 98.2A3.5 2.8 0 1 1 130 103.6M71 97.8A3.1 2.5 0 1 1 76.8 99.9M109.3 133.5A4.2 3.4 0 1 1 117.6 134.1M69.8 122.4A4.2 3.4 0 1 1 73.2 114.6M68.8 82.3A2.8 2.2 0 1 1 71.2 87.2M120.9 91.7A2.1 1.7 0 1 1 123 88.1M75.7 75.6A4.3 3.4 0 1 1 77.9 83.9M144.6 113.5A4.5 3.6 0 1 1 142.2 122.2M88.4 75.8A2.6 2.1 0 1 1 93.5 76.2M71.7 93.8A2.1 1.7 0 1 1 74.8 90.9M131.8 101.3A3.1 2.5 0 1 1 131 107.6M148.8 103A2.3 1.8 0 1 1 145.6 106.3M95.3 76.5A4.1 3.3 0 1 1 87.1 77.5M68.8 73.5A3.6 2.9 0 1 1 75.6 75.7M135.7 93.9A4 3.2 0 1 1 128.8 97.9M104.2 129.3A2.1 1.7 0 1 1 103.1 133.3M134.7 105.2A4.5 3.6 0 1 1 126.3 102.2M106.1 126.8A3.9 3.1 0 1 1 102.4 133.7M137.7 91.3A3.5 2.8 0 1 1 135.2 97.9M139.2 75.7A2.9 2.3 0 1 1 133.7 77.2M71.1 91.2A3.7 2.9 0 1 1 75.9 85.7M95.3 128.4A3.3 2.6 0 1 1 101.7 127M127 76.4A2.5 2 0 1 1 126.5 81.4M155.5 105.4A3.9 3.2 0 1 1 152.9 97.9M70.2 126.4A3.3 2.7 0 1 1 65.3 130.9M132 117A3.4 2.7 0 1 1 138.7 117M126.8 97.1A2.2 1.8 0 1 1 123.9 100.5M151.6 123.8A2.8 2.3 0 1 1 149.1 128.9M95.5 86.7A3.2 2.6 0 1 1 89.3 88.5M140.9 86.1A3.1 2.5 0 1 1 140.9 92.3M120.7 105.5A3.1 2.5 0 1 1 120.3 111.7M91.3 76.6A2.3 1.8 0 1 1 95.3 78.7M143.4 124.7A4.6 3.7 0 1 1 134.2 124.5M151.9 78A2.1 1.7 0 1 1 151 73.8M134.9 109.5A4.3 3.4 0 1 1 130 116.6M106 79.6A4.1 3.3 0 1 1 101.2 72.8M112.6 103.8A4.3 3.5 0 1 1 105 107.8M146.6 115.7A3.6 2.9 0 1 1 152.7 112M75 99.1A4.5 3.6 0 1 1 66 97.9M70.2 122.9A3.1 2.4 0 1 1 64.1 123.4M149.6 96.8A4.5 3.6 0 1 1 158.1 94.3M135.5 86A4.1 3.3 0 1 1 142.5 90.2M157 94A3.7 3 0 1 1 149.6 94.8M151.1 132.6A4 3.2 0 1 1 145.1 127.4M148.3 101.9A2.5 2 0 1 1 145 98M146.3 135.6A4.4 3.5 0 1 1 139.2 130.4M70.6 98.6A3.2 2.5 0 1 1 64.8 96M131.9 105.6A4.4 3.5 0 1 1 138 99.2M110.2 85.3A2.8 2.2 0 1 1 112.6 80.3M68.2 88.5A3.2 2.6 0 1 1 65.8 94.4M102.3 98.2A3.9 3.1 0 1 1 102.9 90.4M153.2 98.6A4.4 3.5 0 1 1 144.6 97.2M109.3 93.4A3.6 2.9 0 1 1 102.8 90.1M147.5 87.2A3.1 2.5 0 1 1 149.8 93M107.6 93.7A3.4 2.7 0 1 1 112.7 98.2M104.8 91.1A4 3.2 0 1 1 111.8 87.3M95.6 95.8A2.1 1.7 0 1 1 99.7 96.6M113.7 81.5A4.1 3.3 0 1 1 108.3 87.6M123.1 118.3A2.8 2.3 0 1 1 117.5 118.9M143.6 129.4A4.3 3.4 0 1 1 144.7 120.9M74.7 82.4A2.6 2.1 0 1 1 76.1 87.4M83.8 93.1A4.3 3.5 0 1 1 76.7 98.2M117.6 133.3A4.5 3.6 0 1 1 124.4 127.4M77.8 83.9A2.4 1.9 0 1 1 78.6 88.7M84.1 114.8A4.6 3.7 0 1 1 77.2 120.8M89.6 84.6A2.5 2 0 1 1 86.5 80.6M109.7 89.9A2.6 2.1 0 1 1 108.9 95M77.9 91.2A3.5 2.8 0 1 1 77.9 98.2M158.4 79.5A2.2 1.7 0 1 1 154.1 79M119.2 123A3.3 2.6 0 1 1 112.8 122.2M152.8 78.2A3.3 2.6 0 1 1 149.6 84M73.1 77.5A2.2 1.8 0 1 1 76.3 80.6M97.8 79A4.5 3.6 0 1 1 88.9 78.1M101.2 130.7A3.8 3 0 1 1 93.6 129.7M76 115.1A3.2 2.6 0 1 1 80.9 111M122.6 86.6A2.7 2.1 0 1 1 126.9 83.5M96.8 117.7A3.4 2.7 0 1 1 90.1 117.9M111 96.4A3 2.4 0 1 1 104.9 95.8M75.6 109.5A4.4 3.5 0 1 1 73.4 118M123 118.3A4.5 3.6 0 1 1 114.9 114M79.6 88A4.1 3.3 0 1 1 72.8 83.5M77.4 97.9A3 2.4 0 1 1 74.8 92.5M89.1 83.2A2.4 2 0 1 1 90.3 78.5M118.3 112.4A2.2 1.8 0 1 1 114.2 110.7M130.3 107A2.5 2 0 1 1 128.1 102.4M81.5 89.8A3.7 3 0 1 1 77.5 83.6M142.8 120A4.2 3.4 0 1 1 149.4 114.8M137.6 92A4.4 3.5 0 1 1 142.8 84.9M83.8 119.7A4.2 3.4 0 1 1 84.8 111.4M148.8 97.3A2.2 1.8 0 1 1 153.2 97.8M112.9 93.9A2.2 1.7 0 1 1 109.2 96.3M133.7 110.5A4 3.2 0 1 1 139.3 116.1M145.8 88.1A3.8 3.1 0 1 1 143 81M66.6 82.4A2 1.6 0 1 1 68.8 79M64.3 87.1A4 3.2 0 1 1 71.8 84.1M149 117.3A3.7 3 0 1 1 145.7 123.9M102.5 104.1A3 2.4 0 1 1 102.5 110.1M108.7 105.4A2.3 1.8 0 1 1 104.3 106.6M136 84.3A4.2 3.3 0 1 1 128.1 81.3M81.1 126.1A2.5 2 0 1 1 80.3 131.1M100.1 102.7A4.3 3.4 0 1 1 95.4 109.8M69.7 88.1A4 3.2 0 1 1 73.4 80.9M96.7 124.8A4.3 3.4 0 1 1 105.2 125.6M134.2 124.3A2.3 1.8 0 1 1 138.8 124M134.6 117.2A3.5 2.8 0 1 1 131.3 123.4M109.8 102.7A2.1 1.7 0 1 1 111 98.7M131.6 123.9A3.7 2.9 0 1 1 124.9 121.1M86.8 72.2A3.7 3 0 1 1 83.8 79.1M139.4 123.2A4.4 3.6 0 1 1 145 130.2M115.2 109.1A2.6 2.1 0 1 1 118.8 105.4M129.5 126.7A3.9 3.1 0 1 1 135 132.4M125.7 121.4A4.4 3.6 0 1 1 121.2 113.7M119.3 122.2A3.4 2.7 0 1 1 112.8 120.3M96.9 125.6A3.2 2.6 0 1 1 94 119.9" stroke-width="0.55"/><path d="M153.6 165.3A2.7 2.1 0 1 1 154.1 170.6M167.4 127.3A3.2 2.5 0 1 1 170.7 132.7M143.3 136A2.3 1.9 0 1 1 142 131.5M136.2 144.1A4.4 3.5 0 1 1 134.6 135.5M157.8 128.5A3.8 3 0 1 1 165 125.9M157.5 164.5A3.3 2.7 0 1 1 162.4 169M130 126A2.4 1.9 0 1 1 131.4 130.6M160.8 155.8A2.4 1.9 0 1 1 160.8 160.6M156.5 149.6A3.5 2.8 0 1 1 162 153.8M182 149.2A3.9 3.1 0 1 1 175.4 153.4M131.9 170.7A3.2 2.5 0 1 1 138.2 171.5M149.5 150.9A2.6 2.1 0 1 1 154.6 149.3M127.4 172.1A2.6 2.1 0 1 1 124.9 167.5M132 154.2A2.9 2.3 0 1 1 134 159.7M148 143.2A4.4 3.6 0 1 1 139.2 144.1M173 132.5A2.3 1.8 0 1 1 173.3 127.9M138.8 163.2A3.6 2.9 0 1 1 140.2 156.1M129 133.5A4.3 3.4 0 1 1 135.1 127.6M168.8 148.5A2.4 1.9 0 1 1 164.8 151.1M131.5 175.4A2.1 1.7 0 1 1 127.9 173.3M167.9 130.8A2.4 1.9 0 1 1 172.4 132.6M181.5 156.3A2.7 2.1 0 1 1 176.7 154M164.8 156.8A3.1 2.5 0 1 1 168.6 161.8M170.2 153.8A2 1.6 0 1 1 174.3 154.3M178.7 147A2.2 1.7 0 1 1 174.9 144.9M140.6 142.5A3.2 2.5 0 1 1 135.9 146.6M184.4 130.4A4.5 3.6 0 1 1 183.8 121.5M189.6 139.7A4.4 3.5 0 1 1 181.1 141.9M174.4 160.6A2.8 2.3 0 1 1 174.5 155M145.2 163.4A2.9 2.3 0 1 1 150.4 166M142 141.1A4.5 3.6 0 1 1 133.9 144.9M141.4 133.8A3.1 2.5 0 1 1 135.4 135.2M138.9 159.6A3 2.4 0 1 1 144 162.6M131.9 172.2A2.4 1.9 0 1 1 133.7 167.8M134.9 156A2.8 2.2 0 1 1 129.8 158.4M156.2 135.3A4.4 3.5 0 1 1 148.9 140.3M170.9 141.9A3.7 3 0 1 1 165.5 136.7M152.6 142.7A3.8 3 0 1 1 148.7 149.1M179.9 149.6A3.9 3.1 0 1 1 184.3 143.2M130.4 175.5A3.5 2.8 0 1 1 125.6 170.5M158.6 127.3A2.3 1.8 0 1 1 159.5 131.7M181 171.3A2.6 2.1 0 1 1 186.1 170.2M154.7 141.1A3.8 3 0 1 1 154.3 148.7M181.8 151.3A3.1 2.5 0 1 1 180.5 145.3M176.1 133.4A3.3 2.6 0 1 1 172.2 138.6M178.5 163.7A2.9 2.3 0 1 1 183.9 161.8M160.1 158.8A3.9 3.1 0 1 1 163.1 151.6M187.6 157.9A3.5 2.8 0 1 1 180.7 159M125.5 149A4.3 3.5 0 1 1 132 154.7M159.2 139.3A3.2 2.5 0 1 1 152.9 140.3M135.2 150.5A3.6 2.9 0 1 1 136.8 157.5M182.9 126.9A2.1 1.7 0 1 1 179.4 129.3M166.4 135.2A2.4 1.9 0 1 1 161.8 136.4M150 165.9A2.6 2.1 0 1 1 153.1 169.9M172.2 174A2.9 2.4 0 1 1 166.3 174.7M174.9 127.3A2.9 2.3 0 1 1 170.7 123.3M162.7 168.7A2 1.6 0 1 1 166.2 166.8M127.3 150.1A2.2 1.8 0 1 1 128.1 154.5M159.8 139.2A3.3 2.7 0 1 1 166.4 140.6M154.1 171.2A2.7 2.2 0 1 1 157 166.7M129.8 134.8A4 3.2 0 1 1 127.6 142.5M147.9 167.1A3.1 2.5 0 1 1 153.4 170M157.5 172.2A2 1.6 0 1 1 158.4 176.1M181.8 157.5A4.3 3.5 0 1 1 178.4 165.5M131 149.4A3.7 3 0 1 1 138.4 150.4M185.2 171A4.3 3.5 0 1 1 178.1 176.1M168.8 160.2A2.6 2.1 0 1 1 173.9 159.7M130.2 153.9A3.4 2.7 0 1 1 136.4 156.6M156.1 168.5A3.7 3 0 1 1 149.2 171.3M181 177.7A4.3 3.4 0 1 1 184.8 170" stroke-width="0.55"/><path d="M18.9 177.7A2.7 2.2 0 1 1 17 172.6M2.9 174A3 2.4 0 1 1 5.7 179.2M11.1 152.6A4.3 3.5 0 1 1 12.6 144.1M28.9 172.4A3.6 2.8 0 1 1 34.6 168.1M16.7 175.7A2.7 2.1 0 1 1 21.4 173M33 156.2A4.6 3.7 0 1 1 39.9 162.2M7.2 160.1A4.6 3.6 0 1 1 11.6 168.1M14.7 147.2A3 2.4 0 1 1 16.2 141.4M22.1 172.3A4.3 3.5 0 1 1 14.2 175.7M11.7 170.9A2.4 1.9 0 1 1 6.8 170.8M20.3 157.1A2.4 1.9 0 1 1 21.3 161.8M41.5 161.6A2.2 1.7 0 1 1 43.9 165.2M18.6 149.1A2.1 1.7 0 1 1 14.4 149.1M37.4 179A4.5 3.6 0 1 1 29 175.7M19.1 165.5A2.3 1.8 0 1 1 20.3 161.1M39.2 176A4 3.2 0 1 1 31.3 177.4M25.9 171.7A4.2 3.4 0 1 1 34.3 172.2M0.1 150.6A4.2 3.4 0 1 1 7.3 155M42.6 153.8A3.6 2.9 0 1 1 42 146.6M35.1 181.1A3.9 3.1 0 1 1 41.4 176.5M7.6 143.7A3.7 3 0 1 1 14.8 145.6M12.8 158.9A3.1 2.5 0 1 1 18.7 160.8M29.7 172.1A4.3 3.5 0 1 1 23 166.5M27.7 160A3.4 2.7 0 1 1 23.1 155M11.6 172.8A4.6 3.7 0 1 1 20.7 172.5M24.7 154.6A2.5 2 0 1 1 28 158.3M42.2 149.4A2.6 2.1 0 1 1 43.5 144.3M25 173.8A3 2.4 0 1 1 19 173.6M17.4 155.6A2.6 2.1 0 1 1 15.3 160.3M9.4 145.4A3.1 2.5 0 1 1 6.7 139.9M25.1 178.7A2.8 2.3 0 1 1 29.3 175M9.1 147A4.2 3.4 0 1 1 12.5 154.7M28.2 154.5A4.1 3.3 0 1 1 34.5 159.7M34.4 171.3A4.1 3.3 0 1 1 31.2 178.9M29.2 181.2A4.1 3.3 0 1 1 27.6 173.1M17.6 165.8A2.9 2.4 0 1 1 13.1 169.6M42.3 145.8A3.3 2.6 0 1 1 45.9 151.3M25.6 164.4A4.4 3.5 0 1 1 21.4 172M10.8 162.3A3.8 3 0 1 1 5.8 167.9M5 155.2A3.4 2.7 0 1 1 -0.4 151.2M47.2 153.6A3.8 3 0 1 1 41.7 148.5M43.9 151.5A3.8 3 0 1 1 39.5 157.7M34.5 154.4A4.3 3.4 0 1 1 42.5 151.1M12.3 172.9A3.4 2.7 0 1 1 19.1 173.5M12.7 166.6A3 2.4 0 1 1 17.5 170M3.1 172.5A2.3 1.8 0 1 1 5.1 168.4M7.7 157.8A3.2 2.6 0 1 1 1.3 158.6M41.9 179.3A4.2 3.4 0 1 1 35.9 173.4M29.2 155A4.1 3.3 0 1 1 21.8 151.5M37.9 146.4A4.2 3.3 0 1 1 34.2 138.9" stroke-width="0.55"/><path d="M161.9 215.1A4.3 3.5 0 1 1 154.5 210.5M120.2 194.3A4.2 3.4 0 1 1 111.9 195.8M107.2 202.8A3.3 2.6 0 1 1 113.3 205M130.6 199.4A2.2 1.8 0 1 1 130.5 203.8M110.9 205.9A4.4 3.5 0 1 1 119.6 206.7M128.9 199.9A2 1.6 0 1 1 131.8 197.1M160.2 202.9A2.3 1.9 0 1 1 159.8 198.2M115.7 196.8A4 3.2 0 1 1 119.3 203.9M143.3 198.1A3.2 2.6 0 1 1 140.2 203.7M126.8 211.5A2.6 2.1 0 1 1 128.3 206.6M110.7 210.6A3.9 3.1 0 1 1 117.4 214.5M130.3 207.9A3.1 2.5 0 1 1 132.5 213.7M103.8 191.6A2 1.6 0 1 1 107.9 191.7M148.5 215A3.1 2.5 0 1 1 146.9 209M133.9 189.9A2.8 2.2 0 1 1 131.3 185M136.3 206A4.3 3.4 0 1 1 137.9 214.4M114.8 192.2A3.5 2.8 0 1 1 117 198.8M159.1 206.8A2.2 1.7 0 1 1 160.5 202.7M156.8 206.5A4.2 3.3 0 1 1 150.7 212.3M105.6 191.7A3.4 2.7 0 1 1 102.8 197.7M110 197.2A4.5 3.6 0 1 1 119 197M138.6 187.2A3.1 2.5 0 1 1 132.3 186.8M161.7 195.6A2.2 1.8 0 1 1 157.3 195.6M133.9 210.6A2.3 1.9 0 1 1 129.3 211.2M137.2 202.5A2.4 1.9 0 1 1 132.4 201.9M102.7 190.9A2.1 1.6 0 1 1 104.8 187.4M121.5 189.6A4.3 3.5 0 1 1 120.3 181M157.4 215A2.5 2 0 1 1 154.3 211M127.7 184.2A2.9 2.3 0 1 1 127.1 189.9M105 205.4A3 2.4 0 1 1 108 210.7M125 185.3A3 2.4 0 1 1 127.4 190.8M147.4 195.3A3.5 2.8 0 1 1 153.1 199.4M159.9 193.5A4.6 3.7 0 1 1 150.8 194.3M147.2 211A3.5 2.8 0 1 1 145.9 218M112.7 195.9A3 2.4 0 1 1 107.7 192.5M156.7 203.9A4 3.2 0 1 1 154.5 211.6M125.5 205.2A2.9 2.3 0 1 1 130.1 208.7M153.7 191.1A3.4 2.7 0 1 1 153 197.8M101.3 193.5A2.3 1.9 0 1 1 105.9 194.5M114.4 207.4A2.5 2 0 1 1 119.4 207.7" stroke-width="0.55"/><path d="M69.4 318q0.2 -10.6 0.6 -17.7M10 318q0.3 -4.1 1.1 -6.9M48.6 318q-0.9 -11.3 -2.9 -18.8M78.1 318q-0.3 -9.3 -1.1 -15.5M65.8 318q0.2 -8.5 0.6 -14.2M32.7 318q0.4 -9.2 1.4 -15.3M22.2 318q0.1 -9.6 0.2 -16.1M16.6 318q-0.4 -6.6 -1.3 -10.9M36.7 318q-0.9 -4.1 -3 -6.8M76.7 318q0.8 -10.3 2.7 -17.1M79.9 318q0.7 -9.9 2.5 -16.5M57.7 318q0.9 -9 3.1 -15.1M33.6 318q0.9 -11.5 2.9 -19.1M102.8 318q0.6 -10.2 1.9 -17M80.6 318q-0.2 -4.7 -0.8 -7.8M98.1 318q-0.2 -10.8 -0.6 -18M19.1 318q0.4 -11.3 1.5 -18.9M17.5 318q-0.5 -10.6 -1.7 -17.6M97.6 318q-0.6 -9.1 -2.1 -15.1M79.5 318q-0.7 -9.7 -2.4 -16.2M81.2 318q0.6 -4.1 1.9 -6.8M61 318q1.1 -8.2 3.8 -13.6M73.6 318q0.2 -4.9 0.6 -8.2M2.5 318q-0.4 -11.3 -1.4 -18.8M60.9 318q0 -11.2 0.1 -18.7M76.5 318q0.8 -10 2.6 -16.7M76.1 318q-1 -6.8 -3.5 -11.4M31.1 318q0 -11.8 -0.2 -19.6M42.3 318q-0.9 -9.2 -3.1 -15.3M27.5 318q-0.4 -5.2 -1.2 -8.7M64.5 318q0.7 -9.9 2.3 -16.5M39.8 318q0.4 -4.1 1.5 -6.8M9.9 318q0.6 -8.6 2 -14.3M21 318q0.9 -11.2 2.9 -18.7M43.7 318q-0.1 -7.1 -0.5 -11.9M86.2 318q-1.2 -4.9 -3.9 -8.2M83.9 318q0.1 -4.9 0.4 -8.2M8.9 318q0.6 -11.9 2 -19.8M95 318q0.6 -4.1 2 -6.8M109.4 318q-0.6 -11.8 -1.9 -19.6M54 318q0.1 -9.1 0.2 -15.1M85.4 318q0.1 -7.7 0.3 -12.9M18.3 318q-1.2 -10.7 -4 -17.8M79.2 318q0.3 -4.8 1.1 -8M76.3 318q-0.8 -7.5 -2.8 -12.5M4.2 318q-0.7 -7.2 -2.4 -11.9M0.5 318q-1.1 -5 -3.7 -8.3M100.4 318q-0.4 -7.8 -1.3 -12.9M96.1 318q-1 -7.2 -3.5 -11.9M50 318q0.5 -7.5 1.7 -12.5" stroke-width=".6"/><g transform="translate(96 318) scale(0.9)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><g transform="translate(112 316) scale(0.7)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g><g transform="translate(14 318) scale(0.8)"><path d="M0 0q1-12 0-22" stroke-width=".6"/><circle cx="0" cy="-24" r="2.4" stroke-width=".6"/><path d="M0-27v-3M0-21v3M-3-24h-3M3-24h3M-2-26l-2-2M2-26l2-2M-2-22l-2 2M2-22l2 2" stroke-width=".5"/></g></g></symbol>
+    <g id="o-kupu-defs" style="display:none"><g id="o-kupu-g" stroke-width="1.2"><path d="M20 10v14"/><path d="M20 12C14 2 3 3 5 12c1 5 8 6 15 4ZM20 12C26 2 37 3 35 12c-1 5-8 6-15 4ZM20 17c-6 0-11 4-9 9 2 3 7 1 9-6ZM20 17c6 0 11 4 9 9-2 3-7 1-9-6Z"/><path d="M19 10l-3-6M21 10l3-6"/><path d="M9 9c3 1 6 3 8 5M31 9c-3 1-6 3-8 5" stroke-width=".6"/></g></g>
+    <!-- ikon -->
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.3V17h16V7.3l-8 5.4-8-5.4ZM5.6 7 12 11.3 18.4 7H5.6Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V2Zm-2 8v9h14v-9H5Zm2 2h4v4H7v-4Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 2a5 5 0 0 0-5 5c0 3.2 3.4 8 5 9.9 1.6-1.9 5-6.7 5-9.9a5 5 0 0 0-5-5Zm0 2.5A2.5 2.5 0 1 1 12 11.5 2.5 2.5 0 0 1 12 6.5Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm1 3v5.4l3.6 2.1-1 1.7L11 13.6V7h2Z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a.8.8 0 0 0 1.2.7l10.4-6.5a.8.8 0 0 0 0-1.4L9.2 4.8A.8.8 0 0 0 8 5.5Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 3h11a2 2 0 0 1 2 2v11h-2V5H8V3Zm-3 4h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h10V9H5Z"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3Z"/></symbol>
+    <symbol id="i-live" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm7 2.5v7l6-3.5-6-3.5Z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.4 9 7.7s-4 7.7-9 7.7c-.9 0-1.8-.1-2.6-.3L4 20.5l1.4-4A7.3 7.3 0 0 1 3 10.7C3 6.4 7 3 12 3Zm0 2c-4 0-7 2.6-7 5.7 0 1.5.7 2.9 2 4l.5.4-.6 1.8 2.4-1 .4.1c.7.2 1.5.3 2.3.3 4 0 7-2.6 7-5.7S16 5 12 5Z"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 6.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm0 2.3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 4a8 8 0 0 0-7.4 5l1.6.6A6.3 6.3 0 0 1 12 5.7V4Z"/></symbol>
+    <symbol id="i-yt" viewBox="0 0 24 24"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.4H7.6V14h2.7v8h3.2Z"/></symbol>
+    <symbol id="i-tt" viewBox="0 0 24 24"><path d="M16.6 2c.3 2.3 1.6 3.8 3.9 4v3.1a7 7 0 0 1-3.9-1.2v6.7A6.1 6.1 0 1 1 10.5 8.5v3.2a3 3 0 1 0 2.1 2.9V2h4Z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0ZM8.5 20.5a4.9 4.9 0 0 1-3.5-8.4l2.1-2.1 1.4 1.4-2.1 2.1a2.9 2.9 0 1 0 4.1 4.1l2.1-2.1 1.4 1.4-2.1 2.1a4.9 4.9 0 0 1-3.4 1.5Zm8.4-6.6-1.4-1.4 2.1-2.1a2.9 2.9 0 1 0-4.1-4.1L11.4 8.4 10 7l2.1-2.1a4.9 4.9 0 1 1 6.9 6.9l-2.1 2.1Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============================ SAMPUL ============================ -->
+<section id="cover" data-section="cover">
+  <div class="cv-in">
+    <svg class="ranting r-tl ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+    <div class="cv-body">
+      <p class="kick" data-field="cover.judul" data-label="Judul">Pernikahan</p>
+      <svg class="gazebo ukir" viewBox="0 0 240 200" aria-hidden="true"><use href="#o-gazebo"/></svg>
+      <h1 class="names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h1>
+      <div class="cv-to">
+        <small data-field="cover.kepadaYth" data-label="Kepada Yth" data-hide-empty="cover.kepadaYth">Kepada Yth.</small>
+        <p id="guestName" data-field="guest.name" data-label="Nama tamu (dari link undangan)">Tamu Undangan</p>
+      </div>
+      <button class="btn" id="openBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><span data-field="cover.tombolBukaUndangan" data-label="Tombol Buka Undangan">Buka Undangan</span></button>
+    </div>
+  </div>
+</section>
+
+<main>
+<!-- ============================ HERO ============================ -->
+<section class="sec" data-section="hero">
+  <svg class="ranting r-tl ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <svg class="ranting r-br ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick" data-field="hero.judul" data-label="Judul">The Wedding Of</p>
+    <h2 class="hero-names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h2>
+    <p class="hero-date" data-field="hero.tanggalAkad" data-label="Tanggal Akad" data-hide-empty="hero.tanggalAkad">Sabtu, 12 Desember 2026</p>
+    <svg class="kupu ukir" viewBox="0 0 40 32" aria-hidden="true"><use href="#o-kupu"/></svg>
+  </div>
+</section>
+
+<!-- ============================ KUTIPAN ============================ -->
+<section class="sec" data-section="quote">
+  <svg class="ranting r-br ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">A Wedding Verse</p>
+    <p class="ayat" data-field="invitation.quote" data-label="Kutipan" data-hide-empty="invitation.quote">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri, supaya kamu merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang.
+QS. Ar-Rum: 21</p>
+  </div>
+</section>
+
+<!-- ============================ MEMPELAI ============================ -->
+<section class="sec" data-section="couple">
+  <svg class="ranting r-tl ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Bride &amp; Groom</p>
+    <h2 class="title" data-field="couple.judul" data-label="Judul">Mempelai</h2>
+    <p class="sub" data-field="couple.subJudul" data-label="Sub Judul" data-hide-empty="couple.subJudul">Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan.</p>
+  </div>
+  <div class="duo rv">
+    <div class="person">
+      <div class="polaroid"><div class="photo" data-photo="couple.0.foto" data-label="Foto Mempelai 1"><div class="sil">Foto mempelai 1</div></div></div>
+      <p class="p-nick" data-field="couple.0.namaPanggilan" data-label="Nama Panggilan Mempelai 1">Azalia</p>
+      <h3 class="p-full" data-field="couple.0.namaLengkap" data-label="Nama Lengkap Mempelai 1" data-hide-empty="couple.0.namaLengkap">Azalia Fasya</h3>
+      <p class="p-ortu-j" data-field="couple.0.judulOrangTua" data-label="Judul Orang Tua Mempelai 1" data-hide-empty="couple.0.judulOrangTua">Putri dari</p>
+      <p class="p-ortu" data-field="couple.0.orangTua" data-label="Orang Tua Mempelai 1" data-hide-empty="couple.0.orangTua">Bapak Hendra &amp; Ibu Sari</p>
+      <a class="soc" href="#" target="_blank" rel="noopener" data-href="couple.0.sosialMedia1" data-hide-empty="couple.0.sosialMedia1" data-sosial="1"><svg class="ic soc-ic" aria-hidden="true"><use href="#i-ig"/></svg><span data-field="couple.0.sosialMedia1" data-label="Sosial Media Mempelai 1"></span></a>
+    </div>
+    <p class="amp" aria-hidden="true">&amp;</p>
+    <div class="person">
+      <div class="polaroid"><div class="photo" data-photo="couple.1.foto" data-label="Foto Mempelai 2"><div class="sil">Foto mempelai 2</div></div></div>
+      <p class="p-nick" data-field="couple.1.namaPanggilan" data-label="Nama Panggilan Mempelai 2">Dias</p>
+      <h3 class="p-full" data-field="couple.1.namaLengkap" data-label="Nama Lengkap Mempelai 2" data-hide-empty="couple.1.namaLengkap">Dias Taufik</h3>
+      <p class="p-ortu-j" data-field="couple.1.judulOrangTua" data-label="Judul Orang Tua Mempelai 2" data-hide-empty="couple.1.judulOrangTua">Putra dari</p>
+      <p class="p-ortu" data-field="couple.1.orangTua" data-label="Orang Tua Mempelai 2" data-hide-empty="couple.1.orangTua">Bapak Wibowo &amp; Ibu Ratna</p>
+      <a class="soc" href="#" target="_blank" rel="noopener" data-href="couple.1.sosialMedia1" data-hide-empty="couple.1.sosialMedia1" data-sosial="1"><svg class="ic soc-ic" aria-hidden="true"><use href="#i-ig"/></svg><span data-field="couple.1.sosialMedia1" data-label="Sosial Media Mempelai 2"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ACARA ============================ -->
+<section class="sec" data-section="event">
+  <svg class="ranting r-br ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <svg class="kapel ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-kapel"/></svg>
+    <p class="kick">Save The Date</p>
+    <h2 class="title" data-field="event.judul" data-label="Judul">Wedding Details</h2>
+    <p class="sub" data-field="event.subJudul" data-label="Sub Judul" data-hide-empty="event.subJudul">Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada:</p>
+  </div>
+  <div class="evs rv">
+    <div class="ev">
+      <div class="ev-l">
+        <h3 data-field="event.akadJudul" data-label="Judul Event 1">Akad Nikah</h3>
+        <p class="ev-time" data-field="event.akadJam" data-label="Jam Event 1" data-hide-empty="event.akadJam">08.00 – 10.00 WIB</p>
+      </div>
+      <div>
+        <p class="ev-loc" data-field="event.akadLokasi" data-label="Lokasi Event 1" data-hide-empty="event.akadLokasi">Edelweiss Wedding Hall</p>
+        <p class="ev-date" data-field="event.akadTanggal" data-label="Tanggal Event 1" data-hide-empty="event.akadTanggal">Sabtu, 12 Desember 2026</p>
+        <p class="ev-addr" data-field="event.akadAlamat" data-label="Alamat Event 1" data-hide-empty="event.akadAlamat">Jl. Palem Raya No. 1, Karawaci, Tangerang</p>
+        <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="event.akadMapsUrl" data-label="URL Maps Event 1" data-hide-empty="event.akadMapsUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="event.akadTombolMaps" data-label="Teks Tombol Maps Event 1">Open Map</span></a>
+      </div>
+    </div>
+    <div class="ev">
+      <div class="ev-l">
+        <h3 data-field="event.resepsiJudul" data-label="Judul Event 2">Resepsi</h3>
+        <p class="ev-time" data-field="event.resepsiJam" data-label="Jam Event 2" data-hide-empty="event.resepsiJam">11.00 – 14.00 WIB</p>
+      </div>
+      <div>
+        <p class="ev-loc" data-field="event.resepsiLokasi" data-label="Lokasi Event 2" data-hide-empty="event.resepsiLokasi">Hotel Transit</p>
+        <p class="ev-date" data-field="event.resepsiTanggal" data-label="Tanggal Event 2" data-hide-empty="event.resepsiTanggal">Sabtu, 12 Desember 2026</p>
+        <p class="ev-addr" data-field="event.resepsiAlamat" data-label="Alamat Event 2" data-hide-empty="event.resepsiAlamat">Jl. Raya Serpong No. 104, Tangerang Selatan</p>
+        <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="event.resepsiMapsUrl" data-label="URL Maps Event 2" data-hide-empty="event.resepsiMapsUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="event.resepsiTombolMaps" data-label="Teks Tombol Maps Event 2">Open Map</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COUNTDOWN + KALENDER ============================ -->
+<section class="sec" data-section="countdown">
+  <svg class="ranting r-tl ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Happy Days Are Coming</p>
+    <h2 class="title" data-field="countdown.judul" data-label="Judul">Save the Date</h2>
+    <p class="sub" id="cdTanggal" data-field="countdown.tanggalAkad" data-label="Tanggal Akad" data-hide-empty="countdown.tanggalAkad">Sabtu, 12 Desember 2026</p>
+    <div class="cal" id="cal" aria-label="Kalender bulan acara"></div>
+    <div class="cd" aria-label="Hitung mundur">
+      <div><b id="cdD">00</b><span>Hari</span></div><div><b id="cdH">00</b><span>Jam</span></div><div><b id="cdM">00</b><span>Menit</span></div><div><b id="cdS">00</b><span>Detik</span></div>
+    </div>
+    <div class="polaroid cd-photo" data-hide-empty="countdown.fotoPasangan"><div class="photo" data-photo="countdown.fotoPasangan" data-label="Foto Pasangan"><div class="sil">Foto pasangan</div></div></div>
+    <p class="cd-quote" data-field="countdown.kutipan" data-label="Kutipan" data-hide-empty="countdown.kutipan">Cinta tidak saling menatap, tetapi bersama-sama memandang ke arah yang sama.</p>
+    <p class="cd-by" data-field="countdown.kutipanOleh" data-label="Kutipan Oleh" data-hide-empty="countdown.kutipanOleh">Antoine de Saint-Exupéry</p>
+    <a class="btn" href="#" target="_blank" rel="noopener" data-href="kalender.url"><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg><span data-field="countdown.tombolSimpanKalender" data-label="Tombol Simpan Kalender">Simpan ke Kalender</span></a>
+  </div>
+</section>
+
+<!-- ============================ LIVE STREAMING ============================ -->
+<section class="sec" data-section="streaming">
+  <div class="rv">
+    <p class="kick">Join Us Virtually</p>
+    <h2 class="title" data-field="streaming.judul" data-label="Judul">Live Streaming</h2>
+    <p class="sub" data-field="streaming.subJudul" data-label="Sub Judul" data-hide-empty="streaming.subJudul">Bagi yang berhalangan hadir, saksikan momen bahagia kami secara langsung.</p>
+    <a class="btn ghost" href="#" target="_blank" rel="noopener" data-href="streaming.url" data-label="Link Live Streaming" data-hide-empty="streaming.url"><svg class="ic" aria-hidden="true"><use href="#i-live"/></svg><span data-field="streaming.tombolLiveStreaming" data-label="Tombol Live Streaming">Tonton Siaran</span></a>
+  </div>
+</section>
+
+<!-- ============================ LOVE STORY (blok berulang) ============================ -->
+<section class="sec" data-section="story">
+  <svg class="ranting r-br ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Our Chronicle</p>
+    <h2 class="title" data-field="story.judul" data-label="Judul">Kisah Kami</h2>
+  </div>
+  <div class="st" data-repeat="story" data-label="Kisah">
+    <div class="st-item">
+      <p class="st-year" data-field="tahun" data-label="Tahun">2019</p>
+      <h3 data-field="judul" data-label="Judul Kisah">Pertemuan Pertama</h3>
+      <p data-field="deskripsi" data-label="Deskripsi">Kami bertemu di sebuah acara kampus. Obrolan singkat yang ternyata menjadi awal dari kisah panjang kami.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ VIDEO PREWEDDING ============================ -->
+<section class="sec" data-section="prewed">
+  <div class="rv">
+    <p class="kick">Our Moments in Motion</p>
+    <h2 class="title" data-field="prewed.judul" data-label="Judul">Prewedding</h2>
+    <p class="sub" data-field="prewed.subJudul" data-label="Sub Judul" data-hide-empty="prewed.subJudul">Sepenggal cerita kami dalam gambar bergerak.</p>
+    <div class="vframe">
+      <div class="vid" id="vscreen" data-video-path="prewed.video">
+        <div class="vposter"><div class="sil">Video belum dipasang</div></div>
+        <button class="vplay" id="vplay" type="button" aria-label="Putar video prewedding"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></button>
+      </div>
+    </div>
+    <p class="note" data-field="prewed.teksInstruksi" data-label="Teks Instruksi" data-hide-empty="prewed.teksInstruksi">Ketuk tombol untuk memutar.</p>
+  </div>
+</section>
+
+<!-- ============================ GALERI ============================ -->
+<section class="sec" data-section="gallery">
+  <svg class="ranting r-tl ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">The Wedding Of</p>
+    <h2 class="title" data-field="gallery.judul" data-label="Judul">Our Gallery</h2>
+    <p class="sub" data-field="gallery.subJudul" data-label="Sub Judul" data-hide-empty="gallery.subJudul">Momen bahagia yang kami abadikan.</p>
+    <p class="note" data-field="gallery.teksInstruksi" data-label="Teks Instruksi" data-hide-empty="gallery.teksInstruksi">Ketuk foto untuk memperbesar.</p>
+  </div>
+  <div class="gal" id="gal" data-gallery-path="gallery"></div>
+</section>
+
+<!-- ============================ REKENING / E-WALLET (blok berulang) ============================ -->
+<section class="sec" data-section="wallet">
+  <svg class="ranting r-br ukir" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">With Love</p>
+    <h2 class="title" data-field="wallet.judul" data-label="Judul">Hadiah</h2>
+    <p class="sub" data-field="wallet.subJudul" data-label="Sub Judul" data-hide-empty="wallet.subJudul">Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang ingin memberikan tanda kasih untuk kami, dapat melalui:</p>
+  </div>
+  <div class="wl" data-repeat="wallet" data-label="Rekening">
+    <div class="acc">
+      <h3 data-field="judul" data-label="Judul" data-hide-empty="judul">BCA</h3>
+      <p class="lbl">Nomor Rekening</p>
+      <p class="num" data-field="noRekening" data-label="No Rekening" data-hide-empty="noRekening">1234567890</p>
+      <p class="nm" data-field="nama" data-label="Nama" data-hide-empty="nama">a.n. Dias Taufik</p>
+      <button class="btn ghost sm" type="button" data-copy-path="noRekening" data-hide-empty="noRekening"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span data-field="tombolSalin" data-label="Tombol Salin">Salin</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KIRIM HADIAH ============================ -->
+<section class="sec" data-section="gift">
+  <div class="rv">
+    <p class="kick">Send a Gift</p>
+    <h2 class="title" data-field="gift.judul" data-label="Judul">Kirim Hadiah</h2>
+    <p class="sub" data-field="gift.subJudul" data-label="Sub Judul" data-hide-empty="gift.subJudul">Hadiah fisik dapat dikirimkan ke alamat berikut.</p>
+  </div>
+  <div class="gift-box rv">
+    <p class="kick" style="color:var(--muted)" data-field="gift.kepadaYth" data-label="Kepada Yth">Kepada Yth.</p>
+    <p class="g-name" data-field="gift.penerima" data-label="Penerima" data-hide-empty="gift.penerima">Azalia Fasya</p>
+    <p class="g-tel" data-field="gift.noTelpon" data-label="No Telpon" data-hide-empty="gift.noTelpon">0812 3456 7890</p>
+    <p class="g-addr" data-field="gift.alamat" data-label="Alamat" data-hide-empty="gift.alamat">Jl. Palem Raya No. 1, Karawaci, Tangerang 15810</p>
+    <div class="btns">
+      <button class="btn ghost sm" type="button" data-copy-path="gift.teksSalin" data-hide-empty="gift.tombolSalinAlamat,gift.teksSalin"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span data-field="gift.tombolSalinAlamat" data-label="Tombol Salin Alamat (Kosongkan untuk sembunyikan tombol)">Salin Alamat</span></button>
+      <a class="btn ghost sm" href="#" target="_blank" rel="noopener" data-href="gift.petaUrl" data-label="URL Google Maps" data-tampil-bila="gift.tombolBukaPeta" data-grup="peta" data-grup-judul="Tombol Buka Peta" data-hide-empty="gift.tombolBukaPeta,gift.petaUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="gift.tombolBukaPeta" data-label="Tombol Buka Peta (Kosongkan untuk sembunyikan tombol)" data-grup="peta" data-grup-judul="Tombol Buka Peta">Buka Peta</span></a>
+      <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="gift.waUrl" data-hide-empty="gift.tombolChatWhatsapp,gift.waUrl"><svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg><span data-field="gift.tombolChatWhatsapp" data-label="Tombol Chat WhatsApp (Kosongkan untuk sembunyikan tombol)">Konfirmasi</span></a>
+    </div>
+  </div>
+  <p class="note rv" data-field="gift.catatan" data-label="Catatan" data-hide-empty="gift.catatan">Mohon konfirmasi melalui WhatsApp sebelum mengirim.</p>
+</section>
+
+<!-- ============================ KONFIRMASI KEHADIRAN ============================ -->
+<section class="sec" data-section="rsvp">
+  <div class="rv">
+    <p class="kick">Kindly Reply</p>
+    <h2 class="title">RSVP</h2>
+    <form class="frm" id="rsvpForm" autocomplete="off">
+      <label for="rName">Nama</label>
+      <input id="rName" required>
+      <label for="rHadir">Konfirmasi kehadiran</label>
+      <select id="rHadir" required>
+        <option value="">Pilih kehadiran</option>
+        <option>Hadir</option>
+        <option>Tidak hadir</option>
+        <option>Masih ragu</option>
+      </select>
+      <label for="rJumlah">Jumlah tamu</label>
+      <select id="rJumlah"><option>1 orang</option><option>2 orang</option><option>3 orang</option><option>4 orang</option></select>
+      <button class="btn" type="submit">Kirim Konfirmasi</button>
+      <p class="ok" id="rThanks" hidden>Terima kasih, konfirmasi Anda sudah kami terima.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================ UCAPAN & DOA ============================ -->
+<section class="sec" data-section="wishes">
+  <div class="rv">
+    <p class="kick">Warm Wishes</p>
+    <h2 class="title" data-field="wishes.judul" data-label="Judul">Ucapan &amp; Doa</h2>
+    <p class="sub" data-field="wishes.subJudul" data-label="Sub Judul" data-hide-empty="wishes.subJudul">Kirimkan doa dan ucapan terbaik untuk kami.</p>
+    <form class="frm" id="wishForm" autocomplete="off">
+      <label data-field="wishes.judulUcapanTamu" data-label="Judul Ucapan Tamu">Tulis ucapan terbaik Anda</label>
+      <input id="wName" placeholder="Nama" required>
+      <textarea id="wMsg" rows="3" placeholder="Ucapan &amp; doa" required></textarea>
+      <button class="btn" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Kirim Ucapan</button>
+      <p class="ok" id="wThanks" hidden>Terima kasih atas ucapan Anda.</p>
+    </form>
+  </div>
+  <div class="wishlist" id="wishes" data-wish-list="[]"></div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="sec ft" data-section="footer">
+  <svg class="pohon ukir" viewBox="0 0 200 320" aria-hidden="true"><use href="#o-pohon"/></svg>
+  <div class="rv">
+    <svg class="kupu ukir" viewBox="0 0 40 32" aria-hidden="true" style="margin:0 auto 12px"><use href="#o-kupu"/></svg>
+    <p class="kick" data-field="footer.teks2" data-label="Teks 2" data-hide-empty="footer.teks2">Terima kasih atas perhatian dan doa restunya</p>
+    <p class="sub" data-field="footer.teks" data-label="Teks 1">Kehadiran dan doa restu Anda merupakan kehormatan dan kebahagiaan bagi kami.</p>
+    <h3 class="names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h3>
+    <!-- INFO MUSIK LATAR: nilainya dari musik yang DIPILIH di editor (bukan bidang isian user). -->
+    <div class="mcredit" data-hide-empty="musik.judul">
+      <span class="mcredit-ic" aria-hidden="true">♪</span>
+      <span class="mcredit-txt">
+        <small data-field="musik.sumber" data-label="Sumber Musik">Musik latar</small>
+        <b data-field="musik.judul" data-label="Judul Musik">Judul lagu</b>
+        <i data-field="musik.artis" data-label="Artis Musik">Nama artis</i>
+      </span>
+      <a class="mcredit-yt" data-href="musik.tautan" data-hide-empty="musik.tautan" target="_blank" rel="noopener noreferrer" title="Dengarkan di YouTube" aria-label="Dengarkan musik latar di YouTube"><svg class="ic" aria-hidden="true"><use href="#i-yt"/></svg></a>
+    </div>
+    <p class="unica-credit">created with <svg class="uc-hati" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.8 6.6 4.8c2 0 3.5 1.1 5.4 3.1 1.9-2 3.4-3.1 5.4-3.1 3.6 0 5.7 3.6 4.2 7C19.5 16.4 12 21 12 21z"/></svg><span class="sr-only">cinta</span> by <b>Unica</b></p>
+  </div>
+</footer>
+</main>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="Foto galeri">
+  <img id="lbImg" alt="">
+  <button id="lbX" type="button" aria-label="Tutup">✕</button>
+  <button id="lbP" type="button" aria-label="Sebelumnya">‹</button>
+  <button id="lbN" type="button" aria-label="Berikutnya">›</button>
+</div>
+<div id="toast" role="status" aria-live="polite">Disalin</div>
+
+<!-- Musik latar: sumber bunyi ditulis runtime dari musik yang DIPILIH di editor. -->
+<div id="ytmusik" aria-hidden="true" style="position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:.01;overflow:hidden;pointer-events:none"></div>
+<audio id="audio" loop src=""></audio>
+<button id="music" class="paused" type="button" aria-pressed="false" aria-label="Putar atau jeda musik latar"><svg class="ic" aria-hidden="true"><use href="#i-music"/></svg></button>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
+  var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  /* ---------- MUNCUL SAAT DIGULIR (.rv statis + kotak galeri) ---------- */
+  var rvIO = null;
+  if ('IntersectionObserver' in window) {
+    document.documentElement.classList.add('js-rv');
+    rvIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rvIO.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: .02 });
+    $$('main .rv').forEach(function (el) { rvIO.observe(el); });
+  }
+  function tampilkan(el) {
+    var r = el.getBoundingClientRect();
+    if (!rvIO || (r.top < innerHeight && r.bottom > 0)) el.classList.add('in');
+    else rvIO.observe(el);
+  }
+
+  /* ---------- SAMPUL: buka undangan ---------- */
+  var openBtn = document.getElementById('openBtn');
+  if (openBtn) openBtn.onclick = function () {
+    var c = document.getElementById('cover'); if (c) c.classList.add('open');
+    document.body.classList.remove('locked');
+    if (mTombol) mTombol.classList.add('show');
+    mainkanMusik(true);   // musik mulai saat sampul dibuka (browser menolak bunyi sebelum interaksi)
+  };
+
+  /* ---------- TANGGAL ACARA: dibaca dari teks countdown.tanggalAkad (tanpa cache) ---------- */
+  var BULAN = { jan: 0, januari: 0, january: 0, feb: 1, februari: 1, february: 1, mar: 2, maret: 2, march: 2, apr: 3, april: 3, mei: 4, may: 4, jun: 5, juni: 5, june: 5, jul: 6, juli: 6, july: 6, agu: 7, agt: 7, agustus: 7, aug: 7, august: 7, sep: 8, sept: 8, september: 8, okt: 9, oktober: 9, oct: 9, october: 9, nov: 10, november: 10, des: 11, desember: 11, dec: 11, december: 11 };
+  var NAMA_BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  function tanggalTarget() {
+    var el = document.getElementById('cdTanggal'); if (!el) return null;
+    var t = el.textContent || '', d = null, m;
+    if ((m = t.match(/(\d{4})-(\d{1,2})-(\d{1,2})/))) d = new Date(+m[1], +m[2] - 1, +m[3]);
+    else if ((m = t.match(/(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})/)) && BULAN[m[2].toLowerCase()] != null) d = new Date(+m[3], BULAN[m[2].toLowerCase()], +m[1]);
+    else if ((m = t.match(/(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})/))) d = new Date(+m[3], +m[2] - 1, +m[1]);
+    if (!d) return null;
+    var jamEl = document.querySelector('[data-field="event.akadJam"]');
+    var j = ((jamEl && jamEl.textContent) || '').match(/(\d{1,2})[.:](\d{2})/);
+    d.setHours(j ? +j[1] : 8, j ? +j[2] : 0, 0, 0);
+    return d;
+  }
+  /* kalender bulan acara: digambar ulang hanya bila tanggalnya berubah */
+  var calEl = document.getElementById('cal'), calKunci = null;
+  function gambarKalender(tg) {
+    if (!calEl) return;
+    var kunci = tg ? tg.getFullYear() + '-' + tg.getMonth() + '-' + tg.getDate() : '';
+    if (kunci === calKunci) return;
+    calKunci = kunci;
+    calEl.hidden = !tg;
+    if (!tg) return;
+    var awal = new Date(tg.getFullYear(), tg.getMonth(), 1).getDay();
+    var jml = new Date(tg.getFullYear(), tg.getMonth() + 1, 0).getDate();
+    var h = '<p class="cal-h">' + NAMA_BULAN[tg.getMonth()] + ' ' + tg.getFullYear() + '</p><div class="cal-g">';
+    ['M', 'S', 'S', 'R', 'K', 'J', 'S'].forEach(function (w) { h += '<span class="w">' + w + '</span>'; });
+    for (var i = 0; i < awal; i++) h += '<span></span>';
+    for (var k = 1; k <= jml; k++) h += '<span' + (k === tg.getDate() ? ' class="on"' : '') + '>' + k + '</span>';
+    calEl.innerHTML = h + '</div>';
+  }
+  var cdD = $('#cdD'), cdH = $('#cdH'), cdM = $('#cdM'), cdS = $('#cdS');
+  function detak() {
+    var tg = tanggalTarget();
+    gambarKalender(tg);
+    if (!cdD) return;
+    var s = tg ? Math.max(0, Math.floor((tg - new Date()) / 1000)) : 0;
+    cdD.textContent = pad2(Math.floor(s / 86400)); cdH.textContent = pad2(Math.floor(s % 86400 / 3600));
+    cdM.textContent = pad2(Math.floor(s % 3600 / 60)); cdS.textContent = pad2(s % 60);
+  }
+  detak(); setInterval(detak, 1000);
+
+  /* ---------- SALIN: satu pendengar delegasi, data-copy dibaca SAAT diklik ---------- */
+  var toast = document.getElementById('toast');
+  function kabar(teks) {
+    if (!toast) return;
+    toast.textContent = teks; toast.classList.add('on');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('on'); }, 2200);
+  }
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest ? ev.target.closest('[data-copy-path]') : null;
+    if (!t) return;
+    var teks = t.getAttribute('data-copy') || '';
+    if (!teks) return;
+    ev.preventDefault();
+    var paksa = function () { var ta = document.createElement('textarea'); ta.value = teks; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e2) {} ta.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(teks).then(null, paksa);
+    else paksa();
+    kabar('Disalin: ' + (teks.length > 28 ? teks.slice(0, 28) + '…' : teks));
+  });
+
+  /* ---------- GALERI: kotak dari data-gallery-urls (runtime mengisi) ---------- */
+  var gal = document.getElementById('gal');
+  var galTerakhir = null;
+  function daftarGaleri() {
+    try { var a = JSON.parse((gal && gal.getAttribute('data-gallery-urls')) || '[]'); return Array.isArray(a) ? a.filter(Boolean) : []; }
+    catch (e) { return []; }
+  }
+  function gambarGaleri() {
+    if (!gal) return;
+    var url = daftarGaleri();
+    gal.replaceChildren();
+    var n = url.length || 5;   // kosong = kotak contoh
+    for (var i = 0; i < n; i++) {
+      var wrap = document.createElement('div'); wrap.className = 'gi';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gal-item';
+      b.setAttribute('aria-label', 'Foto ' + (i + 1)); b.setAttribute('data-idx', i);
+      var ph = document.createElement('span'); ph.className = 'ph';
+      if (url[i]) { var im = document.createElement('img'); im.src = url[i]; im.alt = 'Foto ' + (i + 1); im.loading = 'lazy'; ph.appendChild(im); }
+      else ph.classList.add('empty');
+      b.appendChild(ph); wrap.appendChild(b); gal.appendChild(wrap);
+      tampilkan(wrap);   // yang sudah di layar langsung tampil
+    }
+  }
+  gambarGaleri();
+  galTerakhir = JSON.stringify(daftarGaleri());
+  window.__unicaGaleri = function () {
+    var kini = JSON.stringify(daftarGaleri());
+    if (kini === galTerakhir) return 0;
+    galTerakhir = kini; gambarGaleri();
+    return daftarGaleri().length;
+  };
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbIdx = 0;
+  function lbTampil(i) {
+    var u = daftarGaleri(); if (!u.length) return;
+    lbIdx = (i + u.length) % u.length; lbImg.src = u[lbIdx]; lb.classList.add('on');
+  }
+  if (gal) gal.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.gal-item'); if (!b) return;
+    lbTampil(+b.getAttribute('data-idx'));
+  });
+  if (lb) {
+    $('#lbX').onclick = function () { lb.classList.remove('on'); };
+    $('#lbP').onclick = function () { lbTampil(lbIdx - 1); };
+    $('#lbN').onclick = function () { lbTampil(lbIdx + 1); };
+    lb.addEventListener('click', function (ev) { if (ev.target === lb) lb.classList.remove('on'); });
+    document.addEventListener('keydown', function (ev) {
+      if (!lb.classList.contains('on')) return;
+      if (ev.key === 'Escape') lb.classList.remove('on');
+      else if (ev.key === 'ArrowLeft') lbTampil(lbIdx - 1);
+      else if (ev.key === 'ArrowRight') lbTampil(lbIdx + 1);
+    });
+  }
+
+  /* ---------- UCAPAN: gambar daftar dari data-wish-list (runtime mengisi) ---------- */
+  var wList = document.getElementById('wishes');
+  var wSaya = [];
+  try { wSaya = JSON.parse(localStorage.getItem('unica.wish.' + location.pathname) || '[]'); } catch (e) { wSaya = []; }
+  var ikonJam = '<svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>';
+  function semuaUcapan() {
+    var dariServer = [];
+    try { dariServer = JSON.parse((wList && wList.getAttribute('data-wish-list')) || '[]'); } catch (e) { dariServer = []; }
+    if (!Array.isArray(dariServer)) dariServer = [];
+    var data = dariServer.map(function (w) { return { i: w.i, n: w.n, m: w.m, t: w.t }; }).concat(wSaya);
+    return data.sort(function (a, b) { return (b.t || 0) - (a.t || 0); });
+  }
+  function gambarUcapan() {
+    if (!wList) return;
+    var rows = semuaUcapan();
+    wList.innerHTML = rows.length
+      ? rows.map(function (w) {
+          var waktu = w.t ? new Date(w.t).toLocaleString('id-ID', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+          return '<article class="wish"' + (w.i == null ? '' : ' data-path="wish.' + esc(w.i) + '.name"') + '><b>' + esc(w.n) + '</b><p>' + esc(w.m) + '</p>' + (waktu ? '<time>' + ikonJam + esc(waktu) + '</time>' : '') + '</article>';
+        }).join('')
+      : '<p class="note" style="text-align:center">Belum ada ucapan. Jadilah yang pertama.</p>';
+  }
+  gambarUcapan();
+  window.__unicaUcapan = gambarUcapan;
+  var wForm = document.getElementById('wishForm');
+  if (wForm) wForm.onsubmit = function (ev) {
+    ev.preventDefault();
+    var n = document.getElementById('wName').value.trim(), m = document.getElementById('wMsg').value.trim();
+    if (!n || !m) return;
+    wSaya.unshift({ n: n, m: m, t: Date.now() }); wSaya = wSaya.slice(0, 50);
+    try { localStorage.setItem('unica.wish.' + location.pathname, JSON.stringify(wSaya)); } catch (e) {}
+    gambarUcapan(); ev.target.reset();
+    var th = document.getElementById('wThanks'); if (th) { th.hidden = false; clearTimeout(th._t); th._t = setTimeout(function () { th.hidden = true; }, 4000); }
+  };
+
+  /* ---------- RSVP (lokal) ---------- */
+  var rForm = document.getElementById('rsvpForm');
+  if (rForm) rForm.onsubmit = function (ev) {
+    ev.preventDefault();
+    var rec = { n: $('#rName').value.trim(), h: $('#rHadir').value, j: $('#rJumlah').value, t: Date.now() };
+    if (!rec.n || !rec.h) return;
+    try { localStorage.setItem('unica.rsvp.' + location.pathname, JSON.stringify(rec)); } catch (e) {}
+    ev.target.reset();
+    var th = document.getElementById('rThanks'); if (th) { th.hidden = false; clearTimeout(th._t); th._t = setTimeout(function () { th.hidden = true; }, 5000); }
+  };
+
+  /* ---------- SOSIAL MEDIA: input = URL lengkap, tampilan = @username + ikon sesuai layanan ---------- */
+  var IKON_SOSIAL = [[/instagram\./i, 'i-ig'], [/facebook\.|fb\.com/i, 'i-fb'], [/tiktok\./i, 'i-tt'], [/twitter\.|(^|\/\/)(www\.)?x\.com/i, 'i-x'], [/youtube\.|youtu\.be/i, 'i-yt']];
+  window.__unicaSosial = function () {
+    $$('a[data-href][data-sosial="1"]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      var t = a.querySelector('span[data-field]');
+      var u = a.querySelector('.soc-ic use');
+      if (u) {
+        var ik = 'i-link';
+        for (var k = 0; k < IKON_SOSIAL.length; k++) if (IKON_SOSIAL[k][0].test(href)) { ik = IKON_SOSIAL[k][1]; break; }
+        u.setAttribute('href', '#' + ik);
+      }
+      if (!t || !href || href === '#') return;
+      var nama = '';
+      try { nama = (href.split('?')[0].split('#')[0].replace(/\/+$/, '').split('/').pop() || '').replace(/^@/, ''); } catch (e) {}
+      t.textContent = nama ? '@' + nama : href;
+    });
+  };
+  window.__unicaSosial();
+
+  /* ---------- VIDEO: nilai dibaca SAAT tombol ditekan + sampul thumbnail YouTube ---------- */
+  var vs = document.getElementById('vscreen'), vp = document.getElementById('vplay');
+  var vposter = vs ? vs.querySelector('.vposter') : null;
+  var posterAsli = vposter ? vposter.innerHTML : '';
+  function videoUrl() { return ((vs && vs.getAttribute('data-video-url')) || '').trim(); }
+  function idVideoYt(u) { var m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
+  function perbaruiPoster() {
+    if (!vposter) return;
+    var id = idVideoYt(videoUrl());
+    var src = id ? 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg' : '';
+    if (!src) { if (vposter.getAttribute('data-poster-isi') !== 'asli') { vposter.innerHTML = posterAsli; vposter.setAttribute('data-poster-isi', 'asli'); } return; }
+    if (vposter.getAttribute('data-poster-isi') === src) return;
+    var im = new Image(); im.src = src; im.alt = 'Sampul video';
+    vposter.replaceChildren(im); vposter.setAttribute('data-poster-isi', src);
+  }
+  perbaruiPoster();
+  window.__unicaVideoPoster = perbaruiPoster;
+  if (vp) vp.onclick = function () {
+    var url = videoUrl();
+    if (!url) { kabar('Video belum dipasang'); return; }
+    mainkanMusik(false);   // hentikan musik latar dulu
+    var id = idVideoYt(url), el;
+    if (id) {
+      el = document.createElement('iframe');
+      el.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
+      el.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; el.allowFullscreen = true;
+    } else { el = document.createElement('video'); el.src = url; el.controls = true; el.autoplay = true; el.playsInline = true; }
+    vs.replaceChildren(el);
+  };
+
+  /* ---------- MUSIK LATAR: sumber bunyi dari musik yang DIPILIH di editor ---------- */
+  /* musik.youtubeId MENANG atas musik.berkas. Nilai hanya dibaca di dalam __unicaMusik(K). */
+  var mAudio = document.getElementById('audio'), mTombol = document.getElementById('music');
+  var mYt = null, mSiap = false, mId = '', mMauPutar = false, mBerkas = '';
+  function muatYtApi(cb) {
+    if (window.YT && window.YT.Player) { cb(); return; }
+    window.onYouTubeIframeAPIReady = cb;
+    if (!window.__unicaYtSkrip) {
+      window.__unicaYtSkrip = document.createElement('script');
+      window.__unicaYtSkrip.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(window.__unicaYtSkrip);
+    }
+  }
+  function pasangYt(id) {
+    if (!id || mId === id) return;
+    mId = id;
+    muatYtApi(function () {
+      if (!mId) return;
+      if (mYt && mYt.loadVideoById) { mYt.loadVideoById(mId); if (!mMauPutar) mYt.pauseVideo(); return; }
+      mYt = new window.YT.Player('ytmusik', {
+        videoId: mId, width: 1, height: 1,
+        playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, loop: 1, playlist: mId, modestbranding: 1, playsinline: 1, rel: 0 },
+        events: {
+          onReady: function () { mSiap = true; if (mMauPutar) mYt.playVideo(); },
+          onStateChange: function (ev) { if (ev.data === 1 || ev.data === 2) mainkanMusik(ev.data === 1, true); }
+        }
+      });
+    });
+  }
+  function mainkanMusik(on, dariYT) {
+    mMauPutar = on;
+    if (!dariYT && mAudio) {
+      if (mBerkas) { if (on) mAudio.play().catch(function () {}); else mAudio.pause(); }
+      else if (mSiap && mYt) { if (on) mYt.playVideo(); else mYt.pauseVideo(); }
+    }
+    if (mTombol) { mTombol.classList.toggle('paused', !on); mTombol.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  }
+  window.__unicaMusik = function (km) {
+    var c = km || {};
+    var y = String(c['musik.youtubeId'] || ''), b = String(c['musik.berkas'] || '');
+    var berkas = y ? '' : b;   // YouTube menang atas berkas
+    if (berkas !== mBerkas) {
+      mBerkas = berkas;
+      if (berkas) { mAudio.src = berkas; mAudio.loop = true; }
+      else { mAudio.pause(); mAudio.removeAttribute('src'); mAudio.load(); }
+    }
+    if (y) pasangYt(y);
+    else if (mId) { mId = ''; if (mYt && mSiap) mYt.pauseVideo(); }
+    mainkanMusik(mMauPutar && !!(mBerkas || mId));   // status user dipertahankan
+  };
+  if (mTombol) mTombol.onclick = function () { mainkanMusik(mTombol.getAttribute('aria-pressed') !== 'true'); };
+})();
+
+/* ---------- ANIMASI-MASUK: tiap elemen section muncul bergiliran saat memasuki layar ---------- */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var root = document.documentElement;
+  var SASARAN = 'h1,h2,h3,h4,p,small,.btn,a.soc,.photo,.polaroid,.pfoto,.cd-foto,.cd-photo,img,svg,figure,.vframe,.person,.ev,.st-item,.acc,.gift-box,.cd,.cal,.frm,.wishlist,.mcredit,.amp,.vgaris,.hgaris,.vname,.wtw,.fbb,.kamus,.btns,ul,ol,blockquote';
+  var LEWATI = '.ic,.gal,.gi,#gal,[data-wish-list] *,.frm *,.btn *,.mcredit *,.cal *,.cd *';
+  function sudahDipilih(el, akar) {
+    for (var p = el.parentElement; p && p !== akar; p = p.parentElement) if (p.classList.contains('ai') || p.classList.contains('ai-in') || p.hasAttribute('data-ai')) return true;
+    return false;
+  }
+  function jenis(el, i) {
+    var cs = getComputedStyle(el), tag = el.tagName;
+    if (el.matches('.person,.ev,.acc,.st-item')) return i % 2 ? 'ai-kanan' : 'ai-kiri';
+    if (el.matches('.photo,.polaroid,.pfoto,.cd-foto,.cd-photo,img,figure,.vframe')) return cs.clipPath === 'none' && i % 2 ? 'ai-tirai' : 'ai-zoom';
+    if (tag === 'svg' || el.matches('.amp,.vgaris,.hgaris')) return el.matches('.vgaris,.hgaris') ? 'ai-tirai' : 'ai-putar';
+    if (/^H[1-3]$/.test(tag) || el.matches('.vname,.wtw,.fbb')) return cs.filter === 'none' ? 'ai-judul' : 'ai-naik';
+    if (el.matches('.cd,.cal,.btns,.btn')) return 'ai-zoom';
+    return 'ai-naik';
+  }
+  var antre = [], jadwal = null;
+  function lepas() {
+    jadwal = null;
+    antre.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
+    antre.forEach(function (el, k) {
+      el.style.setProperty('--ai-d', Math.min(k, 9) * 0.12 + 's');
+      el.classList.remove('ai'); el.classList.add('ai-in');
+    });
+    antre = [];
+  }
+  /* masuk layar -> mainkan; keluar penuh dari layar -> siapkan lagi, jadi animasi berulang tiap kali digulir masuk */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting && e.target.classList.contains('ai') && antre.indexOf(e.target) < 0) antre.push(e.target);
+    });
+    if (antre.length && !jadwal) jadwal = setTimeout(lepas, 30);
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  var ioKeluar = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) return;
+      var el = e.target, k = antre.indexOf(el);
+      if (k >= 0) antre.splice(k, 1);
+      if (el.classList.contains('ai-in')) { el.classList.remove('ai-in'); el.classList.add('ai'); }
+    });
+  }, { threshold: 0 });
+  function siapkan(akar) {
+    var semua = akar.querySelectorAll(SASARAN), urut = 0;
+    for (var j = 0; j < semua.length; j++) {
+      var el = semua[j];
+      if (el.matches(LEWATI) || el.closest('#ornamen') || sudahDipilih(el, akar)) continue;
+      if (getComputedStyle(el).position === 'fixed') continue;
+      el.setAttribute('data-ai', '');
+      el.style.setProperty('--ai-n', jenis(el, urut++));
+      el.classList.add('ai');
+      io.observe(el); ioKeluar.observe(el);
+    }
+  }
+  root.classList.add('ani');
+  var sampul = document.getElementById('cover');
+  if (sampul && !sampul.classList.contains('open')) siapkan(sampul);
+  var mulai = false;
+  function mulaiMain() {
+    if (mulai) return; mulai = true;
+    var ss = document.querySelectorAll('[data-section]:not(#cover)');
+    for (var i = 0; i < ss.length; i++) siapkan(ss[i]);
+  }
+  if (!document.body.classList.contains('locked')) mulaiMain();
+  else new MutationObserver(function (m, o) {
+    if (!document.body.classList.contains('locked')) { o.disconnect(); setTimeout(mulaiMain, 250); }
+  }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>

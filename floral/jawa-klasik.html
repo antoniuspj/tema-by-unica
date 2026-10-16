@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Undangan Pernikahan</title>
+<!--
+  ============================================================================
+  TEMA "JAWA KLASIK" — by-unica HTML theme engine
+  ----------------------------------------------------------------------------
+  Gaya: tiruan desain "Traditional Java" — latar greige berpola kawung, lanskap berkabut
+  (candi, joglo, burung, pakis, merak, bunga ungu), foto mempelai berbingkai oval emas, teks
+  tegak THE BRIDE/THE GROOM, kartu berpuncak lengkung dengan mahkota ukiran mauve, puncak
+  sepasang merak, hitung mundur berbentuk gunungan. Font: Lobster (judul & nama) · Mulish (isi).
+  Semua ornamen = SVG/CSS inline buatan sendiri (tanpa berkas gambar).
+  Kerangka & kontrak penanda mengikuti starter-tema.html.
+  Verifikasi sebelum impor:
+   node scripts/cek-tema.mjs themes/jawa-klasik.html --spec docs/variabel-per-section.mjs
+  ============================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Mulish:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ddd4ce; --bg2:#ddd4ce; --paper:#efe9e4; --card:#cdbfb6; --ink:#3b1f0d; --plum:#9c887f; --plum-d:#7a665e;
+    --muted:#5a574e; --line:rgba(156,136,127,.3);
+    --script:"Lobster",cursive; --serif:"Lobster",cursive; --body:"Mulish",system-ui,sans-serif;
+    --sans:"Mulish",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#2a1a10;color:var(--ink);font:400 14.5px/1.75 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body.locked{overflow:hidden}
+  h1,h2,h3{margin:0;font-weight:400;line-height:1.15}
+  p{margin:0}
+  a{color:inherit}
+  .ic{width:1em;height:1em;fill:currentColor;flex:0 0 auto;vertical-align:-.12em}
+  #ornamen{position:absolute;width:0;height:0;overflow:hidden}
+  .ukir{color:var(--plum);fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---------- KOLOM & SECTION ---------- */
+  main{max-width:430px;margin:0 auto;background:var(--bg);box-shadow:0 0 60px rgba(59,31,13,.12)}
+  .sec{position:relative;overflow:hidden;padding:72px 26px;text-align:center}
+  .sec:nth-of-type(even){background:var(--bg2)}
+  .sec+.sec:before{content:"";position:absolute;top:0;left:18px;right:18px;height:1px;background:var(--line)}
+  .js-rv .rv{opacity:0;transform:translateY(20px);transition:opacity 1s ease,transform 1s ease}
+  .js-rv .rv.in{opacity:1;transform:none}
+  .ranting{position:absolute;width:96px;height:auto;opacity:.32;pointer-events:none}
+  .r-tl{top:10px;left:14px;transform:rotate(-18deg)}
+  .r-br{bottom:12px;right:10px;transform:rotate(160deg)}
+
+  /* ---------- TIPOGRAFI ---------- */
+  .kick{font:600 9.5px/1.6 var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--ink)}
+  .title{position:relative;display:table;margin:8px auto 0;padding:0 40px;font:400 32px/1.15 var(--serif);color:var(--ink)}
+  .title:before,.title:after{content:"";position:absolute;top:50%;width:28px;height:1px;background:var(--line)}
+  .title:before{left:0}
+  .title:after{right:0}
+  .sub{color:var(--muted);font-size:13.5px;margin:14px auto 0;max-width:28em}
+  .note{font-size:12.5px;font-style:italic;color:var(--muted);margin-top:12px}
+  .names{font:400 46px/1.12 var(--script);color:var(--plum);word-break:break-word}
+
+  /* ---------- TOMBOL ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:22px;padding:13px 26px;border:0;border-radius:999px;background:var(--plum);color:#fff;text-decoration:none;font:700 10.5px/1.3 var(--sans);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;cursor:pointer;box-shadow:0 12px 24px -12px rgba(59,31,13,.75);transition:background .25s,transform .2s}
+  .btn:hover{background:var(--plum-d)}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:transparent;color:var(--plum);box-shadow:inset 0 0 0 1.5px var(--plum)}
+  .btn.ghost:hover{background:rgba(90,63,90,.08)}
+  .btn.sm{padding:10px 18px;font-size:9.5px;margin-top:14px}
+  .btn .ic{font-size:13px}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .btns>*{flex:1 1 0;min-width:calc(50% - 4px);margin-top:0;white-space:normal}
+
+  /* ---------- FOTO POLAROID ---------- */
+  .polaroid{background:#fff;padding:8px 8px 26px;box-shadow:0 14px 26px -12px rgba(59,31,13,.45);transition:transform .4s ease}
+  .photo{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:var(--card)}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo .sil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11.5px;padding:8px}
+
+  /* ---------- SAMPUL ---------- */
+  #cover{position:fixed;inset:0;z-index:40;display:flex;justify-content:center;background:#2a1a10;transition:opacity 1s ease,visibility 0s linear 0s}
+  #cover.open{opacity:0;visibility:hidden;transition:opacity 1s ease,visibility 0s linear 1s}
+  .cv-in{position:relative;width:100%;max-width:430px;height:100%;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px 30px}
+  .cv-in:before{content:"";position:absolute;top:22px;left:22px;right:22px;height:1px;background:var(--line)}
+  .cv-body{position:relative;z-index:1;width:100%;max-width:300px}
+  .gazebo{display:block;width:230px;max-width:100%;height:auto;margin:18px auto 6px}
+  .cv-body .names{font-size:44px;margin:6px 0 10px}
+  .cv-date{font:500 12.5px var(--sans);letter-spacing:.08em;color:var(--ink)}
+  .cv-to{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:20px 0 4px}
+  .cv-to small{display:block;font:600 8.5px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  #guestName{font:500 16px var(--body);margin-top:2px}
+
+  /* ---------- HERO ---------- */
+  [data-section="hero"]{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .hero-names{font:400 54px/1.1 var(--script);color:var(--plum);margin:14px 0 8px;word-break:break-word}
+  .hero-date{font:500 12.5px var(--sans);letter-spacing:.14em;color:var(--ink)}
+  .kupu{width:26px;height:auto;margin:18px auto 0;display:block;opacity:.75}
+
+  /* ---------- KUTIPAN ---------- */
+  .ayat{font:italic 400 16.5px/1.8 var(--body);color:var(--ink);white-space:pre-line;margin-top:16px}
+  .ayat:before{content:"\201C";display:block;font:400 34px/1 var(--serif);color:var(--muted);margin-bottom:4px}
+
+  /* ---------- MEMPELAI (dua polaroid berdampingan) ---------- */
+  .duo{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px;align-items:start}
+  .person:first-child .polaroid{transform:rotate(-3deg)}
+  .person:last-child{margin-top:34px}
+  .person:last-child .polaroid{transform:rotate(3deg)}
+  .amp{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font:400 34px/1 var(--script);color:var(--plum);z-index:2;text-shadow:0 0 10px var(--bg)}
+  .p-nick{font:400 32px/1.1 var(--script);color:var(--plum);margin-top:16px}
+  .p-full{font:500 19px/1.2 var(--serif);color:var(--ink);margin-top:2px}
+  .p-ortu-j{font:600 8.5px var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .p-ortu{font-size:12.5px;white-space:pre-line;margin-top:2px}
+  .soc{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font:600 10.5px var(--sans);color:var(--plum);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+
+  /* ---------- ACARA (baris berkolom) ---------- */
+  .kapel{display:block;width:96px;height:auto;margin:0 auto 14px}
+  .evs{margin-top:28px;text-align:left;border-top:1px solid var(--line)}
+  .ev{display:grid;grid-template-columns:88px 1fr;gap:16px;padding:24px 0;border-bottom:1px solid var(--line)}
+  .ev-l{text-align:center;padding-right:14px;border-right:1px solid var(--line)}
+  .ev-l h3{font:600 9.5px/1.6 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+  .ev-time{font:500 11px/1.5 var(--sans);color:var(--muted);margin-top:8px}
+  .ev-loc{font:600 15.5px/1.35 var(--sans);color:var(--ink)}
+  .ev-date{font-size:13px;color:var(--muted);margin-top:4px}
+  .ev-addr{font-size:12.5px;line-height:1.7;color:var(--muted);margin-top:6px;white-space:pre-line}
+
+  /* ---------- COUNTDOWN + KALENDER ---------- */
+  .cal{margin:24px auto 0;max-width:330px;padding:0 4px}
+  .cal-h{font:600 10px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 0;font:500 11.5px var(--sans);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0}
+  .cal-g .w{font-size:8.5px;letter-spacing:.14em;color:var(--muted)}
+  .cal-g span{display:flex;align-items:center;justify-content:center;height:30px}
+  .cal-g .on{width:30px;margin:0 auto;border-radius:50%;border:1.5px solid var(--plum);color:var(--plum);font-weight:700}
+  .cd{display:grid;grid-template-columns:repeat(4,1fr);margin:22px auto 0;max-width:330px}
+  .cd div{border-left:1px solid var(--line);padding:4px 0}
+  .cd div:first-child{border-left:0}
+  .cd b{display:block;font:500 24px/1.2 var(--sans);color:var(--ink)}
+  .cd span{font:600 8px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .cd-photo{width:62%;max-width:230px;margin:32px auto 0;transform:rotate(-2deg)}
+  .cd-quote{font:italic 400 15.5px/1.75 var(--body);margin-top:24px;white-space:pre-line}
+  .cd-by{font:600 9.5px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+  /* ---------- KISAH ---------- */
+  .st{margin-top:28px;text-align:left;border-left:1px solid var(--line);margin-left:6px}
+  .st-item{position:relative;padding:0 0 24px 22px}
+  .st-item:before{content:"";position:absolute;left:-4.5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--plum);box-shadow:0 0 0 4px var(--bg)}
+  .st-year{font:600 9.5px var(--sans);letter-spacing:.3em;color:var(--muted)}
+  .st-item h3{font:500 22px/1.25 var(--serif);margin:2px 0 4px}
+  .st-item p{font-size:13.5px;color:var(--muted);white-space:pre-line}
+
+  /* ---------- VIDEO ---------- */
+  .vframe{margin-top:24px;padding:8px 8px 30px;background:#fff;box-shadow:0 14px 26px -12px rgba(59,31,13,.45);transform:rotate(-1deg)}
+  .vid{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--card)}
+  .vid .vposter,.vid .vposter .sil{position:absolute;inset:0}
+  .vid .vposter .sil{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+  .vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vid iframe,.vid video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border:0;border-radius:50%;background:var(--plum);color:#fff;font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(255,255,255,.55)}
+
+  /* ---------- GALERI POLAROID ---------- */
+  .gal{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;margin-top:26px}
+  .gal .gi{min-width:0;opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+  .gal .gi.in{opacity:1;transform:none}
+  .gal .gi:nth-child(3n+1),.gal .gi:last-child:nth-child(3n+2){grid-column:span 2;padding:0 14%}
+  .gal .gal-item{display:block;width:100%;border:0;padding:7px 7px 22px;background:#fff;cursor:zoom-in;box-shadow:0 14px 24px -12px rgba(59,31,13,.45);transition:transform .4s ease}
+  .gal .gi:nth-child(odd) .gal-item{transform:rotate(-2.5deg)}
+  .gal .gi:nth-child(even) .gal-item{transform:rotate(2.5deg)}
+  .gal .gal-item:hover{transform:rotate(0) scale(1.02)}
+  .gal .ph{display:block;width:100%;aspect-ratio:4/5;position:relative;background:var(--card)}
+  .gal .gi:nth-child(3n+1) .ph{aspect-ratio:5/4}
+  .gal .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .gal .ph.empty:after{content:"Foto";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+  #lb{position:fixed;inset:0;z-index:60;background:rgba(30,18,10,.95);display:none;align-items:center;justify-content:center;padding:18px}
+  #lb.on{display:flex}
+  #lb img{max-width:100%;max-height:86vh;border:8px solid #fff}
+  #lb button{position:absolute;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer}
+  #lbX{top:14px;right:14px}
+  #lbP{left:10px;top:50%;transform:translateY(-50%)}
+  #lbN{right:10px;top:50%;transform:translateY(-50%)}
+
+  /* ---------- KADO / REKENING ---------- */
+  .wl{display:grid;gap:14px;margin-top:26px}
+  .acc{padding:24px 18px;background:var(--card);border-radius:4px}
+  .acc h3{font:500 24px/1.2 var(--serif);letter-spacing:.06em;text-transform:uppercase;color:var(--plum)}
+  .acc .lbl{font:600 9px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .acc .num{font:600 19px/1.4 var(--sans);letter-spacing:.06em}
+  .acc .nm{font-size:13.5px}
+  .gift-box{margin-top:26px;padding:24px 18px;background:var(--card);border-radius:4px}
+  .gift-box .g-name{font:500 22px/1.25 var(--serif);margin-top:2px}
+  .gift-box .g-tel{font:600 11.5px var(--sans);letter-spacing:.06em;color:var(--plum);margin-top:2px}
+  .gift-box .g-addr{font-size:13px;color:var(--muted);white-space:pre-line;margin-top:8px}
+
+  /* ---------- RSVP & UCAPAN (formulir bergaris bawah) ---------- */
+  .frm{display:grid;gap:16px;margin-top:26px;text-align:left}
+  .frm label{font:500 12.5px var(--sans);color:var(--ink);margin-bottom:-12px}
+  .frm input,.frm textarea,.frm select{width:100%;padding:12px 2px;border:0;border-bottom:1px solid rgba(59,31,13,.3);border-radius:0;background:transparent;font:400 15px var(--body);color:var(--ink);outline:none;appearance:none;-webkit-appearance:none}
+  .frm select{background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 12px) 50%,calc(100% - 7px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+  .frm input::placeholder,.frm textarea::placeholder{color:#a8988e}
+  .frm input:focus,.frm textarea:focus,.frm select:focus{border-bottom-color:var(--plum)}
+  .frm .btn{width:100%;margin-top:8px}
+  .ok{display:block;text-align:center;color:var(--plum);font-size:13px;font-style:italic}
+  .wishlist{margin-top:26px;text-align:left;max-height:380px;overflow:auto;border-top:1px solid var(--line)}
+  .wish{padding:16px 2px;border-bottom:1px solid var(--line)}
+  .wish b{display:block;font:700 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase}
+  .wish p{font:italic 400 15px/1.6 var(--body);margin-top:4px;white-space:pre-line;word-break:break-word}
+  .wish time{display:flex;align-items:center;gap:6px;font:500 10.5px var(--sans);color:var(--muted);margin-top:6px}
+
+  /* ---------- FOOTER (pohon ukiran di kiri) ---------- */
+  .ft{min-height:520px;display:flex;flex-direction:column;justify-content:center;padding-left:118px}
+  .pohon{position:absolute;left:-22px;bottom:0;width:190px;height:auto;opacity:.85;pointer-events:none}
+  .ft .rv{position:relative;z-index:1}
+  .ft .kick{line-height:1.8}
+  .ft .sub{margin-top:12px}
+  .ft .names{font-size:38px;margin-top:14px}
+  .mcredit{display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;margin:22px auto 0;padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+  .mcredit-ic{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--plum);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+  .mcredit-txt{display:flex;flex-direction:column;min-width:0;text-align:left;line-height:1.35}
+  .mcredit-txt small{font:600 8px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .mcredit-txt b{font:600 12px var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mcredit-txt i{font-size:11px;color:var(--muted)}
+  .mcredit-yt{flex:0 0 26px;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);color:var(--plum);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px}
+
+  /* ---------- KREDIT PEMBUAT ---------- */
+  .unica-credit{display:flex;align-items:center;justify-content:center;gap:6px;margin:26px auto 0;font:600 9px/1.6 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .unica-credit .uc-hati{width:12px;height:12px;fill:var(--plum);animation:detak-hati 1.6s ease-in-out infinite}
+  .unica-credit b{font:400 22px/1 var(--script);letter-spacing:0;text-transform:none;color:var(--plum)}
+  .unica-credit .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @keyframes detak-hati{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.14)}}
+
+  /* ---------- MUSIK, TOAST ---------- */
+  #audio{display:none}
+  #music{position:fixed;right:max(14px,calc(50% - 201px));bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--plum);color:#fff;font-size:18px;cursor:pointer;z-index:31;display:none;align-items:center;justify-content:center;box-shadow:0 10px 22px -8px rgba(59,31,13,.7)}
+  #music.show{display:flex}
+  #music .ic{animation:putar 4s linear infinite}
+  #music.paused{background:#a89488}
+  #music.paused .ic{animation-play-state:paused}
+  @keyframes putar{to{transform:rotate(360deg)}}
+  #toast{position:fixed;left:50%;bottom:80px;transform:translate(-50%,20px);background:var(--plum);color:#fff;font:600 12px var(--sans);padding:9px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:70}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+
+  /* =====================================================================
+     TEMA JAWA KLASIK — latar greige berpola kawung, lanskap candi & joglo,
+     merak, foto berbingkai oval emas, kartu berpuncak lengkung, gunungan.
+     ===================================================================== */
+  :root{--latar:#ddd4ce;--mauve:#9c887f;--coklat:#3b1f0d;--emas:#b08a3e;--kawung:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'44'%20height%3D'44'%3E%3Cg%20fill%3D'none'%20stroke%3D'rgba(156%2C136%2C127%2C.18)'%20stroke-width%3D'1'%3E%3Cellipse%20cx%3D'22'%20cy%3D'9'%20rx%3D'6'%20ry%3D'9'%2F%3E%3Cellipse%20cx%3D'22'%20cy%3D'35'%20rx%3D'6'%20ry%3D'9'%2F%3E%3Cellipse%20cx%3D'9'%20cy%3D'22'%20rx%3D'9'%20ry%3D'6'%2F%3E%3Cellipse%20cx%3D'35'%20cy%3D'22'%20rx%3D'9'%20ry%3D'6'%2F%3E%3Cellipse%20cx%3D'0'%20cy%3D'0'%20rx%3D'6'%20ry%3D'9'%2F%3E%3Cellipse%20cx%3D'44'%20cy%3D'0'%20rx%3D'6'%20ry%3D'9'%2F%3E%3Cellipse%20cx%3D'0'%20cy%3D'44'%20rx%3D'6'%20ry%3D'9'%2F%3E%3Cellipse%20cx%3D'44'%20cy%3D'44'%20rx%3D'6'%20ry%3D'9'%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D'22'%20cy%3D'22'%20r%3D'1.5'%20fill%3D'rgba(156%2C136%2C127%2C.25)'%2F%3E%3C%2Fsvg%3E");--ukiran:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'300'%20height%3D'70'%20viewBox%3D'0%200%20300%2070'%3E%3Cg%20fill%3D'none'%20stroke%3D'%23b9a39a'%20stroke-width%3D'3'%20stroke-linecap%3D'round'%3E%3Cpath%20d%3D'M150%208c-14%200-20%2014-10%2022%208%206%2018-2%2014-10M150%208c14%200%2020%2014%2010%2022-8%206-18-2-14-10'%2F%3E%3Cpath%20d%3D'M126%2030C104%2018%2080%2022%2070%2040%2060%2056%2040%2060%2020%2052M174%2030c22-12%2046-8%2056%2010%2010%2016%2030%2020%2050%2012'%2F%3E%3Cpath%20d%3D'M100%2036c-6%2010-20%2012-26%204M200%2036c6%2010%2020%2012%2026%204M50%2050c-6%2012-24%2014-32%206M250%2050c6%2012%2024%2014%2032%206'%2F%3E%3C%2Fg%3E%3Cg%20fill%3D'%23c9b6ad'%3E%3Ccircle%20cx%3D'150'%20cy%3D'38'%20r%3D'5'%2F%3E%3Ccircle%20cx%3D'70'%20cy%3D'42'%20r%3D'3'%2F%3E%3Ccircle%20cx%3D'230'%20cy%3D'42'%20r%3D'3'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+  body{font:300 14px/1.75 var(--body)}
+  main{background:var(--kawung),var(--latar)}
+  .sec{padding:76px 28px;background:transparent!important}
+  .sec+.sec:before{display:none}
+  .ranting{width:110px;opacity:1}
+  .sec[data-section="countdown"]{--ink:#fff;--muted:rgba(255,255,255,.8);--line:rgba(255,255,255,.3);background:var(--mauve)!important}
+
+  .kick{font:600 10.5px/1.6 var(--body);letter-spacing:.24em;color:#5a574e}
+  .title{font:400 36px/1.15 var(--serif);color:var(--coklat);padding:0}
+  .title:before,.title:after{display:none}
+  .sub{color:#5a574e}
+  .names{font:400 40px/1.15 var(--serif);color:var(--coklat)}
+  .hero-names{font:400 46px/1.15 var(--serif);color:var(--coklat);margin:10px 0}
+  .hero-date{font:400 12px var(--body);letter-spacing:.24em;color:#5a574e}
+  .btn{background:var(--coklat);color:#f3e9e0;border-radius:999px;font:400 12px/1.3 var(--body);letter-spacing:.1em;text-transform:none}
+  .btn:hover{background:#2a1408}
+  .btn.ghost,.btn.sm{background:transparent;color:#5a574e;box-shadow:inset 0 0 0 1px #5a574e}
+
+  /* sampul: lanskap penuh, teks di tengah langit */
+  #cover{background:#2a1a10}
+  .cv-in{background:var(--latar);padding:0}
+  .cv-in:before{display:none}
+  .cv-body{position:static;max-width:none;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:18vh 40px 0}
+  .cv-body>*:not(.gazebo){position:relative;z-index:1}
+  .cv-body .gazebo{position:absolute;inset:0;width:100%;height:100%;margin:0;z-index:0}
+  .cv-body .names{font-size:40px;margin:8px 0 12px}
+  .cv-to{border:0;margin:0}
+  #guestName{color:var(--coklat);font-weight:600}
+
+  /* kutipan */
+  .ayat{font:300 14px/1.85 var(--body);color:#5a574e}
+  .ayat:before{display:none}
+
+  /* mempelai: bingkai oval emas + teks tegak THE BRIDE / THE GROOM */
+  .duo{grid-template-columns:1fr;max-width:240px;margin:30px auto 0}
+  .person{position:relative}
+  .person:before{position:absolute;left:-46px;top:30px;writing-mode:vertical-rl;transform:rotate(180deg);font:400 18px/1 var(--body);letter-spacing:.24em;color:var(--coklat)}
+  .person:first-child:before{content:"THE BRIDE"}
+  .person:last-child:before{content:"THE GROOM"}
+  .person:first-child .polaroid,.person:last-child .polaroid{transform:none}
+  .person:last-child{margin-top:20px}
+  .polaroid{padding:9px;border-radius:50%;background:linear-gradient(145deg,#e8cf8a,#a07a2e 45%,#d9b866 70%,#8a6a2a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.3),0 16px 26px -12px rgba(59,31,13,.5)}
+  .polaroid .photo{border-radius:50%;aspect-ratio:4/5}
+  .amp{position:static;transform:none;margin:30px 0 12px;font:400 40px/1 var(--serif);color:var(--coklat);text-shadow:none}
+  .p-nick{font:400 28px/1.1 var(--serif);color:var(--coklat);margin-top:16px}
+  .p-full{font:600 12px var(--body);color:#5a574e}
+  .p-ortu-j{font:400 12px var(--body);letter-spacing:0;text-transform:none;color:#5a574e}
+
+  /* kisah: kartu berpuncak lengkung */
+  .st{border:0;margin:26px 0 0}
+  .st-item{padding:30px 22px 24px;margin-bottom:18px;background:rgba(255,255,255,.35);border:1px solid rgba(156,136,127,.35);border-radius:140px 140px 22px 22px;text-align:left}
+  .st-item:before{display:none}
+  .st-year{color:var(--mauve)}
+  .st-item h3{font:400 28px var(--serif);color:var(--coklat)}
+  .st-item p{color:#5a574e}
+
+  /* acara: kartu lengkung dengan mahkota ukiran + sepasang merak */
+  .kapel{width:160px}
+  .evs{position:relative;border:0;text-align:center;background:rgba(255,255,255,.4);border:1px solid rgba(156,136,127,.35);border-radius:160px 160px 20px 20px;padding:70px 18px 20px;margin-top:40px}
+  .evs:before{content:"";position:absolute;left:-10px;right:-10px;top:-26px;height:70px;background:var(--ukiran) center/100% 100% no-repeat}
+  .ev{display:block;border:0;padding:20px 0}
+  .ev+.ev{border-top:1px solid rgba(156,136,127,.3)}
+  .ev-l{border:0;padding:0;text-align:center}
+  .ev-l h3{font:400 30px/1.2 var(--serif);letter-spacing:0;text-transform:none;color:var(--coklat)}
+  .ev-time,.ev-date{font:400 12.5px var(--body);color:#5a574e}
+  .ev-date{text-transform:uppercase;letter-spacing:.06em}
+  .ev-loc{font:600 14px var(--body);color:var(--coklat);margin-top:6px}
+
+  /* hitung mundur: pita mauve + gunungan */
+  .sec[data-section="countdown"] .title{color:#fff}
+  .sec[data-section="countdown"] .kick{color:#fff}
+  .cal{background:rgba(255,255,255,.12);border-radius:16px;padding:12px}
+  .cal-g{color:#fff}
+  .cal-g .on{border-color:#fff;color:#fff}
+  .cd{--ink:var(--coklat);--muted:#5a574e;--line:rgba(59,31,13,.15);max-width:300px;margin:26px auto 0;padding:118px 0 20px;background:#e8e0da;clip-path:polygon(50% 0,100% 100%,0 100%);grid-template-columns:repeat(2,84px);justify-content:center;row-gap:8px}
+  .cd div:nth-child(3){border-left:0}
+  .cd b{color:var(--coklat)}
+  .cd-photo{transform:none;border-radius:50%;padding:8px;background:linear-gradient(145deg,#e8cf8a,#a07a2e 45%,#d9b866 70%,#8a6a2a)}
+  .cd-photo .photo{border-radius:50%}
+  .sec[data-section="countdown"] .btn{background:#fff;color:var(--coklat)}
+
+  /* galeri & video */
+  .gal .gal-item{transform:none!important;padding:0;background:transparent;border-radius:6px;overflow:hidden}
+  .vframe{transform:none;padding:0;background:transparent;border-radius:10px;overflow:hidden}
+
+  /* rekening & hadiah */
+  .acc,.gift-box{background:rgba(255,255,255,.4);border:1px solid rgba(156,136,127,.35);border-radius:22px}
+  .acc h3{color:var(--coklat)}
+
+  /* ucapan: daftar berkartu mauve, input cokelat */
+  .wishlist{--ink:#fff;--muted:rgba(255,255,255,.75);--line:rgba(255,255,255,.2);background:var(--mauve);border:0;border-radius:150px 150px 18px 18px;padding:60px 18px 16px;color:#fff}
+  .wish b,.wish p{color:#fff}
+  .sec[data-section="wishes"] .frm input,.sec[data-section="wishes"] .frm textarea{background:#4a2a14;border:0;border-radius:4px;padding:12px;color:#f3e9e0}
+
+  /* footer: merak di dahan */
+  main footer.sec{padding:260px 28px 60px;text-align:center}
+  .pohon{left:0;top:0;bottom:auto;width:100%;height:280px;opacity:1}
+  .ft{padding-left:28px}
+  .ft .names{font-size:40px}
+  .unica-credit{color:#5a574e}
+  .unica-credit b{font:400 22px/1 var(--serif);color:var(--coklat)}
+  .unica-credit .uc-hati{fill:#8a6aa8}
+  #music{background:var(--coklat);color:#e8cf8a}
+  #music.paused{background:#a89488}
+
+  @media (max-width:370px){
+    .sec{padding:66px 20px}
+    .names,.cv-body .names{font-size:38px}.hero-names{font-size:46px}.title{font-size:28px;padding:0 32px}.title:before,.title:after{width:22px}
+    .ev{grid-template-columns:76px 1fr;gap:12px}
+    .ft{padding-left:100px}.pohon{width:160px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js-rv .rv,.gal .gi{transition:none}
+    #music .ic,.unica-credit .uc-hati{animation:none}
+  }
+
+  /* ---------- ANIMASI-MASUK: elemen muncul bergiliran saat section digulir ---------- */
+  html.ani .rv{opacity:1!important;transform:none!important;transition:none!important}
+  html.ani .ai{opacity:0!important}
+  html.ani .ai-in{animation:var(--ai-n,ai-naik) var(--ai-t,.95s) cubic-bezier(.2,.75,.25,1) var(--ai-d,0s) both}
+  @keyframes ai-naik{from{opacity:0;translate:0 34px}}
+  @keyframes ai-judul{from{opacity:0;translate:0 24px;filter:blur(8px)}}
+  @keyframes ai-kiri{from{opacity:0;translate:-46px 0}}
+  @keyframes ai-kanan{from{opacity:0;translate:46px 0}}
+  @keyframes ai-zoom{from{opacity:0;scale:.86}}
+  @keyframes ai-tirai{from{opacity:0;clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes ai-putar{from{opacity:0;rotate:-14deg;scale:.7}}
+  @keyframes ai-pudar{from{opacity:0}}
+</style>
+</head>
+<body class="locked">
+
+<!-- ============================ ORNAMEN & IKON (SVG bersama) ============================ -->
+<svg id="ornamen" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- ornamen Jawa: lanskap candi-joglo-merak, puncak sepasang merak, merak di dahan, ranting pakis, kawung -->
+    <symbol id="o-gazebo" viewBox="0 0 300 520"><defs><linearGradient id="jkLangit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e2dc"/><stop offset=".55" stop-color="#e2d8d0"/><stop offset="1" stop-color="#d6cbc2"/></linearGradient></defs><rect width="300" height="520" fill="url(#jkLangit)"/><path d="M60 300L130 120 160 160 190 110 260 300Z" fill="#d3c7be" opacity=".8"/><path d="M0 330C60 280 120 290 170 310C220 290 270 300 300 320V400H0Z" fill="#cbbdb3" opacity=".6"/><path d="M-13.3 43.6A4.9 4 0 1 1 -16.6 52.9M63.3 108.4A4.8 3.8 0 1 1 58.5 116.7M60.4 44.5A4.2 3.3 0 1 1 62.8 36.5M-9.3 48.4A2.6 2.1 0 1 1 -8.2 53.4M31.3 35.6A4.2 3.3 0 1 1 31.8 43.9M-3 24.3A2.4 2 0 1 1 -5.9 20.4M48.9 67.4A4.3 3.4 0 1 1 45.8 75.5M-10 90.3A3 2.4 0 1 1 -10 84.4M51 109.7A2.5 2 0 1 1 55.9 108.4M73.3 5.9A3.9 3.1 0 1 1 65.6 6.9M-0.5 33.8A3.9 3.1 0 1 1 -6.4 38.8M48.4 117.5A4.7 3.8 0 1 1 49.8 108.2M-1.5 101.5A3.3 2.6 0 1 1 4.1 104.9M54.3 31.1A4.2 3.4 0 1 1 50.5 38.5M67.4 93.7A2.8 2.3 0 1 1 73.1 93.1M-4.6 81.6A2.5 2 0 1 1 -9 79.2M24.8 28.2A4.7 3.8 0 1 1 26.6 37.5M62.2 4A3.6 2.9 0 1 1 62.3 11.2M21.4 57.4A4.2 3.3 0 1 1 13.4 55.2M34.9 9.6A2.7 2.1 0 1 1 39.6 12.1M70.2 24.3A4 3.2 0 1 1 69.1 16.5M38.7 91.7A2.6 2 0 1 1 39 96.8M69.6 51.1A3.7 2.9 0 1 1 76.4 53.8M19.2 7.4A2.7 2.2 0 1 1 21.3 12.3M67.7 60.6A2.1 1.7 0 1 1 63.5 59.8M-14 29.3A4.3 3.5 0 1 1 -10.7 21.3M9.3 56.9A4.7 3.8 0 1 1 15.1 49.5M66 50.9A2.5 2 0 1 1 68.2 55.4M47.6 61.7A3.9 3.1 0 1 1 55.2 62.8M32.9 86.9A2.9 2.3 0 1 1 36.2 82.1M53.1 33.2A2.4 1.9 0 1 1 48.4 33.6M-4.1 13.4A3.4 2.7 0 1 1 -7.6 19.2M22.2 4A3.1 2.5 0 1 1 22.8 10.2M3.3 105.2A4.5 3.6 0 1 1 -3.8 110.6M28 8.4A2.2 1.8 0 1 1 30.1 12.3M6.4 25.9A4.4 3.5 0 1 1 -1.4 21.9M15.8 92.3A4.4 3.6 0 1 1 11 84.8M13.6 9.4A2.1 1.7 0 1 1 17.1 7M0.7 23.7A2.3 1.8 0 1 1 -0.6 28.1M5.7 80.6A3.5 2.8 0 1 1 -0.5 83.7M-2.9 67.9A4.9 3.9 0 1 1 2 59.5M1.2 108.4A3.5 2.8 0 1 1 -1.8 114.7M60 98.4A3.1 2.5 0 1 1 62.4 92.6M59.8 75.9A4.7 3.8 0 1 1 50.4 77.2M17.6 62.3A2.3 1.9 0 1 1 19.9 66.4M15.5 67.2A2.5 2 0 1 1 13.9 62.5M49.1 100.3A4.6 3.7 0 1 1 50 91.2M7.8 34.5A3 2.4 0 1 1 8.1 40.4M45.2 60.7A5 4 0 1 1 35.7 63.7M-13.7 106.8A2 1.6 0 1 1 -15.2 110.5M9.7 94.5A3.4 2.7 0 1 1 5 89.4M67.9 101A2.1 1.7 0 1 1 64.4 98.7M10.3 110.8A3.9 3.1 0 1 1 3 113.7M-13.4 109.5A3.9 3.1 0 1 1 -9.1 102.9M60.3 108.3A3.2 2.6 0 1 1 59 114.6M12.1 58.3A5 4 0 1 1 16.8 67.1M10.6 9.4A3.1 2.5 0 1 1 4.5 10.8M-2.1 69.2A3.5 2.8 0 1 1 4.9 68.8M9 81.4A3.4 2.7 0 1 1 15.3 84.1M64.2 39.4A4.8 3.9 0 1 1 56.4 33.7M0 9.3A2.5 2 0 1 1 -4.5 7.1M71 83.6A4.9 3.9 0 1 1 73.9 74.3M63.5 35.2A2.1 1.7 0 1 1 59.5 34.3M50.2 96.9A2.3 1.8 0 1 1 47.1 93.7M72.5 107.5A3.2 2.6 0 1 1 74.3 101.2M-11.8 116.2A4.6 3.7 0 1 1 -6.3 108.7M14.3 90.1A4.3 3.4 0 1 1 14 98.7M15.3 106.9A2.1 1.7 0 1 1 12.9 110.3M71.6 6.7A3.1 2.5 0 1 1 75.5 11.6M58.9 19A3 2.4 0 1 1 64.3 21.5M69 60.3A4.6 3.7 0 1 1 72.5 51.8M-16.1 75.3A3.8 3 0 1 1 -12.7 68.6M37.9 33.7A4.9 3.9 0 1 1 47.5 31.7M32.3 68.1A3.7 3 0 1 1 28.6 61.6M71.5 5.7A3.6 2.9 0 1 1 77.7 9.4M37.4 100.1A3.4 2.7 0 1 1 30.8 101.4M15.9 64.2A2.9 2.3 0 1 1 10.6 61.7M44.9 93.4A2.8 2.2 0 1 1 49.9 95.8M50.5 13.6A3.5 2.8 0 1 1 47.4 20M62.3 78.9A4.7 3.8 0 1 1 63.4 69.6M18.7 95.5A2.9 2.3 0 1 1 13.2 97.1M37.6 81.5A4.2 3.4 0 1 1 31.2 76M8.4 81.6A3.8 3.1 0 1 1 5.1 74.7M-1.9 38.3A3.5 2.8 0 1 1 -7.6 42.4M23.5 29.3A2.5 2 0 1 1 27.7 26.6M35.4 83.2A2.2 1.8 0 1 1 32.3 86.4M30.2 84.5A4.7 3.7 0 1 1 39.1 87.2M3.5 103.3A2.6 2.1 0 1 1 -0.4 99.8M29.4 99.3A3.3 2.7 0 1 1 26.1 93.5M25.2 16.7A2.6 2.1 0 1 1 30.1 14.6M73.1 74.5A2.7 2.2 0 1 1 76.7 70.3M20.9 69.8A4.8 3.8 0 1 1 19.5 79.2M-5.9 68.2A3.4 2.7 0 1 1 -3.2 74.4M33.9 104.2A3.8 3 0 1 1 26.3 105M-11.2 100A4.6 3.7 0 1 1 -15.1 108.4M46.6 60.7A3.4 2.7 0 1 1 40.9 64.4M-13.8 27.1A3 2.4 0 1 1 -12.9 21.3M45 7.4A2.3 1.8 0 1 1 48.5 10.4M65.2 38.5A4.9 3.9 0 1 1 65.6 28.7M54.5 34.5A4.9 3.9 0 1 1 48.8 42.6M60.3 83.2A2.1 1.7 0 1 1 56.7 81.1M-7.3 62.5A3.4 2.7 0 1 1 -7.4 55.7M-3.4 87A3.1 2.5 0 1 1 -3.2 80.7M17.1 96.4A2.1 1.7 0 1 1 17.6 92.1M67.4 71.5A4 3.2 0 1 1 63.9 64.2M-10.1 73.7A4.2 3.4 0 1 1 -6.5 66.1M14.3 26.7A4.2 3.3 0 1 1 10.8 19.1M27.7 78.5A4.8 3.8 0 1 1 36.1 83M19.6 57A2.7 2.2 0 1 1 14.6 54.7M-2.6 29A3.4 2.8 0 1 1 -8.7 25.8M45.6 37.3A4.6 3.6 0 1 1 36.5 38.1M25.4 2.9A4.7 3.8 0 1 1 27.2 12.1M23.8 28.8A4.7 3.8 0 1 1 18.9 20.7M42.5 20.6A3.9 3.1 0 1 1 47.6 14.7M67.6 74.9A2.9 2.4 0 1 1 72.3 71.4M16 96.5A2.1 1.7 0 1 1 14.3 92.7M28 67.2A4.4 3.5 0 1 1 30 58.5M51.6 71.9A4 3.2 0 1 1 58.7 68.3M6.5 25.1A3.7 3 0 1 1 8.4 32.2M18.8 28.3A3.2 2.5 0 1 1 20.1 22.1M-9.5 107.3A2.6 2.1 0 1 1 -8.1 102.2M8.6 68A2.9 2.3 0 1 1 8.9 62.3M51.5 60.3A3.5 2.8 0 1 1 52.8 67.1M32.2 109.4A2.1 1.7 0 1 1 36.4 109.2M25.9 12.5A2.2 1.8 0 1 1 25.7 16.9M8 29A2.7 2.1 0 1 1 12.6 31.6M51.3 92.2A3.5 2.8 0 1 1 58 94.4M72.8 19.4A2.4 1.9 0 1 1 68.7 21.8M61.3 52.5A3.4 2.7 0 1 1 61.9 59.3M16.1 73.6A3.1 2.5 0 1 1 14.3 67.7M-7.1 32.9A3.9 3.2 0 1 1 -3.7 40M-3.6 12.2A2.5 2 0 1 1 1.4 11.9M13.7 57.7A3.3 2.6 0 1 1 7.3 56.6M6.1 64.2A3.7 2.9 0 1 1 13.1 62.1M61.1 12.1A3.7 3 0 1 1 68 15M8 41.6A3.5 2.8 0 1 1 2.6 37.1M17.5 48.6A2.8 2.2 0 1 1 20.8 53M51.2 12A2.9 2.3 0 1 1 53.3 17.4M73.2 39.2A4.5 3.6 0 1 1 68.1 46.7M-2.1 74.7A3.4 2.7 0 1 1 -6.4 80M23.8 34.2A3.1 2.5 0 1 1 19.3 38.4M9 97.6A4.6 3.7 0 1 1 15.6 104.2M25.2 54.5A5 4 0 1 1 20.7 45.6M59.7 79.1A3 2.4 0 1 1 56.2 83.9M35.9 73.8A2.4 1.9 0 1 1 32.6 70.2M65.2 30A3.3 2.6 0 1 1 68.8 35.5M31.1 55.7A3.9 3.1 0 1 1 29.3 63.3M-13.4 101.9A3.8 3.1 0 1 1 -13.5 94.2M75.4 108A4.6 3.7 0 1 1 73 99.1M59.4 58.1A4.7 3.7 0 1 1 51.8 63.4M59.6 82.7A2.9 2.3 0 1 1 65 80.9M35 37.6A2.3 1.8 0 1 1 30.6 36.5M23.8 75.5A4.1 3.2 0 1 1 15.9 77.3M7.7 85.4A2.5 2 0 1 1 12.7 85.8M5.4 68.7A4.6 3.7 0 1 1 5.4 59.4M10.6 13.9A2.7 2.1 0 1 1 15 10.8M27.6 42.3A4.6 3.7 0 1 1 27.9 33.1M55 61.3A3.5 2.8 0 1 1 47.9 61.5M41.8 62.5A3.4 2.8 0 1 1 46.1 67.8M67.2 69.7A4.3 3.5 0 1 1 59.7 65.3M66.8 31.7A2.6 2.1 0 1 1 65.5 26.8M11.4 52.7A2.6 2.1 0 1 1 16.5 52.2M29.7 91A4 3.2 0 1 1 35.3 85.2M50 13.8A3.5 2.8 0 1 1 43.2 15.6M10.7 107.6A2.1 1.6 0 1 1 7.9 104.5M0.6 75.1A2.7 2.1 0 1 1 4.1 79.1M70.6 104A3.5 2.8 0 1 1 67.6 97.6M53.3 91.9A4.3 3.4 0 1 1 46 87.4M41.6 10.1A4.6 3.7 0 1 1 33.6 5.7M16.6 35.6A2.8 2.2 0 1 1 13.9 30.7M0 107.1A2.4 1.9 0 1 1 2.8 110.9M50 10.4A4.1 3.3 0 1 1 54.1 17.5M44.2 35.6A2.4 1.9 0 1 1 47.7 38.8M-12.5 62.8A2.6 2.1 0 1 1 -13.8 67.9M37.7 43.5A5 4 0 1 1 47.7 43.3M-14 48.7A2.9 2.3 0 1 1 -8.7 46.4M-4.2 13.9A2.6 2.1 0 1 1 0.2 16.8M71.8 39.1A2.3 1.9 0 1 1 75.7 36.4M-3.5 54.4A2.2 1.7 0 1 1 -0.1 51.8M51.4 74.9A3.5 2.8 0 1 1 44.9 72.6M18.1 76.2A2.1 1.7 0 1 1 14.1 77.5M48 67.4A4.1 3.3 0 1 1 40 69.5M42.8 23.1A4.7 3.8 0 1 1 48 15.2M59.4 53.8A4.5 3.6 0 1 1 59.4 62.8M22.3 76.8A4.9 3.9 0 1 1 32 76.6M-8.1 81.1A4.8 3.9 0 1 1 -3.3 89.5M44.6 50.3A4.7 3.7 0 1 1 37.7 56.7M10.9 85.2A2.6 2.1 0 1 1 14.6 81.5M14.2 29A3.3 2.6 0 1 1 7.9 27M55.9 7.4A2.2 1.8 0 1 1 54.5 11.6M68.3 52.7A3.2 2.6 0 1 1 63 49.1M-4.4 20A2.5 2 0 1 1 -9.1 18.1M61.3 66.7A2.8 2.3 0 1 1 66.9 66.7M69.6 36.9A4.1 3.3 0 1 1 61.8 39.5M27.6 23.2A2.2 1.8 0 1 1 23.2 23.2M45.8 66.8A3.1 2.5 0 1 1 41.3 62.6M0.2 73.3A2.7 2.2 0 1 1 4.4 69.8M62.4 83.2A3.9 3.1 0 1 1 70 81.5M24.1 92.2A4.1 3.3 0 1 1 16.3 94.7M35.7 8.6A3.4 2.7 0 1 1 37.3 2M67.1 52.4A3 2.4 0 1 1 71 48M42.3 16.5A4.9 3.9 0 1 1 44.6 7M35.1 61.2A2.7 2.1 0 1 1 34.3 66.5M50 12.8A4.6 3.7 0 1 1 48.7 21.9M29.3 57.2A2.1 1.7 0 1 1 25 57.5M-6.4 5.7A4.2 3.4 0 1 1 -3 13.4M36.6 10.6A4.9 3.9 0 1 1 41.7 18.9M-10.9 41.3A2 1.6 0 1 1 -7 42.4M-9.2 87.6A2 1.6 0 1 1 -13 89M43.7 61.2A4.1 3.2 0 1 1 40.7 53.7M70.2 19.2A4.6 3.7 0 1 1 78.2 23.8M-8.2 88.6A2.1 1.7 0 1 1 -12.4 88.3M56.9 105.1A2.8 2.2 0 1 1 53.4 109.4M9.2 67.5A3.8 3 0 1 1 1.8 66.9M21.5 97.6A3.4 2.8 0 1 1 28.4 97M21.3 32A2.9 2.3 0 1 1 15.5 32.2M30.5 32.7A4.6 3.7 0 1 1 31.4 41.8M56.6 60.6A2.5 2 0 1 1 52.9 57.1M9 7.5A4.7 3.8 0 1 1 16.6 13.2M-6.9 8.8A4.2 3.4 0 1 1 -13.9 4M48.8 73.9A3.8 3.1 0 1 1 42.7 69.3M24.2 94A3.9 3.1 0 1 1 31.9 94.5M56.8 74A3.6 2.9 0 1 1 60.8 68.1M17.9 78.7A2.6 2.1 0 1 1 23.1 78.9M22.9 85.7A3.4 2.7 0 1 1 26.4 91.6M75.3 81.5A3.3 2.6 0 1 1 69.2 83.9M72.4 41.3A2.1 1.7 0 1 1 69 43.7M66.9 78.5A2.7 2.1 0 1 1 66.8 83.8M45.5 22.5A2.4 1.9 0 1 1 43.3 26.6M71.1 25A2.3 1.8 0 1 1 66.5 24.5M72.1 92.9A3.3 2.7 0 1 1 77.3 88.7M71.2 36.7A3.4 2.7 0 1 1 77 40.4M76.1 98.5A2.1 1.7 0 1 1 73.5 95.2M-9.7 58.2A3.6 2.9 0 1 1 -2.6 58.6M-7 39.2A2.2 1.7 0 1 1 -11.2 38.5M11 30.5A2.3 1.8 0 1 1 13.1 26.5M21.1 3.9A3.3 2.6 0 1 1 24.7 9.4M14.2 23.1A2.4 1.9 0 1 1 9.5 23.5M55.2 86.1A3.9 3.1 0 1 1 48.2 82.8M2.8 54.3A4 3.2 0 1 1 10.2 50.9M19.9 39.1A2.8 2.3 0 1 1 17.1 34.2M60.4 2.5A2.8 2.2 0 1 1 59.5 8M51.4 114.3A4 3.2 0 1 1 59 111.7M22.6 63.6A2.6 2.1 0 1 1 24.9 58.9M1.8 14.7A4.8 3.9 0 1 1 8.2 7.4M14.6 110A2.7 2.2 0 1 1 14.9 104.6M40.1 23.3A3.9 3.1 0 1 1 44.5 16.8M-13.6 95.8A2.2 1.7 0 1 1 -12.5 91.6M30.4 75.9A3.7 3 0 1 1 23.1 77.1M36.3 18.4A2.5 2 0 1 1 31.3 19.3M40.6 58A2.5 2 0 1 1 37.1 54.4M16.4 13.8A4 3.2 0 1 1 17.7 5.8M44.8 65.1A3.2 2.5 0 1 1 50.9 66.6M-10.4 81.4A3.1 2.5 0 1 1 -10 87.6M-17.7 80.8A4.3 3.5 0 1 1 -12 87.3M37.3 41.7A3.2 2.6 0 1 1 31.3 39.4M-0.4 19A3.9 3.1 0 1 1 7.2 17M32.3 57.9A2.4 2 0 1 1 31.8 53.1M51.1 94.7A4.1 3.3 0 1 1 56.3 88.4M14.1 45.2A4.9 3.9 0 1 1 19.5 37" fill="none" stroke="#b9a39a" stroke-width=".8"/><path d="M288.9 83.8A2.7 2.2 0 1 1 291.5 79.1M297 17.5A4.5 3.6 0 1 1 288.1 16.6M230.2 56.8A2.6 2.1 0 1 1 234.8 54.2M240.4 92.8A2.9 2.3 0 1 1 235.4 90M228.1 36.1A2.9 2.3 0 1 1 233.8 36.4M276.9 27A4.4 3.5 0 1 1 284.8 31.1M307.5 67.8A3.8 3 0 1 1 302.9 73.7M229.2 40A3.1 2.5 0 1 1 225.4 45M234.1 9.3A4.9 3.9 0 1 1 225.1 5.7M303.2 54.5A2.7 2.2 0 1 1 301.7 59.7M309.5 28.9A4.1 3.3 0 1 1 307 36.7M313.2 46.1A3 2.4 0 1 1 310.7 51.4M265.3 42.3A4.9 3.9 0 1 1 256.3 46.3M238.3 55.6A3.8 3 0 1 1 242.6 49.4M290.9 -2.8A4.8 3.8 0 1 1 294.7 6M239.5 45.2A4.4 3.5 0 1 1 247.5 49M306.2 96.9A4.6 3.7 0 1 1 297 96.8M310.3 73.7A2 1.6 0 1 1 310.4 77.7M264.7 66A4.3 3.4 0 1 1 262.6 74.3M259.7 8.7A3 2.4 0 1 1 254.4 11.7M294.2 46.8A3.7 2.9 0 1 1 293.3 54M280.6 62.1A3.6 2.9 0 1 1 274 59M251.4 25.5A3.8 3.1 0 1 1 257.4 30.3M241.2 13A4 3.2 0 1 1 248.7 9.8M279.9 71.1A4 3.2 0 1 1 282.6 78.6M286.3 81.7A2.5 2 0 1 1 288.5 86.3M294.4 58.6A4.2 3.4 0 1 1 302.7 58M247.4 15.8A4.8 3.8 0 1 1 239.4 10.5M312.5 29.8A2.2 1.8 0 1 1 315.7 33M298.7 44.4A2.9 2.3 0 1 1 304.2 42.5M297.2 61.1A2.7 2.1 0 1 1 302.6 61.4M255.4 88.1A3.3 2.7 0 1 1 258 82M269.9 67.7A4 3.2 0 1 1 277.9 69.1M268.8 85A3 2.4 0 1 1 263.8 81.6M231 94A4.8 3.9 0 1 1 226 85.8M255.9 50.2A4.2 3.4 0 1 1 251.7 42.9M255.3 72.8A4.7 3.8 0 1 1 251.5 81.5M271.6 62.8A2.3 1.8 0 1 1 267.2 61.6M257.6 1.1A2.8 2.2 0 1 1 252.6 3.6M236.1 72A4.6 3.7 0 1 1 245.2 70.3M224.6 82.9A4.5 3.6 0 1 1 228.8 74.8M259.4 61.1A4.6 3.7 0 1 1 256.8 52.3M263 35A4.9 3.9 0 1 1 266.3 25.9M260.1 95A3.7 2.9 0 1 1 267.3 95.6M245.2 79.6A3.2 2.5 0 1 1 242.4 73.8M234.8 35.5A2.2 1.8 0 1 1 237.6 32.1M301.5 26.9A4.8 3.8 0 1 1 292.5 23.8M267.9 23.7A3.6 2.9 0 1 1 260.7 24.3M275.5 60.6A4.4 3.5 0 1 1 283.2 56.3M277.8 6.2A3.4 2.7 0 1 1 284.5 7M258.4 96.2A3.4 2.7 0 1 1 252 98.4M262.2 66.7A2.1 1.6 0 1 1 262.2 62.6M301.5 32.8A3 2.4 0 1 1 297.5 37.3M233.8 28.2A3.5 2.8 0 1 1 240.2 25.3M309.3 75.3A3 2.4 0 1 1 310.8 81.2M261 40.7A3 2.4 0 1 1 266.7 38.8M260.5 20.8A4.8 3.9 0 1 1 269.8 18.6M239.7 19A3.5 2.8 0 1 1 238.5 12.1M253 84.8A3.3 2.6 0 1 1 257.8 89.2M297.4 22.2A3.3 2.7 0 1 1 296.2 28.7M258.1 26.1A3.4 2.7 0 1 1 252.6 30.2M255.7 23.7A3.3 2.6 0 1 1 255.6 30.2M245.7 60.2A4 3.2 0 1 1 238.1 62.6M293 5.2A4.2 3.4 0 1 1 290.6 -2.9M260 19.6A4.1 3.3 0 1 1 252.3 16.5M242.8 63.5A3.1 2.5 0 1 1 238.7 68.2M285.2 32.9A4.2 3.4 0 1 1 291.5 27.4M319.2 42.7A5 4 0 1 1 309.4 45M263.7 37.5A4 3.2 0 1 1 259.4 30.8M281.4 28.5A3 2.4 0 1 1 282 22.6M282.6 4.7A4 3.2 0 1 1 275.5 8.1M281 74A4.2 3.4 0 1 1 272.5 73.3M257.8 48.4A2.3 1.8 0 1 1 262 46.6M285.7 79.4A4.5 3.6 0 1 1 291.9 86M303.5 61.3A4.9 3.9 0 1 1 313.3 61.7M238.1 46.5A5 4 0 1 1 236.7 56.3M250.6 23.6A4.8 3.8 0 1 1 246 15.3M274 64.3A3.3 2.7 0 1 1 268.2 61M312.7 4.2A2.1 1.7 0 1 1 315.7 1.2M255.5 94.4A3 2.4 0 1 1 249.5 94.7M266.4 58.8A4.7 3.8 0 1 1 260.6 51.4M275.5 35.2A2.3 1.8 0 1 1 272.2 32M287.4 81.5A4.9 3.9 0 1 1 297 79.7M265.1 50.8A4 3.2 0 1 1 273 52.3M280.1 23.1A3.4 2.7 0 1 1 286.3 20.3M248.1 65.7A2.1 1.6 0 1 1 246.8 61.8M303.9 50A2.3 1.8 0 1 1 305.3 54.3M300.9 21.1A4.7 3.8 0 1 1 293.2 26.6M290.5 50.6A4.1 3.3 0 1 1 296.7 56.1M301 49.4A4.8 3.9 0 1 1 309.5 53.9M308.4 91.5A2.4 1.9 0 1 1 312.7 93.6M305.5 69.2A3.5 2.8 0 1 1 301.1 63.6M292 11.2A3.1 2.5 0 1 1 297.5 14.3M281.5 -0.7A4.6 3.7 0 1 1 273.8 4.3M246.3 79.5A4.4 3.5 0 1 1 241.4 72.2M243.7 31.8A2.4 1.9 0 1 1 247.5 29M285.4 23.9A2.8 2.2 0 1 1 282 19.5M238.8 88A4.1 3.3 0 1 1 238.8 79.9M232 76.8A3.9 3.1 0 1 1 228.6 69.9M231.1 31.9A5 4 0 1 1 236.5 40.2M299.8 47.4A4.4 3.5 0 1 1 291 47.1M272.1 11.4A4.9 3.9 0 1 1 271 1.6M251.9 35.2A3.3 2.7 0 1 1 258.1 32.9M229.2 98.7A3.2 2.5 0 1 1 234.4 95M308.8 48.5A3 2.4 0 1 1 304.2 52.5M279.5 5.9A2.1 1.7 0 1 1 282.9 8.3M309.3 66.9A2.6 2.1 0 1 1 312.5 62.8M282 54.6A3.8 3 0 1 1 282.7 47.1M236 43.1A3 2.4 0 1 1 230.2 41.3M282.7 54.2A3.6 2.9 0 1 1 282.6 61.5M271.3 3.6A4.6 3.7 0 1 1 277.9 9.9M274.3 3A3.3 2.7 0 1 1 280.8 1.3M260.9 29.2A3.7 2.9 0 1 1 264.7 35.5M303.1 61.1A4.9 3.9 0 1 1 301.8 70.8M248 87.3A2.5 2 0 1 1 252.1 84.4M288.6 67A4 3.2 0 1 1 296.5 68.3M284.9 24.4A3.7 3 0 1 1 287 17.3M288.7 58.6A4.2 3.4 0 1 1 286.4 50.4M249.6 17A4.4 3.5 0 1 1 255.3 10.2M228.9 1.6A3 2.4 0 1 1 223.3 -0.9M305.2 15.5A2.2 1.7 0 1 1 303.3 11.6M254.3 75A3.2 2.6 0 1 1 253.3 81.3M292.1 40.5A2.6 2.1 0 1 1 287 39.3M244.1 42.6A4.8 3.9 0 1 1 234.7 44.8M280 50.6A2.5 2 0 1 1 275.6 53.1M271.2 85.9A2.2 1.8 0 1 1 266.8 86.5M317.4 13.1A3.8 3 0 1 1 310.6 16.4M286.5 36.5A2.8 2.3 0 1 1 291.7 38.8M283.5 45.4A3.7 3 0 1 1 286.2 38.4M223.7 22.1A3.4 2.7 0 1 1 229.1 18.1M286.5 15.3A4.5 3.6 0 1 1 278.3 18.7M299.3 100.2A2.9 2.3 0 1 1 293.8 98.1M243.8 81A5 4 0 1 1 250.7 73.9M282.7 34.3A2.8 2.2 0 1 1 287 30.9M290 92.4A3.1 2.5 0 1 1 296.1 91.4M295.2 50.2A3.4 2.7 0 1 1 291 55.6M280.7 6.8A2.4 1.9 0 1 1 280 2.1M307.1 78.2A2.2 1.8 0 1 1 311.5 78M240.5 72.7A4.2 3.4 0 1 1 241.9 64.5M256.7 0.2A3.3 2.6 0 1 1 262.2 3.9M290 37.7A4.5 3.6 0 1 1 296.2 31.3M302.7 0.6A3.8 3.1 0 1 1 310.3 -0.2M249.5 77A2.2 1.8 0 1 1 251.6 80.9M223.5 74.6A3.2 2.6 0 1 1 229.3 77.3M300.4 32.7A4.7 3.7 0 1 1 308.3 37.6M263.8 18.9A4.3 3.4 0 1 1 270.8 23.8M270.6 7.3A3.7 3 0 1 1 273.9 14M229.5 82A4.3 3.4 0 1 1 222.8 76.6M285.6 34.9A2.2 1.8 0 1 1 288.4 31.5M249.9 12.4A4.7 3.8 0 1 1 240.5 12.8M305.8 91.9A2.6 2.1 0 1 1 304 96.8M287.1 60.6A3.4 2.7 0 1 1 289.9 66.9M298.3 50.6A3 2.4 0 1 1 292.2 50.8M302.7 72.6A4.2 3.4 0 1 1 294.4 71.1M291 89.2A3.8 3 0 1 1 295 95.5M243.5 43.1A3.8 3 0 1 1 238 48.2M281.1 19.6A4.2 3.3 0 1 1 272.8 19M299.6 65.4A3.6 2.9 0 1 1 295.1 59.9M301.1 83.6A5 4 0 1 1 310 88.1M286.7 98.1A2.8 2.2 0 1 1 292.2 99.3M232 19.9A3.3 2.7 0 1 1 227.6 24.8M308.6 45.8A4.2 3.4 0 1 1 316 49.8M255.7 5.1A4.6 3.7 0 1 1 256.8 -4.1M259.2 61.4A3.9 3.1 0 1 1 253.8 67M290.6 52.4A4.7 3.8 0 1 1 297.7 46.2M303.2 12.4A4.4 3.5 0 1 1 308.7 5.6M302.7 76.1A2.3 1.9 0 1 1 298.3 74.3M280.8 47.3A3.6 2.9 0 1 1 282.2 40.2M285.7 56.7A3.4 2.7 0 1 1 280.9 51.8M312.2 41.1A2.6 2.1 0 1 1 308 44.2M299.1 57.1A3 2.4 0 1 1 301.5 51.5M309.3 43A2.3 1.8 0 1 1 305.1 41.3M289.8 80.6A3.1 2.5 0 1 1 292.9 75.3M270.8 73.9A4.8 3.8 0 1 1 280.4 73.7M233.7 5.2A2 1.6 0 1 1 237.6 6.4M230.9 34.3A4.8 3.8 0 1 1 236.6 42M261.8 37.1A2.4 1.9 0 1 1 257.4 38.6M259.2 34.4A2.6 2.1 0 1 1 260.2 39.6M271 6.1A3.5 2.8 0 1 1 271.2 13.1M259.7 74.7A3.7 2.9 0 1 1 254.6 69.4M242.8 18.8A2.2 1.8 0 1 1 246.6 21.1M277.9 47.8A5 4 0 1 1 287.4 45.1M239.4 77.1A4.6 3.7 0 1 1 233.7 69.9M271.5 78.3A3.5 2.8 0 1 1 272.1 71.3M310.7 19.8A4.6 3.7 0 1 1 318.5 24.6M257.2 37.8A3.8 3 0 1 1 250.7 33.9M227.3 42.1A4.5 3.6 0 1 1 234.7 47.3M286.1 2.3A2 1.6 0 1 1 282.1 2.8M290.7 8.7A4.5 3.6 0 1 1 297 2.2M272.3 75.7A2.8 2.2 0 1 1 277.7 74.5M230.1 22.9A3.7 2.9 0 1 1 236.7 19.6M313.1 81.3A2.1 1.7 0 1 1 316.5 78.9M290.6 27.9A2.4 1.9 0 1 1 294.5 25.1M252.2 88.2A3.7 3 0 1 1 253.4 80.9M299 5.1A2.6 2.1 0 1 1 303.7 2.9M275.6 80.6A4.4 3.5 0 1 1 275 71.8M255.9 92A4 3.2 0 1 1 249.4 87.4M291.8 23.4A3.9 3.1 0 1 1 298.3 27.8M299.5 64.7A2.5 2 0 1 1 295.3 62M273.9 43.9A2 1.6 0 1 1 271.7 40.5M312.7 44.2A4.8 3.8 0 1 1 315.4 35.1M281.7 17A3.3 2.6 0 1 1 288.2 16.4M313.6 69.9A3.9 3.1 0 1 1 311.9 77.6M294 46.1A2.4 1.9 0 1 1 289.4 46.8M286.6 41.4A4.6 3.6 0 1 1 290.4 33.1M292.5 10.9A4.4 3.5 0 1 1 298.5 17.2M317.8 78.6A4.8 3.8 0 1 1 310.6 72.2M287.7 52.4A3.4 2.7 0 1 1 283.9 58M312.9 31.5A4.6 3.7 0 1 1 312 40.7M306 61.8A3.5 2.8 0 1 1 300.1 58M275.7 72.9A4.4 3.5 0 1 1 267 71.8M249 74.1A3.1 2.5 0 1 1 255.2 73.5M250.2 20.6A3.9 3.1 0 1 1 254.3 13.9M290.7 75.8A3.4 2.7 0 1 1 292.4 82.4M274.7 90.7A3.8 3.1 0 1 1 267.1 91.4M305.2 55.4A3 2.4 0 1 1 299.2 54.6M235.4 33.2A4.7 3.7 0 1 1 226.4 31.1M242 31A3 2.4 0 1 1 245.9 26.4M221.7 85.9A4.5 3.6 0 1 1 229.1 80.8M244.6 97.9A2.7 2.1 0 1 1 240.3 94.8M290.4 26.5A2.2 1.8 0 1 1 294.7 27.4M313 73.2A3.5 2.8 0 1 1 313.7 80.2M290.4 94.7A2.2 1.8 0 1 1 288.9 90.6M250.2 85.8A2.4 1.9 0 1 1 245.7 87.5M270.8 93.4A3.2 2.6 0 1 1 273.9 87.7M274.8 23.3A2.8 2.3 0 1 1 269.3 24M278.4 26.2A3.1 2.5 0 1 1 273.9 30.6M231.8 1.9A2.8 2.2 0 1 1 236.6 -0.7M261.7 79.6A4.4 3.6 0 1 1 265.2 87.7M308.8 42A4.2 3.4 0 1 1 307.8 50.3M257.4 70A4.6 3.6 0 1 1 262.8 77.3M293.7 70.3A4.6 3.7 0 1 1 295.8 79.2M261.2 56.3A4.1 3.3 0 1 1 268.3 60.4M309.3 98.7A2.4 1.9 0 1 1 313.6 100.6M307.9 74.6A2.1 1.7 0 1 1 308.6 78.7M297.3 20.4A4.4 3.5 0 1 1 293.3 12.6M311 26.1A4.2 3.3 0 1 1 302.6 26M253.2 64.5A2.7 2.2 0 1 1 249.5 68.5M249.3 33A4.4 3.5 0 1 1 256.1 38.5M270.7 12.9A3.8 3.1 0 1 1 277.7 9.7" fill="none" stroke="#b9a39a" stroke-width=".8"/><path d="M269 152.3A2.9 2.3 0 1 1 273.8 155.5M281.7 130.4A3.6 2.9 0 1 1 285.7 136.4M289.3 151.2A2.6 2.1 0 1 1 291.8 146.6M276.3 118.4A3.7 2.9 0 1 1 276.2 111.1M272.9 163.1A2.5 2 0 1 1 276.3 166.9M289.8 141.2A2.2 1.8 0 1 1 285.5 140.5M278.1 106.6A2.7 2.2 0 1 1 282.5 109.9M293.4 168A3.7 2.9 0 1 1 286.5 170.6M282 137.1A3 2.4 0 1 1 275.9 137.4M275.6 163A3.6 2.9 0 1 1 271.4 157.1M276.6 129.1A2.8 2.2 0 1 1 271.4 127.1M300.5 157.7A5 4 0 1 1 305.6 166.2M290.1 134.5A3.2 2.6 0 1 1 283.9 132.9M278.7 163.9A3.4 2.8 0 1 1 283.6 168.7M303.9 155.7A4.6 3.7 0 1 1 303.1 146.4M282.3 109.7A4.1 3.3 0 1 1 289.4 105.8M295.9 132.2A2.7 2.2 0 1 1 300.9 134.3M282.1 120.1A2.1 1.7 0 1 1 278 118.8M292.6 107.6A2.1 1.7 0 1 1 294.9 104M281.8 114.3A4.3 3.4 0 1 1 273.7 111.7M311.3 142.3A4.8 3.9 0 1 1 301.7 143.6M311.6 143.7A2 1.6 0 1 1 308.1 145.7M298 152A4.5 3.6 0 1 1 306.4 155.2M270.9 135.2A2.5 2 0 1 1 272.2 140M300.5 111.7A4.5 3.6 0 1 1 305.7 104.4M284.5 143.9A4.9 3.9 0 1 1 290.9 151.2M297.4 168A4.4 3.5 0 1 1 302.2 175.4M295.6 134A3.9 3.1 0 1 1 299.9 140.6M282.3 106.5A3.9 3.1 0 1 1 285.4 113.8M308.7 105.8A3.9 3.1 0 1 1 302.1 109.9M311.2 124.9A2.5 2 0 1 1 306.5 122.9M308.4 102.2A3.5 2.8 0 1 1 310.9 108.8M301.7 153.4A3.3 2.6 0 1 1 303.8 159.6M280.1 166.5A4 3.2 0 1 1 275.2 160.2M299.1 133.3A2.5 2 0 1 1 298.2 128.4M280.6 124.5A4.8 3.8 0 1 1 271.3 126.7M275.5 124.5A3 2.4 0 1 1 275 118.4M302 121.1A4.6 3.7 0 1 1 292.7 120.7M298.3 135.6A3 2.4 0 1 1 292.5 137.3M305.7 142.9A4.1 3.3 0 1 1 312.8 147.1M275.9 119.8A3.3 2.6 0 1 1 281.6 123M283.4 122A3.1 2.5 0 1 1 289.7 122.5M301.7 123.2A3.9 3.1 0 1 1 294.3 125.6M285.9 145.6A4.1 3.3 0 1 1 285.8 153.8M312.5 175.1A4.1 3.3 0 1 1 306.5 169.4M280.3 184.2A4.8 3.8 0 1 1 276.5 175.4M286.4 113.1A2.2 1.8 0 1 1 282.6 110.8M289.9 114.6A4.5 3.6 0 1 1 292.6 123.1M297.8 133.3A3.1 2.5 0 1 1 303.7 135.1M306.8 176.5A3.7 3 0 1 1 303.2 182.9M282.4 156A2.2 1.8 0 1 1 283.9 151.9M278.8 149.1A2.8 2.2 0 1 1 275.1 153.3M297 119.5A4.7 3.8 0 1 1 306.2 121.6M266.9 123.2A4.6 3.7 0 1 1 276.1 123.5M284.5 151.9A2.9 2.3 0 1 1 290 150.4M294.9 135.5A3.6 2.9 0 1 1 301.3 132.1M289.4 161.7A4.3 3.5 0 1 1 280.7 161.4M273.4 134.4A4.3 3.4 0 1 1 280.1 129.2M293.7 172.1A4 3.2 0 1 1 289 165.6M294.3 116.4A3.6 2.9 0 1 1 296.2 109.3M274.4 146.1A2.5 2 0 1 1 278.3 149.2M295.8 120.2A2.3 1.9 0 1 1 300 118.1M284.6 183.1A4.3 3.4 0 1 1 279.6 176.1M281.8 123.7A3 2.4 0 1 1 277.1 119.9M278.8 121.4A3.8 3.1 0 1 1 284.1 115.9M302.8 168.5A4.1 3.3 0 1 1 294.9 166.5M276.2 111A4.7 3.8 0 1 1 278.7 101.9M302 101A2 1.6 0 1 1 299.6 104.2M292 165.4A3.4 2.7 0 1 1 297.6 161.7M297.1 136.6A2.1 1.7 0 1 1 301.2 136M277 141.5A2.8 2.2 0 1 1 271.6 139.9M297.4 166.7A4.5 3.6 0 1 1 295 158M290.2 175.8A4.3 3.4 0 1 1 295.7 182.4M277.9 128.6A4.3 3.5 0 1 1 272.4 121.9M271 112.4A2.5 2 0 1 1 275.9 111.2M287.8 139.9A2.6 2.1 0 1 1 285.6 135.1M298.1 140.8A5 4 0 1 1 289.4 135.9M285.3 121.4A2.6 2.1 0 1 1 290.1 123.5M309 143.6A3.2 2.5 0 1 1 309.7 149.9M313.9 176.5A5 4 0 1 1 304.3 178.9" fill="none" stroke="#c6b2a8" stroke-width=".8"/><path d="M8 0C20 40 30 90 24 150M286 0C276 40 272 100 280 160" stroke="#a8948a" stroke-width="2" fill="none"/><path d="M120 120q4.8 -4.8 9.6 0q4.8 -4.8 9.6 0" fill="none" stroke="#6a5a52" stroke-width="1.1"/><path d="M140 108q4 -4 8 0q4 -4 8 0" fill="none" stroke="#6a5a52" stroke-width="1.1"/><path d="M104 140q3.6 -3.6 7.2 0q3.6 -3.6 7.2 0" fill="none" stroke="#6a5a52" stroke-width="1.1"/><path d="M190 96q3.2 -3.2 6.4 0q3.2 -3.2 6.4 0" fill="none" stroke="#6a5a52" stroke-width="1.1"/><g transform="translate(66 360) scale(1.05)" fill="#cbbbb0" stroke="#9c887f" stroke-width=".6"><path d="M-44 0H44V-10H-44Z"/><path d="M-38-10H38V-40H-38Z"/><path d="M-32-14v-22M-24-14v-22M-16-14v-22M-8-14v-22M0-14v-22M8-14v-22M16-14v-22M24-14v-22M32-14v-22" fill="none" stroke-width=".4"/><path d="M-14-10v-20h28v20" fill="#cdbfb6"/><path d="M-34 -40H34V-48H-34Z"/><path d="M-32 -48L0 -53L32 -48" fill="none"/><path d="M-34 -48l3 -6 3 6Z"/><path d="M34 -48l-3 -6 -3 6Z"/><path d="M-29 -53H29V-61H-29Z"/><path d="M-27 -61L0 -66L27 -61" fill="none"/><path d="M-29 -61l3 -6 3 6Z"/><path d="M29 -61l-3 -6 -3 6Z"/><path d="M-24 -66H24V-74H-24Z"/><path d="M-22 -74L0 -79L22 -74" fill="none"/><path d="M-24 -74l3 -6 3 6Z"/><path d="M24 -74l-3 -6 -3 6Z"/><path d="M-19 -79H19V-87H-19Z"/><path d="M-17 -87L0 -92L17 -87" fill="none"/><path d="M-19 -87l3 -6 3 6Z"/><path d="M19 -87l-3 -6 -3 6Z"/><path d="M-14 -92H14V-100H-14Z"/><path d="M-12 -100L0 -105L12 -100" fill="none"/><path d="M-14 -100l3 -6 3 6Z"/><path d="M14 -100l-3 -6 -3 6Z"/><path d="M-9 -105H9V-113H-9Z"/><path d="M-7 -113L0 -118L7 -113" fill="none"/><path d="M-9 -113l3 -6 3 6Z"/><path d="M9 -113l-3 -6 -3 6Z"/><path d="M-6-118L0-138 6-118Z"/></g><g transform="translate(214 340) scale(1)" stroke="#8f7a70" stroke-width=".6"><path d="M-60-30L-26-56H26L60-30Z" fill="#c4b2a6"/><path d="M-26-56L-12-78H12L26-56Z" fill="#c4b2a6"/><path d="M-54-31L-24.3-55M-48-31L-21.6-55M-42-31L-18.9-55M-36-31L-16.2-55M-30-31L-13.5-55M-24-31L-10.8-55M-18-31L-8.1-55M-12-31L-5.4-55M-6-31L-2.7-55M0-31L0-55M6-31L2.7-55M12-31L5.4-55M18-31L8.1-55M24-31L10.8-55M30-31L13.5-55M36-31L16.2-55M42-31L18.9-55M48-31L21.6-55M54-31L24.3-55" fill="none" stroke-width=".35"/><path d="M-56-30H56V-26H-56Z" fill="#c4b2a6"/><path d="M-50-26V0M-30-26V0M-10-26V0M10-26V0M30-26V0M50-26V0" fill="none" stroke-width="1"/><path d="M-62 0H62" fill="none"/></g><g transform="translate(20 520) rotate(-30) scale(1.3)" stroke="#7d6a5e" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><g transform="translate(46 520) rotate(-8) scale(1.1)" stroke="#8f7a6c" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><g transform="translate(280 520) rotate(30) scale(1.3)" stroke="#7d6a5e" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><g transform="translate(256 520) rotate(10) scale(1.1)" stroke="#8f7a6c" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(70 520) rotate(-40) scale(1.2)" fill="#6f8a6a" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(90 520) rotate(10) scale(1)" fill="#5f7a5c" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(230 520) rotate(40) scale(1.2)" fill="#6f8a6a" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(210 520) rotate(-10) scale(1)" fill="#5f7a5c" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><g transform="translate(56 438) scale(0.8 0.8)"><path d="M0 0C-20 10 -60 30 -90 60M0 0C-26 14 -64 38 -93 70M0 0C-32 18 -68 46 -96 80M0 0C-38 22 -72 54 -99 90M0 0C-44 26 -76 62 -102 100M0 0C-50 30 -80 70 -105 110M0 0C-56 34 -84 78 -108 120" fill="none" stroke="#7a6a5a" stroke-width="1.3"/><ellipse cx="-90" cy="60" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-90" cy="60" r="2" fill="#3a4a7a"/><ellipse cx="-93" cy="70" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-93" cy="70" r="2" fill="#3a4a7a"/><ellipse cx="-96" cy="80" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-96" cy="80" r="2" fill="#3a4a7a"/><ellipse cx="-99" cy="90" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-99" cy="90" r="2" fill="#3a4a7a"/><ellipse cx="-102" cy="100" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-102" cy="100" r="2" fill="#3a4a7a"/><ellipse cx="-105" cy="110" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-105" cy="110" r="2" fill="#3a4a7a"/><ellipse cx="-108" cy="120" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-108" cy="120" r="2" fill="#3a4a7a"/><path d="M0 0C-14-2-22 10-16 22C-10 30 6 28 10 16C14 6 10 0 0 0Z" fill="#4a5a6a" stroke="#2e3a46" stroke-width=".6"/><path d="M4 2C6-12 10-24 18-30C24-34 30-28 26-22C22-16 16-8 12 4Z" fill="#3e6a8a"/><circle cx="22" cy="-27" r="1.4" fill="#fff"/><path d="M27-27l6 1-6 2" fill="#c9a24e"/><path d="M20-32l-1-7M23-32l2-7M25-30l4-6" stroke="#3e6a8a" stroke-width=".8"/></g><g transform="translate(250 430) scale(-0.7 0.7)"><path d="M0 0C-20 10 -60 30 -90 60M0 0C-26 14 -64 38 -93 70M0 0C-32 18 -68 46 -96 80M0 0C-38 22 -72 54 -99 90M0 0C-44 26 -76 62 -102 100M0 0C-50 30 -80 70 -105 110M0 0C-56 34 -84 78 -108 120" fill="none" stroke="#7a6a5a" stroke-width="1.3"/><ellipse cx="-90" cy="60" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-90" cy="60" r="2" fill="#3a4a7a"/><ellipse cx="-93" cy="70" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-93" cy="70" r="2" fill="#3a4a7a"/><ellipse cx="-96" cy="80" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-96" cy="80" r="2" fill="#3a4a7a"/><ellipse cx="-99" cy="90" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-99" cy="90" r="2" fill="#3a4a7a"/><ellipse cx="-102" cy="100" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-102" cy="100" r="2" fill="#3a4a7a"/><ellipse cx="-105" cy="110" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-105" cy="110" r="2" fill="#3a4a7a"/><ellipse cx="-108" cy="120" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-108" cy="120" r="2" fill="#3a4a7a"/><path d="M0 0C-14-2-22 10-16 22C-10 30 6 28 10 16C14 6 10 0 0 0Z" fill="#4a5a6a" stroke="#2e3a46" stroke-width=".6"/><path d="M4 2C6-12 10-24 18-30C24-34 30-28 26-22C22-16 16-8 12 4Z" fill="#3e6a8a"/><circle cx="22" cy="-27" r="1.4" fill="#fff"/><path d="M27-27l6 1-6 2" fill="#c9a24e"/><path d="M20-32l-1-7M23-32l2-7M25-30l4-6" stroke="#3e6a8a" stroke-width=".8"/></g><g transform="translate(110 470)"><path d="M0 0C-4.5 -3 -4 -10 0 -10C4 -10 4.5 -3 0 0Z" transform="rotate(0)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.5 -3 -4 -10 0 -10C4 -10 4.5 -3 0 0Z" transform="rotate(72)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.5 -3 -4 -10 0 -10C4 -10 4.5 -3 0 0Z" transform="rotate(144)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.5 -3 -4 -10 0 -10C4 -10 4.5 -3 0 0Z" transform="rotate(216)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.5 -3 -4 -10 0 -10C4 -10 4.5 -3 0 0Z" transform="rotate(288)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="2.2" fill="#e8d07a"/></g><g transform="translate(130 490)"><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(0)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(72)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(144)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(216)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(288)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.8" fill="#e8d07a"/></g><g transform="translate(176 476)"><path d="M0 0C-4.95 -3.3 -4.4 -11 0 -11C4.4 -11 4.95 -3.3 0 0Z" transform="rotate(0)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.95 -3.3 -4.4 -11 0 -11C4.4 -11 4.95 -3.3 0 0Z" transform="rotate(72)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.95 -3.3 -4.4 -11 0 -11C4.4 -11 4.95 -3.3 0 0Z" transform="rotate(144)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.95 -3.3 -4.4 -11 0 -11C4.4 -11 4.95 -3.3 0 0Z" transform="rotate(216)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.95 -3.3 -4.4 -11 0 -11C4.4 -11 4.95 -3.3 0 0Z" transform="rotate(288)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="2.4" fill="#e8d07a"/></g><g transform="translate(196 500)"><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(0)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(72)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(144)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(216)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(288)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.8" fill="#e8d07a"/></g><g transform="translate(150 506)"><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(0)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(72)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(144)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(216)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(288)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.5" fill="#e8d07a"/></g><g transform="translate(24 480)"><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(0)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(72)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(144)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(216)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.6 -2.4 -3.2 -8 0 -8C3.2 -8 3.6 -2.4 0 0Z" transform="rotate(288)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.8" fill="#e8d07a"/></g><g transform="translate(276 478)"><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(0)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(72)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(144)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(216)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(288)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="2" fill="#e8d07a"/></g></symbol>
+    <symbol id="o-kapel" viewBox="0 0 120 110"><path d="M60 40C50 60 40 80 30 108M60 40C70 60 80 80 90 108" stroke="#9c887f" stroke-width="7" fill="none" stroke-linecap="round" opacity=".7"/><path d="M30 60l6 -2M90 60l-6 -2M30.6 65l6 -2M89.4 65l-6 -2M31.2 70l6 -2M88.8 70l-6 -2M31.8 75l6 -2M88.2 75l-6 -2M32.4 80l6 -2M87.6 80l-6 -2M33 85l6 -2M87 85l-6 -2M33.6 90l6 -2M86.4 90l-6 -2M34.2 95l6 -2M85.8 95l-6 -2M34.8 100l6 -2M85.2 100l-6 -2" stroke="#c9b8ae" stroke-width="1"/><g transform="translate(48 40) scale(-0.55 0.55)"><path d="M0 0C-14-2-22 10-16 22C-10 30 6 28 10 16C14 6 10 0 0 0Z" fill="#4a5a6a" stroke="#2e3a46" stroke-width=".6"/><path d="M4 2C6-12 10-24 18-30C24-34 30-28 26-22C22-16 16-8 12 4Z" fill="#3e6a8a"/><circle cx="22" cy="-27" r="1.4" fill="#fff"/><path d="M27-27l6 1-6 2" fill="#c9a24e"/><path d="M20-32l-1-7M23-32l2-7M25-30l4-6" stroke="#3e6a8a" stroke-width=".8"/></g><g transform="translate(72 40) scale(0.55 0.55)"><path d="M0 0C-14-2-22 10-16 22C-10 30 6 28 10 16C14 6 10 0 0 0Z" fill="#4a5a6a" stroke="#2e3a46" stroke-width=".6"/><path d="M4 2C6-12 10-24 18-30C24-34 30-28 26-22C22-16 16-8 12 4Z" fill="#3e6a8a"/><circle cx="22" cy="-27" r="1.4" fill="#fff"/><path d="M27-27l6 1-6 2" fill="#c9a24e"/><path d="M20-32l-1-7M23-32l2-7M25-30l4-6" stroke="#3e6a8a" stroke-width=".8"/></g><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(60 46) rotate(-50) scale(0.5)" fill="#6f8a6a" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(60 46) rotate(50) scale(0.5)" fill="#6f8a6a" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><g transform="translate(60 46) rotate(-20) scale(0.35)" stroke="#7d6a5e" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><g transform="translate(60 46) rotate(20) scale(0.35)" stroke="#7d6a5e" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><g transform="translate(54 36)"><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(0)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(72)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(144)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(216)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(288)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.3" fill="#e8d07a"/></g><g transform="translate(66 34)"><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(0)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(72)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(144)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(216)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(288)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.1" fill="#e8d07a"/></g><g transform="translate(60 26)"><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(0)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(72)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(144)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(216)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.25 -1.5 -2 -5 0 -5C2 -5 2.25 -1.5 0 0Z" transform="rotate(288)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.1" fill="#e8d07a"/></g></symbol>
+    <symbol id="o-pohon" viewBox="0 0 200 320"><path d="M-0.7 56.9A3.1 2.5 0 1 1 0.7 62.9M28.3 19.8A4.7 3.7 0 1 1 20.8 25.4M183.3 86.4A2.9 2.3 0 1 1 179.4 90.6M159.6 78.1A2 1.6 0 1 1 155.8 76.5M150 23.9A2.9 2.3 0 1 1 150.7 18.3M185.3 8A2.6 2.1 0 1 1 187.6 12.7M11.7 8.2A4.2 3.4 0 1 1 19.2 4.3M177.9 40.8A2.9 2.3 0 1 1 183.7 40.2M197.7 109.1A5 4 0 1 1 196.9 99.3M8.2 44.3A4.5 3.6 0 1 1 -0.2 47.5M137.1 82.4A4.2 3.4 0 1 1 140.4 74.7M76.5 45A2 1.6 0 1 1 75 48.8M39.6 38.8A3.7 3 0 1 1 33 35.4M105.9 33.4A4.5 3.6 0 1 1 101.2 25.7M50.4 13.4A2.8 2.3 0 1 1 47.1 8.8M41.8 71.1A4.4 3.5 0 1 1 33.6 67.8M148.9 45.3A2.2 1.7 0 1 1 149.6 49.6M0.4 52.5A3.5 2.8 0 1 1 2.6 45.8M53.9 42.9A2.2 1.8 0 1 1 51.9 46.8M173.4 107.1A3.4 2.7 0 1 1 178 112.2M148.2 48.4A2.9 2.3 0 1 1 143.2 45.6M100.3 105.9A5 4 0 1 1 98.3 115.6M199.3 99.1A3.3 2.6 0 1 1 196.5 105.1M136.3 88.9A2.7 2.2 0 1 1 131.4 86.5M167.7 112.3A2.4 1.9 0 1 1 164.1 115.2M39.2 105.1A3.4 2.7 0 1 1 44.3 100.8M182.2 97.8A2.7 2.2 0 1 1 186 101.7M31.4 59.2A2.5 2 0 1 1 30.4 54.4M112 106.6A4.6 3.7 0 1 1 102.8 106.7M3.4 10.2A3.7 3 0 1 1 10.8 9.1M147.3 27.3A2.2 1.7 0 1 1 144.3 30.5M98 56.9A4.5 3.6 0 1 1 106.3 60.1M83.9 11.6A4.6 3.6 0 1 1 90.9 5.7M169.3 111.2A3 2.4 0 1 1 173.3 106.8M101.3 94.3A2.5 2 0 1 1 96.8 92.4M43.9 18.4A3.7 3 0 1 1 41 25.2M136.1 85.3A4.1 3.3 0 1 1 137 93.4M157.8 40.4A4.4 3.6 0 1 1 158.4 31.6M81 91.9A2.2 1.8 0 1 1 76.8 93.1M81.3 50.5A4.4 3.5 0 1 1 81.7 41.7M143.9 8.3A3.2 2.6 0 1 1 139.7 13.2M107.1 17.3A2.3 1.8 0 1 1 108.6 21.7M2.1 89.5A3.5 2.8 0 1 1 -1.2 95.6M153.1 12.9A3.1 2.4 0 1 1 147.4 15.1M158.9 63.6A4.6 3.7 0 1 1 164.3 71.1M127.3 67.3A3.1 2.5 0 1 1 129.1 73.3M75.7 19.6A4.7 3.8 0 1 1 76.8 10.2M146.8 41A4.9 3.9 0 1 1 154.2 47.4M82.1 60.7A3.1 2.5 0 1 1 80.9 66.7M13.7 4.8A3 2.4 0 1 1 16.7 10.1M21 45.8A4.3 3.4 0 1 1 15.3 39.4M35.2 57.1A2.6 2.1 0 1 1 34.4 62.3M190.3 96.3A4.9 3.9 0 1 1 195.8 104.3M69.2 98.1A3.5 2.8 0 1 1 75.1 102.2M41.3 53.4A2.3 1.8 0 1 1 44.2 49.9M167.2 116.6A4.4 3.5 0 1 1 166.6 107.8M114.9 35.8A4.1 3.2 0 1 1 107.1 37.9M161.1 49A3.4 2.7 0 1 1 155.5 52.6M68.1 72.4A3.7 2.9 0 1 1 65.9 79.4M19.9 52.3A5 4 0 1 1 18.1 62.1M147.6 48.2A4.6 3.7 0 1 1 151.9 39.9M191.9 4.6A4.9 4 0 1 1 183.3 9.5M197.9 83.4A2 1.6 0 1 1 193.8 83M140.8 94.3A2.2 1.8 0 1 1 136.7 96M197.1 104.4A4.7 3.8 0 1 1 189.8 110.3M89.7 85.6A4.4 3.5 0 1 1 98 88.4M105.3 111.6A2.2 1.8 0 1 1 101.2 110M110.3 47.7A2.3 1.8 0 1 1 105.8 47.6M79.5 19.1A2.5 2 0 1 1 83.4 16.2M150.8 104.9A2.1 1.7 0 1 1 153.4 101.7M135.4 25.1A3.9 3.1 0 1 1 138.7 32.2M123.9 66.7A3.8 3 0 1 1 130.9 69.7M88.1 44.6A4.2 3.4 0 1 1 79.6 44.8M157.2 101.1A3.3 2.7 0 1 1 151.2 103.9M35.9 13.1A2.7 2.1 0 1 1 31.6 10M49.8 39.6A4.2 3.3 0 1 1 41.7 37.7M17.2 46.3A2.9 2.4 0 1 1 11.7 44.2M62.8 30.4A3.5 2.8 0 1 1 55.9 30.5M103.1 26.1A2.8 2.2 0 1 1 106.6 21.7M142.1 15.1A2.7 2.1 0 1 1 145.1 10.7M92.5 68.8A2.1 1.7 0 1 1 88.3 68.7M116.4 13.9A4.7 3.8 0 1 1 112.1 5.5M173.4 26.5A4.8 3.8 0 1 1 164.1 24.5M92 60.5A2.1 1.7 0 1 1 94.9 57.4M62.2 56.7A2.1 1.7 0 1 1 60.4 60.4M155.2 94.8A4.3 3.4 0 1 1 150.4 101.9M141.7 106.3A4.3 3.4 0 1 1 136.1 112.8M17.8 85.5A4.5 3.6 0 1 1 26 89.1M129.6 57.5A4.2 3.4 0 1 1 124.3 64.1M149 62.4A2.9 2.3 0 1 1 143.7 64.8M151.7 38.8A2.6 2.1 0 1 1 150.6 33.7M73.3 54.2A2.2 1.8 0 1 1 77.3 52.4M136.2 6.8A2.6 2 0 1 1 139 11.1M103 52.1A2.2 1.7 0 1 1 107 50.3M89.3 39.7A2.2 1.8 0 1 1 90.2 35.4M166.5 31.6A2.9 2.3 0 1 1 169.1 26.3M47.2 13.5A3.3 2.6 0 1 1 53.7 14.3M21.5 27.2A4.6 3.7 0 1 1 17.9 18.6M59.8 16.4A2.3 1.9 0 1 1 57 20.1M56.6 43.9A3.2 2.6 0 1 1 51.4 40.1M62.4 105.7A3.6 2.9 0 1 1 69.5 104.6M50.1 42.2A3.5 2.8 0 1 1 43.7 39.4M9.7 102.8A2.5 2 0 1 1 4.7 103.7M182.1 87.4A2.6 2.1 0 1 1 177.2 85.8M65.8 6.6A4.3 3.4 0 1 1 71.1 13.3M195.2 10.8A4.1 3.2 0 1 1 189.3 16.4M98.4 96.4A3.3 2.6 0 1 1 94.9 101.9M42.2 117.2A4.8 3.9 0 1 1 44.7 107.9M21.3 88.2A2.9 2.3 0 1 1 15.5 87M52.7 68.7A2.5 2 0 1 1 54.4 64M191.2 13.8A4.7 3.8 0 1 1 187.7 5M132.2 39.4A3.5 2.8 0 1 1 138.3 42.7M132.2 80.8A3.6 2.9 0 1 1 137.8 76.3M104.7 16.9A4.3 3.5 0 1 1 97 20.9M106.2 108A4.3 3.5 0 1 1 98.2 104.7M85.8 12.8A3.9 3.2 0 1 1 93.3 10.5M39.2 67.8A2 1.6 0 1 1 41.7 71M41 114.5A2.5 2 0 1 1 44.9 111.4M24 45.8A3.2 2.5 0 1 1 22.2 39.7M115.3 10.1A2.4 1.9 0 1 1 111.7 13.3M66.2 58.7A3.7 3 0 1 1 73.5 59.9M78.2 68.9A4.2 3.4 0 1 1 78.1 77.4M167 75.9A3.5 2.8 0 1 1 166.4 69M152.1 106.8A3.1 2.5 0 1 1 154.4 112.6M72.9 30.7A4.1 3.3 0 1 1 79.5 25.9M140.5 12.4A2.8 2.3 0 1 1 145.7 10.3M83.8 22.3A2.4 1.9 0 1 1 79.1 21.3M184.1 69.2A3.1 2.5 0 1 1 178 67.9M38.2 95.6A3.1 2.5 0 1 1 41.6 90.4M58.8 84.1A3.3 2.6 0 1 1 52.2 83.3M78.4 104.1A4 3.2 0 1 1 78 96.1M82.5 72A4.7 3.7 0 1 1 82.7 62.6M94.4 23.1A4.7 3.8 0 1 1 94.7 13.7M17.2 96.5A3 2.4 0 1 1 13.9 101.5M69.2 44.4A2 1.6 0 1 1 65.3 43.3M172.3 114.9A5 4 0 1 1 162.3 114.8M14.3 28A3.7 2.9 0 1 1 7.2 29.9M111.8 54.2A4.7 3.7 0 1 1 114.5 45.2M81 87.2A3.5 2.8 0 1 1 75.9 92.1M46.6 74.5A3.9 3.1 0 1 1 53.7 77.7M110.8 5.9A4.9 3.9 0 1 1 120.6 6.3M201.6 17.6A2.7 2.2 0 1 1 196.2 16.9M137.7 49.5A3.9 3.1 0 1 1 145.4 50.5M1.6 31.5A3.6 2.9 0 1 1 2.3 38.7M87.7 18.4A3 2.4 0 1 1 82.1 16.2M9.1 73.5A2.2 1.8 0 1 1 13.4 74.9M63.5 64.8A2.4 1.9 0 1 1 58.9 65.5M48.3 60A2.6 2.1 0 1 1 52.5 63.1M113.8 76.9A4.1 3.3 0 1 1 108.9 83.5M163.2 33.6A2.7 2.2 0 1 1 157.8 33.5M168.1 89.4A4.7 3.8 0 1 1 176.5 93.7M36 104A4 3.2 0 1 1 33.1 96.7M174.8 82.3A2.9 2.3 0 1 1 179.9 79.6M80.9 115.4A3.6 2.8 0 1 1 78.3 108.8M165 49.8A2.9 2.3 0 1 1 159.9 52.5M70.6 64.7A3.3 2.7 0 1 1 74.5 70.1M190.5 74.1A2.9 2.3 0 1 1 190.1 68.2M128.1 36.9A3.2 2.6 0 1 1 125.9 30.8M33.4 81.6A4.3 3.4 0 1 1 39.3 75.4M34 53.8A4.8 3.8 0 1 1 30 62.4M189.6 17.1A4.7 3.7 0 1 1 192.2 26.1M27.1 57.3A2.9 2.3 0 1 1 22.8 61.1M8.7 109.4A3.8 3.1 0 1 1 1.4 111.7M157.2 61.2A2.3 1.8 0 1 1 154.9 65.1M170.6 55.8A4 3.2 0 1 1 172.1 47.9M164 96.8A2 1.6 0 1 1 164.5 92.8M82.8 74.4A4.2 3.4 0 1 1 90.5 78.1M52.7 82.5A3.5 2.8 0 1 1 51.1 75.7M41.9 19.8A2.5 2 0 1 1 47 19.8M22.7 59A3.7 2.9 0 1 1 29.9 57.6M43 72.9A4 3.2 0 1 1 39.5 65.7M119.6 93.8A3.4 2.7 0 1 1 125.8 90.9M153.3 101.6A3 2.4 0 1 1 147.9 99.2M111.4 106.9A2.6 2.1 0 1 1 107.1 103.9M50.5 81.2A4.6 3.6 0 1 1 58.6 77.1M122.9 78.6A3.2 2.6 0 1 1 118.8 83.5M33.3 46.1A4.6 3.7 0 1 1 42.2 48.6M183.5 68.7A4.9 4 0 1 1 174.9 73.6M22.3 79.2A4 3.2 0 1 1 14.6 77.4M52.9 56.4A3 2.4 0 1 1 57.6 60.3M154 82.8A4.2 3.4 0 1 1 153.9 74.3M70.5 36A4.2 3.4 0 1 1 70.5 27.5M23.1 62.3A2.4 2 0 1 1 23.3 57.4M103.8 41.9A3.1 2.5 0 1 1 98.3 38.9M162.6 60.7A4.6 3.7 0 1 1 168.1 53.3M171.5 55.4A4.8 3.9 0 1 1 179.3 61.2M7.7 48.5A4.2 3.4 0 1 1 0.6 44M155.9 44.4A2.3 1.8 0 1 1 154.9 48.9M48.7 41.5A2.9 2.3 0 1 1 44 38.2M123.2 45.9A4.7 3.8 0 1 1 128.6 38.1M61.6 8A3.7 2.9 0 1 1 55.7 12.4M73.7 67.6A3.9 3.1 0 1 1 79.9 62.7M88 34.9A2.2 1.7 0 1 1 84.7 37.7M41.6 98A2.5 2 0 1 1 46.6 98.4M84.2 47.7A4.9 4 0 1 1 86.8 38.2M17.5 6.6A2.3 1.8 0 1 1 15.2 10.5M182.9 32A4.4 3.5 0 1 1 174.7 28.9M169.4 49.8A4.6 3.7 0 1 1 163.7 42.6M97.2 13.5A3.4 2.7 0 1 1 92.3 8.7M122.4 29.3A4.6 3.7 0 1 1 130 34.6M52.1 109.5A3.1 2.5 0 1 1 52.7 103.3M101.2 23A3.2 2.5 0 1 1 106.9 20.1M202.5 99.9A4.9 4 0 1 1 192.6 98.8M44.1 83.9A3.3 2.6 0 1 1 49.4 87.8M20.8 80.3A4.1 3.3 0 1 1 27 74.8M97.2 77.9A4.5 3.6 0 1 1 99.6 86.6M13.8 102A4.5 3.6 0 1 1 10 110.2M134.9 51.5A4.1 3.2 0 1 1 140.9 57M14 12.8A4.1 3.3 0 1 1 13.6 4.7M32.3 25A2.8 2.2 0 1 1 27.1 22.8M66.3 57.5A4.2 3.3 0 1 1 58.9 53.7M89.5 61.6A3.3 2.6 0 1 1 95.8 63.3M191.4 106.9A2.8 2.2 0 1 1 187.2 110.6M63.1 16.5A2.4 2 0 1 1 67 13.6M91.1 26.5A3.7 3 0 1 1 98.5 26.1M15.6 80.6A4.1 3.3 0 1 1 14.2 88.7M18.2 59.4A3.4 2.7 0 1 1 18 66.3M106.3 33.5A4.5 3.6 0 1 1 105.6 42.5M95.1 84A3.3 2.7 0 1 1 89 86.6M75.7 19A2.7 2.1 0 1 1 70.3 19.1M54 47.1A2.5 2 0 1 1 51.7 51.5M145.1 103.1A2.8 2.2 0 1 1 148.4 107.7M29 69.2A2.2 1.8 0 1 1 25.6 66.4M36 20.1A2.4 1.9 0 1 1 37 15.4M51.3 22.6A2.5 2 0 1 1 49.9 27.4M80.1 41.2A2.5 2 0 1 1 80.1 46.2M110.5 78.4A2.7 2.2 0 1 1 105.1 79.1M145.4 53.8A2.3 1.9 0 1 1 150.1 53.6M55 95A3.6 2.9 0 1 1 47.8 94.1M108.7 98.4A3.1 2.5 0 1 1 102.9 96.2M187.5 81.7A2.5 2 0 1 1 182.6 82.9M74.4 78.5A2.7 2.1 0 1 1 70.1 75.3M135.4 60.8A4.7 3.7 0 1 1 127.5 55.7M151.3 80.8A5 4 0 1 1 159.6 75.2M163 18.1A4.9 3.9 0 1 1 171 12.5M173.6 89.1A4.4 3.5 0 1 1 165 87.5M191.2 64.3A3.3 2.7 0 1 1 189.4 70.7M150.2 24.9A2 1.6 0 1 1 149 28.8M189.7 107.8A4.1 3.3 0 1 1 181.8 110M88.1 41.8A2.7 2.1 0 1 1 92.7 39.2M99.9 110.2A3.9 3.1 0 1 1 95.9 117M6.4 64.5A4 3.2 0 1 1 11.4 58.4M104.5 80.7A3.2 2.5 0 1 1 98.7 83.1M61.6 77.9A2.7 2.1 0 1 1 57.2 80.9M172.8 68.7A4.6 3.7 0 1 1 170.9 59.6M130.6 25.9A3.9 3.1 0 1 1 125.8 19.8M102.8 52.9A3.3 2.7 0 1 1 103.1 46.2M20.3 27A4.7 3.8 0 1 1 13 33M59.7 45.4A5 4 0 1 1 55.6 36.3M106.1 75.9A3.8 3 0 1 1 111.6 81.1M176.3 39.2A3.2 2.5 0 1 1 178.6 45.1M171.3 83.5A2.3 1.8 0 1 1 167.9 86.5M89.5 92.8A4.8 3.8 0 1 1 88.8 102.4M89.2 69.8A4 3.2 0 1 1 86.6 62.2M-3 94.3A4.8 3.9 0 1 1 3.3 101.6M182.6 76.5A4 3.2 0 1 1 182.4 68.4M12.3 71.1A4.9 3.9 0 1 1 6.1 63.7M27.1 41.7A3.2 2.6 0 1 1 30.9 36.5M147.7 14.7A4.6 3.7 0 1 1 149.9 5.8M126.5 16.5A2.8 2.2 0 1 1 124.3 21.6M5.2 31.4A2.2 1.8 0 1 1 2.3 34.8M27.4 20.5A5 4 0 1 1 33.7 28.3M22 15.1A3.2 2.6 0 1 1 22.7 8.6M58.8 17.6A2.4 1.9 0 1 1 55.6 21.2M193.5 29.9A2.6 2 0 1 1 189.5 33.1M117 53.8A4 3.2 0 1 1 124.9 55.6M92.4 72.6A2 1.6 0 1 1 92.4 68.6M30 85.3A2.8 2.3 0 1 1 33.2 80.7M85.5 95.2A3.9 3.1 0 1 1 89.8 88.8M170.7 42.6A4.5 3.6 0 1 1 164.4 36.3M88 2.7A3.7 3 0 1 1 83.4 8.5M166.6 79.1A4 3.2 0 1 1 158.8 77.2M135.3 117A3.6 2.9 0 1 1 133.6 109.9M52.3 84.7A4.1 3.3 0 1 1 47.8 91.5M0.8 62.3A2.9 2.3 0 1 1 2.4 56.6M168.7 12.1A2.4 1.9 0 1 1 171.8 8.4M3.9 31.8A2.4 1.9 0 1 1 7.6 28.7M197.3 35A3 2.4 0 1 1 193.1 30.7M15.5 83.2A2.2 1.7 0 1 1 15.3 78.8M127.6 78A2 1.6 0 1 1 123.8 76.5M36.1 13.8A4.7 3.7 0 1 1 27.5 10.1M70.3 26.7A4.9 3.9 0 1 1 76.4 34.3M104 78.8A4.8 3.9 0 1 1 102.8 88.4M52.3 89.1A2.5 2 0 1 1 47.4 88.1M54.2 45.5A2.6 2.1 0 1 1 51.8 40.8M0.5 56.9A3.7 3 0 1 1 1.2 49.5M15.1 39.6A3 2.4 0 1 1 19.3 35.2M186.2 52.9A4.6 3.7 0 1 1 183.4 61.7M138.5 53.8A3.6 2.9 0 1 1 132.8 58M178.7 78.1A3.6 2.9 0 1 1 173.9 83.5M147.2 8.8A3.1 2.5 0 1 1 153.4 9.9M39.7 31.9A4.1 3.3 0 1 1 45.1 38M72.7 59.7A4.7 3.8 0 1 1 67 52.2M195.6 84.6A4.4 3.5 0 1 1 201.7 90.9M44.6 114.8A3.7 2.9 0 1 1 50.4 110.2M16 66.6A4.9 3.9 0 1 1 23.8 60.5M170.1 30.6A3 2.4 0 1 1 171.3 36.6M64.6 55.3A4.3 3.4 0 1 1 56.1 55.6M108.1 34.9A4.7 3.8 0 1 1 110 25.8M77.5 112A4.6 3.7 0 1 1 71.9 104.7" fill="none" stroke="#b39d93" stroke-width=".8"/><path d="M0 120C60 110 120 90 200 96" stroke="#8f7a70" stroke-width="3" fill="none"/><g transform="translate(150 92) scale(-0.9 0.9)"><path d="M0 0C-20 10 -60 30 -90 60M0 0C-26 14 -64 38 -93 70M0 0C-32 18 -68 46 -96 80M0 0C-38 22 -72 54 -99 90M0 0C-44 26 -76 62 -102 100M0 0C-50 30 -80 70 -105 110M0 0C-56 34 -84 78 -108 120" fill="none" stroke="#7a6a5a" stroke-width="1.3"/><ellipse cx="-90" cy="60" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-90" cy="60" r="2" fill="#3a4a7a"/><ellipse cx="-93" cy="70" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-93" cy="70" r="2" fill="#3a4a7a"/><ellipse cx="-96" cy="80" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-96" cy="80" r="2" fill="#3a4a7a"/><ellipse cx="-99" cy="90" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-99" cy="90" r="2" fill="#3a4a7a"/><ellipse cx="-102" cy="100" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-102" cy="100" r="2" fill="#3a4a7a"/><ellipse cx="-105" cy="110" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-105" cy="110" r="2" fill="#3a4a7a"/><ellipse cx="-108" cy="120" rx="4" ry="6" fill="#5a6a6a"/><circle cx="-108" cy="120" r="2" fill="#3a4a7a"/><path d="M0 0C-14-2-22 10-16 22C-10 30 6 28 10 16C14 6 10 0 0 0Z" fill="#4a5a6a" stroke="#2e3a46" stroke-width=".6"/><path d="M4 2C6-12 10-24 18-30C24-34 30-28 26-22C22-16 16-8 12 4Z" fill="#3e6a8a"/><circle cx="22" cy="-27" r="1.4" fill="#fff"/><path d="M27-27l6 1-6 2" fill="#c9a24e"/><path d="M20-32l-1-7M23-32l2-7M25-30l4-6" stroke="#3e6a8a" stroke-width=".8"/></g></symbol>
+    <symbol id="o-ranting" viewBox="0 0 120 80"><g transform="translate(30 80) rotate(30) scale(0.7)" stroke="#8f7a6c" fill="none" stroke-linecap="round"><path d="M0 0C2-30-2-60 4-90" stroke-width="1.2"/><path d="M0.2 -6.4q7.9 -2 13.1 -4M0.2 -6.4q-7.9 -2 -13.1 -4M0.4 -12.8q7.3 -2 12.3 -4M0.4 -12.8q-7.3 -2 -12.3 -4M0.6 -19.2q6.8 -2 11.4 -4M0.6 -19.2q-6.8 -2 -11.4 -4M0.8 -25.6q6.3 -2 10.5 -4M0.8 -25.6q-6.3 -2 -10.5 -4M1 -32q5.8 -2 9.6 -4M1 -32q-5.8 -2 -9.6 -4M1.2 -38.4q5.3 -2 8.8 -4M1.2 -38.4q-5.3 -2 -8.8 -4M1.4 -44.8q4.7 -2 7.9 -4M1.4 -44.8q-4.7 -2 -7.9 -4M1.6 -51.2q4.2 -2 7 -4M1.6 -51.2q-4.2 -2 -7 -4M1.8 -57.6q3.7 -2 6.1 -4M1.8 -57.6q-3.7 -2 -6.1 -4M2 -64q3.1 -2 5.3 -4M2 -64q-3.1 -2 -5.3 -4M2.2 -70.4q2.6 -2 4.4 -4M2.2 -70.4q-2.6 -2 -4.4 -4M2.4 -76.8q2.1 -2 3.5 -4M2.4 -76.8q-2.1 -2 -3.5 -4M2.6 -83.2q1.6 -2 2.6 -4M2.6 -83.2q-1.6 -2 -2.6 -4" stroke-width=".9"/></g><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(50 78) rotate(40) scale(0.7)" fill="#6f8a6a" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><path d="M0 0C10-12 12-40 0-56C-12-40-10-12 0 0Z" transform="translate(64 78) rotate(70) scale(0.6)" fill="#5f7a5c" stroke="rgba(0,0,0,.15)" stroke-width=".5"/><g transform="translate(70 40)"><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(0)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(72)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(144)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(216)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-4.05 -2.6999999999999997 -3.6 -9 0 -9C3.6 -9 4.05 -2.6999999999999997 0 0Z" transform="rotate(288)" fill="#8a6aa8" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="2" fill="#e8d07a"/></g><g transform="translate(88 52)"><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(0)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(72)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(144)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(216)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-3.15 -2.1 -2.8000000000000003 -7 0 -7C2.8000000000000003 -7 3.15 -2.1 0 0Z" transform="rotate(288)" fill="#f3eef4" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.5" fill="#e8d07a"/></g><g transform="translate(56 56)"><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(0)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(72)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(144)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(216)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><path d="M0 0C-2.7 -1.7999999999999998 -2.4000000000000004 -6 0 -6C2.4000000000000004 -6 2.7 -1.7999999999999998 0 0Z" transform="rotate(288)" fill="#b49ac6" stroke="rgba(0,0,0,.15)" stroke-width=".4"/><circle r="1.3" fill="#e8d07a"/></g></symbol>
+    <symbol id="o-kupu" viewBox="0 0 40 32"><g fill="none" stroke="#b08a3e" stroke-width="1.2"><ellipse cx="20" cy="8" rx="5" ry="7"/><ellipse cx="20" cy="24" rx="5" ry="7"/><ellipse cx="12" cy="16" rx="7" ry="5"/><ellipse cx="28" cy="16" rx="7" ry="5"/></g><circle cx="20" cy="16" r="1.8" fill="#b08a3e"/></symbol>
+    <!-- ikon -->
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.3V17h16V7.3l-8 5.4-8-5.4ZM5.6 7 12 11.3 18.4 7H5.6Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V2Zm-2 8v9h14v-9H5Zm2 2h4v4H7v-4Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 2a5 5 0 0 0-5 5c0 3.2 3.4 8 5 9.9 1.6-1.9 5-6.7 5-9.9a5 5 0 0 0-5-5Zm0 2.5A2.5 2.5 0 1 1 12 11.5 2.5 2.5 0 0 1 12 6.5Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm1 3v5.4l3.6 2.1-1 1.7L11 13.6V7h2Z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a.8.8 0 0 0 1.2.7l10.4-6.5a.8.8 0 0 0 0-1.4L9.2 4.8A.8.8 0 0 0 8 5.5Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 3h11a2 2 0 0 1 2 2v11h-2V5H8V3Zm-3 4h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h10V9H5Z"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3Z"/></symbol>
+    <symbol id="i-live" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm7 2.5v7l6-3.5-6-3.5Z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.4 9 7.7s-4 7.7-9 7.7c-.9 0-1.8-.1-2.6-.3L4 20.5l1.4-4A7.3 7.3 0 0 1 3 10.7C3 6.4 7 3 12 3Zm0 2c-4 0-7 2.6-7 5.7 0 1.5.7 2.9 2 4l.5.4-.6 1.8 2.4-1 .4.1c.7.2 1.5.3 2.3.3 4 0 7-2.6 7-5.7S16 5 12 5Z"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 6.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm0 2.3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 4a8 8 0 0 0-7.4 5l1.6.6A6.3 6.3 0 0 1 12 5.7V4Z"/></symbol>
+    <symbol id="i-yt" viewBox="0 0 24 24"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.4H7.6V14h2.7v8h3.2Z"/></symbol>
+    <symbol id="i-tt" viewBox="0 0 24 24"><path d="M16.6 2c.3 2.3 1.6 3.8 3.9 4v3.1a7 7 0 0 1-3.9-1.2v6.7A6.1 6.1 0 1 1 10.5 8.5v3.2a3 3 0 1 0 2.1 2.9V2h4Z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0ZM8.5 20.5a4.9 4.9 0 0 1-3.5-8.4l2.1-2.1 1.4 1.4-2.1 2.1a2.9 2.9 0 1 0 4.1 4.1l2.1-2.1 1.4 1.4-2.1 2.1a4.9 4.9 0 0 1-3.4 1.5Zm8.4-6.6-1.4-1.4 2.1-2.1a2.9 2.9 0 1 0-4.1-4.1L11.4 8.4 10 7l2.1-2.1a4.9 4.9 0 1 1 6.9 6.9l-2.1 2.1Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============================ SAMPUL ============================ -->
+<section id="cover" data-section="cover">
+  <div class="cv-in">
+    <svg class="ranting r-tl" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+    <div class="cv-body">
+      <p class="kick" data-field="cover.judul" data-label="Judul">Pernikahan</p>
+      <svg class="gazebo" viewBox="0 0 300 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><use href="#o-gazebo"/></svg>
+      <h1 class="names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h1>
+      <div class="cv-to">
+        <small data-field="cover.kepadaYth" data-label="Kepada Yth" data-hide-empty="cover.kepadaYth">Kepada Yth.</small>
+        <p id="guestName" data-field="guest.name" data-label="Nama tamu (dari link undangan)">Tamu Undangan</p>
+      </div>
+      <button class="btn" id="openBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><span data-field="cover.tombolBukaUndangan" data-label="Tombol Buka Undangan">Buka Undangan</span></button>
+    </div>
+  </div>
+</section>
+
+<main>
+<!-- ============================ HERO ============================ -->
+<section class="sec" data-section="hero">
+  <svg class="ranting r-tl" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <svg class="ranting r-br" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick" data-field="hero.judul" data-label="Judul">The Wedding Of</p>
+    <h2 class="hero-names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h2>
+    <p class="hero-date" data-field="hero.tanggalAkad" data-label="Tanggal Akad" data-hide-empty="hero.tanggalAkad">Sabtu, 12 Desember 2026</p>
+    <svg class="kupu ukir" viewBox="0 0 40 32" aria-hidden="true"><use href="#o-kupu"/></svg>
+  </div>
+</section>
+
+<!-- ============================ KUTIPAN ============================ -->
+<section class="sec" data-section="quote">
+  <svg class="ranting r-br" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">A Wedding Verse</p>
+    <p class="ayat" data-field="invitation.quote" data-label="Kutipan" data-hide-empty="invitation.quote">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri, supaya kamu merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang.
+QS. Ar-Rum: 21</p>
+  </div>
+</section>
+
+<!-- ============================ MEMPELAI ============================ -->
+<section class="sec" data-section="couple">
+  <svg class="ranting r-tl" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Bride &amp; Groom</p>
+    <h2 class="title" data-field="couple.judul" data-label="Judul">Mempelai</h2>
+    <p class="sub" data-field="couple.subJudul" data-label="Sub Judul" data-hide-empty="couple.subJudul">Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan.</p>
+  </div>
+  <div class="duo rv">
+    <div class="person">
+      <div class="polaroid"><div class="photo" data-photo="couple.0.foto" data-label="Foto Mempelai 1"><div class="sil">Foto mempelai 1</div></div></div>
+      <p class="p-nick" data-field="couple.0.namaPanggilan" data-label="Nama Panggilan Mempelai 1">Azalia</p>
+      <h3 class="p-full" data-field="couple.0.namaLengkap" data-label="Nama Lengkap Mempelai 1" data-hide-empty="couple.0.namaLengkap">Azalia Fasya</h3>
+      <p class="p-ortu-j" data-field="couple.0.judulOrangTua" data-label="Judul Orang Tua Mempelai 1" data-hide-empty="couple.0.judulOrangTua">Putri dari</p>
+      <p class="p-ortu" data-field="couple.0.orangTua" data-label="Orang Tua Mempelai 1" data-hide-empty="couple.0.orangTua">Bapak Hendra &amp; Ibu Sari</p>
+      <a class="soc" href="#" target="_blank" rel="noopener" data-href="couple.0.sosialMedia1" data-hide-empty="couple.0.sosialMedia1" data-sosial="1"><svg class="ic soc-ic" aria-hidden="true"><use href="#i-ig"/></svg><span data-field="couple.0.sosialMedia1" data-label="Sosial Media Mempelai 1"></span></a>
+    </div>
+    <p class="amp" aria-hidden="true">&amp;</p>
+    <div class="person">
+      <div class="polaroid"><div class="photo" data-photo="couple.1.foto" data-label="Foto Mempelai 2"><div class="sil">Foto mempelai 2</div></div></div>
+      <p class="p-nick" data-field="couple.1.namaPanggilan" data-label="Nama Panggilan Mempelai 2">Dias</p>
+      <h3 class="p-full" data-field="couple.1.namaLengkap" data-label="Nama Lengkap Mempelai 2" data-hide-empty="couple.1.namaLengkap">Dias Taufik</h3>
+      <p class="p-ortu-j" data-field="couple.1.judulOrangTua" data-label="Judul Orang Tua Mempelai 2" data-hide-empty="couple.1.judulOrangTua">Putra dari</p>
+      <p class="p-ortu" data-field="couple.1.orangTua" data-label="Orang Tua Mempelai 2" data-hide-empty="couple.1.orangTua">Bapak Wibowo &amp; Ibu Ratna</p>
+      <a class="soc" href="#" target="_blank" rel="noopener" data-href="couple.1.sosialMedia1" data-hide-empty="couple.1.sosialMedia1" data-sosial="1"><svg class="ic soc-ic" aria-hidden="true"><use href="#i-ig"/></svg><span data-field="couple.1.sosialMedia1" data-label="Sosial Media Mempelai 2"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ACARA ============================ -->
+<section class="sec" data-section="event">
+  <svg class="ranting r-br" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <svg class="kapel" viewBox="0 0 120 110" aria-hidden="true"><use href="#o-kapel"/></svg>
+    <p class="kick">Save The Date</p>
+    <h2 class="title" data-field="event.judul" data-label="Judul">Wedding Details</h2>
+    <p class="sub" data-field="event.subJudul" data-label="Sub Judul" data-hide-empty="event.subJudul">Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada:</p>
+  </div>
+  <div class="evs rv">
+    <div class="ev">
+      <div class="ev-l">
+        <h3 data-field="event.akadJudul" data-label="Judul Event 1">Akad Nikah</h3>
+        <p class="ev-time" data-field="event.akadJam" data-label="Jam Event 1" data-hide-empty="event.akadJam">08.00 – 10.00 WIB</p>
+      </div>
+      <div>
+        <p class="ev-loc" data-field="event.akadLokasi" data-label="Lokasi Event 1" data-hide-empty="event.akadLokasi">Edelweiss Wedding Hall</p>
+        <p class="ev-date" data-field="event.akadTanggal" data-label="Tanggal Event 1" data-hide-empty="event.akadTanggal">Sabtu, 12 Desember 2026</p>
+        <p class="ev-addr" data-field="event.akadAlamat" data-label="Alamat Event 1" data-hide-empty="event.akadAlamat">Jl. Palem Raya No. 1, Karawaci, Tangerang</p>
+        <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="event.akadMapsUrl" data-label="URL Maps Event 1" data-hide-empty="event.akadMapsUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="event.akadTombolMaps" data-label="Teks Tombol Maps Event 1">Open Map</span></a>
+      </div>
+    </div>
+    <div class="ev">
+      <div class="ev-l">
+        <h3 data-field="event.resepsiJudul" data-label="Judul Event 2">Resepsi</h3>
+        <p class="ev-time" data-field="event.resepsiJam" data-label="Jam Event 2" data-hide-empty="event.resepsiJam">11.00 – 14.00 WIB</p>
+      </div>
+      <div>
+        <p class="ev-loc" data-field="event.resepsiLokasi" data-label="Lokasi Event 2" data-hide-empty="event.resepsiLokasi">Hotel Transit</p>
+        <p class="ev-date" data-field="event.resepsiTanggal" data-label="Tanggal Event 2" data-hide-empty="event.resepsiTanggal">Sabtu, 12 Desember 2026</p>
+        <p class="ev-addr" data-field="event.resepsiAlamat" data-label="Alamat Event 2" data-hide-empty="event.resepsiAlamat">Jl. Raya Serpong No. 104, Tangerang Selatan</p>
+        <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="event.resepsiMapsUrl" data-label="URL Maps Event 2" data-hide-empty="event.resepsiMapsUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="event.resepsiTombolMaps" data-label="Teks Tombol Maps Event 2">Open Map</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COUNTDOWN + KALENDER ============================ -->
+<section class="sec" data-section="countdown">
+  <svg class="ranting r-tl" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Happy Days Are Coming</p>
+    <h2 class="title" data-field="countdown.judul" data-label="Judul">Save the Date</h2>
+    <p class="sub" id="cdTanggal" data-field="countdown.tanggalAkad" data-label="Tanggal Akad" data-hide-empty="countdown.tanggalAkad">Sabtu, 12 Desember 2026</p>
+    <div class="cal" id="cal" aria-label="Kalender bulan acara"></div>
+    <div class="cd" aria-label="Hitung mundur">
+      <div><b id="cdD">00</b><span>Hari</span></div><div><b id="cdH">00</b><span>Jam</span></div><div><b id="cdM">00</b><span>Menit</span></div><div><b id="cdS">00</b><span>Detik</span></div>
+    </div>
+    <div class="polaroid cd-photo" data-hide-empty="countdown.fotoPasangan"><div class="photo" data-photo="countdown.fotoPasangan" data-label="Foto Pasangan"><div class="sil">Foto pasangan</div></div></div>
+    <p class="cd-quote" data-field="countdown.kutipan" data-label="Kutipan" data-hide-empty="countdown.kutipan">Cinta tidak saling menatap, tetapi bersama-sama memandang ke arah yang sama.</p>
+    <p class="cd-by" data-field="countdown.kutipanOleh" data-label="Kutipan Oleh" data-hide-empty="countdown.kutipanOleh">Antoine de Saint-Exupéry</p>
+    <a class="btn" href="#" target="_blank" rel="noopener" data-href="kalender.url"><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg><span data-field="countdown.tombolSimpanKalender" data-label="Tombol Simpan Kalender">Simpan ke Kalender</span></a>
+  </div>
+</section>
+
+<!-- ============================ LIVE STREAMING ============================ -->
+<section class="sec" data-section="streaming">
+  <div class="rv">
+    <p class="kick">Join Us Virtually</p>
+    <h2 class="title" data-field="streaming.judul" data-label="Judul">Live Streaming</h2>
+    <p class="sub" data-field="streaming.subJudul" data-label="Sub Judul" data-hide-empty="streaming.subJudul">Bagi yang berhalangan hadir, saksikan momen bahagia kami secara langsung.</p>
+    <a class="btn ghost" href="#" target="_blank" rel="noopener" data-href="streaming.url" data-label="Link Live Streaming" data-hide-empty="streaming.url"><svg class="ic" aria-hidden="true"><use href="#i-live"/></svg><span data-field="streaming.tombolLiveStreaming" data-label="Tombol Live Streaming">Tonton Siaran</span></a>
+  </div>
+</section>
+
+<!-- ============================ LOVE STORY (blok berulang) ============================ -->
+<section class="sec" data-section="story">
+  <svg class="ranting r-br" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">Our Chronicle</p>
+    <h2 class="title" data-field="story.judul" data-label="Judul">Kisah Kami</h2>
+  </div>
+  <div class="st" data-repeat="story" data-label="Kisah">
+    <div class="st-item">
+      <p class="st-year" data-field="tahun" data-label="Tahun">2019</p>
+      <h3 data-field="judul" data-label="Judul Kisah">Pertemuan Pertama</h3>
+      <p data-field="deskripsi" data-label="Deskripsi">Kami bertemu di sebuah acara kampus. Obrolan singkat yang ternyata menjadi awal dari kisah panjang kami.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ VIDEO PREWEDDING ============================ -->
+<section class="sec" data-section="prewed">
+  <div class="rv">
+    <p class="kick">Our Moments in Motion</p>
+    <h2 class="title" data-field="prewed.judul" data-label="Judul">Prewedding</h2>
+    <p class="sub" data-field="prewed.subJudul" data-label="Sub Judul" data-hide-empty="prewed.subJudul">Sepenggal cerita kami dalam gambar bergerak.</p>
+    <div class="vframe">
+      <div class="vid" id="vscreen" data-video-path="prewed.video">
+        <div class="vposter"><div class="sil">Video belum dipasang</div></div>
+        <button class="vplay" id="vplay" type="button" aria-label="Putar video prewedding"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></button>
+      </div>
+    </div>
+    <p class="note" data-field="prewed.teksInstruksi" data-label="Teks Instruksi" data-hide-empty="prewed.teksInstruksi">Ketuk tombol untuk memutar.</p>
+  </div>
+</section>
+
+<!-- ============================ GALERI ============================ -->
+<section class="sec" data-section="gallery">
+  <svg class="ranting r-tl" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">The Wedding Of</p>
+    <h2 class="title" data-field="gallery.judul" data-label="Judul">Our Gallery</h2>
+    <p class="sub" data-field="gallery.subJudul" data-label="Sub Judul" data-hide-empty="gallery.subJudul">Momen bahagia yang kami abadikan.</p>
+    <p class="note" data-field="gallery.teksInstruksi" data-label="Teks Instruksi" data-hide-empty="gallery.teksInstruksi">Ketuk foto untuk memperbesar.</p>
+  </div>
+  <div class="gal" id="gal" data-gallery-path="gallery"></div>
+</section>
+
+<!-- ============================ REKENING / E-WALLET (blok berulang) ============================ -->
+<section class="sec" data-section="wallet">
+  <svg class="ranting r-br" viewBox="0 0 120 80" aria-hidden="true"><use href="#o-ranting"/></svg>
+  <div class="rv">
+    <p class="kick">With Love</p>
+    <h2 class="title" data-field="wallet.judul" data-label="Judul">Hadiah</h2>
+    <p class="sub" data-field="wallet.subJudul" data-label="Sub Judul" data-hide-empty="wallet.subJudul">Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang ingin memberikan tanda kasih untuk kami, dapat melalui:</p>
+  </div>
+  <div class="wl" data-repeat="wallet" data-label="Rekening">
+    <div class="acc">
+      <h3 data-field="judul" data-label="Judul" data-hide-empty="judul">BCA</h3>
+      <p class="lbl">Nomor Rekening</p>
+      <p class="num" data-field="noRekening" data-label="No Rekening" data-hide-empty="noRekening">1234567890</p>
+      <p class="nm" data-field="nama" data-label="Nama" data-hide-empty="nama">a.n. Dias Taufik</p>
+      <button class="btn ghost sm" type="button" data-copy-path="noRekening" data-hide-empty="noRekening"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span data-field="tombolSalin" data-label="Tombol Salin">Salin</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ KIRIM HADIAH ============================ -->
+<section class="sec" data-section="gift">
+  <div class="rv">
+    <p class="kick">Send a Gift</p>
+    <h2 class="title" data-field="gift.judul" data-label="Judul">Kirim Hadiah</h2>
+    <p class="sub" data-field="gift.subJudul" data-label="Sub Judul" data-hide-empty="gift.subJudul">Hadiah fisik dapat dikirimkan ke alamat berikut.</p>
+  </div>
+  <div class="gift-box rv">
+    <p class="kick" style="color:var(--muted)" data-field="gift.kepadaYth" data-label="Kepada Yth">Kepada Yth.</p>
+    <p class="g-name" data-field="gift.penerima" data-label="Penerima" data-hide-empty="gift.penerima">Azalia Fasya</p>
+    <p class="g-tel" data-field="gift.noTelpon" data-label="No Telpon" data-hide-empty="gift.noTelpon">0812 3456 7890</p>
+    <p class="g-addr" data-field="gift.alamat" data-label="Alamat" data-hide-empty="gift.alamat">Jl. Palem Raya No. 1, Karawaci, Tangerang 15810</p>
+    <div class="btns">
+      <button class="btn ghost sm" type="button" data-copy-path="gift.teksSalin" data-hide-empty="gift.tombolSalinAlamat,gift.teksSalin"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span data-field="gift.tombolSalinAlamat" data-label="Tombol Salin Alamat (Kosongkan untuk sembunyikan tombol)">Salin Alamat</span></button>
+      <a class="btn ghost sm" href="#" target="_blank" rel="noopener" data-href="gift.petaUrl" data-label="URL Google Maps" data-tampil-bila="gift.tombolBukaPeta" data-grup="peta" data-grup-judul="Tombol Buka Peta" data-hide-empty="gift.tombolBukaPeta,gift.petaUrl"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span data-field="gift.tombolBukaPeta" data-label="Tombol Buka Peta (Kosongkan untuk sembunyikan tombol)" data-grup="peta" data-grup-judul="Tombol Buka Peta">Buka Peta</span></a>
+      <a class="btn sm" href="#" target="_blank" rel="noopener" data-href="gift.waUrl" data-hide-empty="gift.tombolChatWhatsapp,gift.waUrl"><svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg><span data-field="gift.tombolChatWhatsapp" data-label="Tombol Chat WhatsApp (Kosongkan untuk sembunyikan tombol)">Konfirmasi</span></a>
+    </div>
+  </div>
+  <p class="note rv" data-field="gift.catatan" data-label="Catatan" data-hide-empty="gift.catatan">Mohon konfirmasi melalui WhatsApp sebelum mengirim.</p>
+</section>
+
+<!-- ============================ KONFIRMASI KEHADIRAN ============================ -->
+<section class="sec" data-section="rsvp">
+  <div class="rv">
+    <p class="kick">Kindly Reply</p>
+    <h2 class="title">RSVP</h2>
+    <form class="frm" id="rsvpForm" autocomplete="off">
+      <label for="rName">Nama</label>
+      <input id="rName" required>
+      <label for="rHadir">Konfirmasi kehadiran</label>
+      <select id="rHadir" required>
+        <option value="">Pilih kehadiran</option>
+        <option>Hadir</option>
+        <option>Tidak hadir</option>
+        <option>Masih ragu</option>
+      </select>
+      <label for="rJumlah">Jumlah tamu</label>
+      <select id="rJumlah"><option>1 orang</option><option>2 orang</option><option>3 orang</option><option>4 orang</option></select>
+      <button class="btn" type="submit">Kirim Konfirmasi</button>
+      <p class="ok" id="rThanks" hidden>Terima kasih, konfirmasi Anda sudah kami terima.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================ UCAPAN & DOA ============================ -->
+<section class="sec" data-section="wishes">
+  <div class="rv">
+    <p class="kick">Warm Wishes</p>
+    <h2 class="title" data-field="wishes.judul" data-label="Judul">Ucapan &amp; Doa</h2>
+    <p class="sub" data-field="wishes.subJudul" data-label="Sub Judul" data-hide-empty="wishes.subJudul">Kirimkan doa dan ucapan terbaik untuk kami.</p>
+    <form class="frm" id="wishForm" autocomplete="off">
+      <label data-field="wishes.judulUcapanTamu" data-label="Judul Ucapan Tamu">Tulis ucapan terbaik Anda</label>
+      <input id="wName" placeholder="Nama" required>
+      <textarea id="wMsg" rows="3" placeholder="Ucapan &amp; doa" required></textarea>
+      <button class="btn" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Kirim Ucapan</button>
+      <p class="ok" id="wThanks" hidden>Terima kasih atas ucapan Anda.</p>
+    </form>
+  </div>
+  <div class="wishlist" id="wishes" data-wish-list="[]"></div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="sec ft" data-section="footer">
+  <svg class="pohon" viewBox="0 0 200 140" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><use href="#o-pohon"/></svg>
+  <div class="rv">
+    <svg class="kupu ukir" viewBox="0 0 40 32" aria-hidden="true" style="margin:0 auto 12px"><use href="#o-kupu"/></svg>
+    <p class="kick" data-field="footer.teks2" data-label="Teks 2" data-hide-empty="footer.teks2">Terima kasih atas perhatian dan doa restunya</p>
+    <p class="sub" data-field="footer.teks" data-label="Teks 1">Kehadiran dan doa restu Anda merupakan kehormatan dan kebahagiaan bagi kami.</p>
+    <h3 class="names" data-field="cover.namaPasangan" data-label="Nama Pasangan">Azalia &amp; Dias</h3>
+    <!-- INFO MUSIK LATAR: nilainya dari musik yang DIPILIH di editor (bukan bidang isian user). -->
+    <div class="mcredit" data-hide-empty="musik.judul">
+      <span class="mcredit-ic" aria-hidden="true">♪</span>
+      <span class="mcredit-txt">
+        <small data-field="musik.sumber" data-label="Sumber Musik">Musik latar</small>
+        <b data-field="musik.judul" data-label="Judul Musik">Judul lagu</b>
+        <i data-field="musik.artis" data-label="Artis Musik">Nama artis</i>
+      </span>
+      <a class="mcredit-yt" data-href="musik.tautan" data-hide-empty="musik.tautan" target="_blank" rel="noopener noreferrer" title="Dengarkan di YouTube" aria-label="Dengarkan musik latar di YouTube"><svg class="ic" aria-hidden="true"><use href="#i-yt"/></svg></a>
+    </div>
+    <p class="unica-credit">created with <svg class="uc-hati" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.8 6.6 4.8c2 0 3.5 1.1 5.4 3.1 1.9-2 3.4-3.1 5.4-3.1 3.6 0 5.7 3.6 4.2 7C19.5 16.4 12 21 12 21z"/></svg><span class="sr-only">cinta</span> by <b>Unica</b></p>
+  </div>
+</footer>
+</main>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="Foto galeri">
+  <img id="lbImg" alt="">
+  <button id="lbX" type="button" aria-label="Tutup">✕</button>
+  <button id="lbP" type="button" aria-label="Sebelumnya">‹</button>
+  <button id="lbN" type="button" aria-label="Berikutnya">›</button>
+</div>
+<div id="toast" role="status" aria-live="polite">Disalin</div>
+
+<!-- Musik latar: sumber bunyi ditulis runtime dari musik yang DIPILIH di editor. -->
+<div id="ytmusik" aria-hidden="true" style="position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:.01;overflow:hidden;pointer-events:none"></div>
+<audio id="audio" loop src=""></audio>
+<button id="music" class="paused" type="button" aria-pressed="false" aria-label="Putar atau jeda musik latar"><svg class="ic" aria-hidden="true"><use href="#i-music"/></svg></button>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); };
+  var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  /* ---------- MUNCUL SAAT DIGULIR (.rv statis + kotak galeri) ---------- */
+  var rvIO = null;
+  if ('IntersectionObserver' in window) {
+    document.documentElement.classList.add('js-rv');
+    rvIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rvIO.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: .02 });
+    $$('main .rv').forEach(function (el) { rvIO.observe(el); });
+  }
+  function tampilkan(el) {
+    var r = el.getBoundingClientRect();
+    if (!rvIO || (r.top < innerHeight && r.bottom > 0)) el.classList.add('in');
+    else rvIO.observe(el);
+  }
+
+  /* ---------- SAMPUL: buka undangan ---------- */
+  var openBtn = document.getElementById('openBtn');
+  if (openBtn) openBtn.onclick = function () {
+    var c = document.getElementById('cover'); if (c) c.classList.add('open');
+    document.body.classList.remove('locked');
+    if (mTombol) mTombol.classList.add('show');
+    mainkanMusik(true);   // musik mulai saat sampul dibuka (browser menolak bunyi sebelum interaksi)
+  };
+
+  /* ---------- TANGGAL ACARA: dibaca dari teks countdown.tanggalAkad (tanpa cache) ---------- */
+  var BULAN = { jan: 0, januari: 0, january: 0, feb: 1, februari: 1, february: 1, mar: 2, maret: 2, march: 2, apr: 3, april: 3, mei: 4, may: 4, jun: 5, juni: 5, june: 5, jul: 6, juli: 6, july: 6, agu: 7, agt: 7, agustus: 7, aug: 7, august: 7, sep: 8, sept: 8, september: 8, okt: 9, oktober: 9, oct: 9, october: 9, nov: 10, november: 10, des: 11, desember: 11, dec: 11, december: 11 };
+  var NAMA_BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  function tanggalTarget() {
+    var el = document.getElementById('cdTanggal'); if (!el) return null;
+    var t = el.textContent || '', d = null, m;
+    if ((m = t.match(/(\d{4})-(\d{1,2})-(\d{1,2})/))) d = new Date(+m[1], +m[2] - 1, +m[3]);
+    else if ((m = t.match(/(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})/)) && BULAN[m[2].toLowerCase()] != null) d = new Date(+m[3], BULAN[m[2].toLowerCase()], +m[1]);
+    else if ((m = t.match(/(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})/))) d = new Date(+m[3], +m[2] - 1, +m[1]);
+    if (!d) return null;
+    var jamEl = document.querySelector('[data-field="event.akadJam"]');
+    var j = ((jamEl && jamEl.textContent) || '').match(/(\d{1,2})[.:](\d{2})/);
+    d.setHours(j ? +j[1] : 8, j ? +j[2] : 0, 0, 0);
+    return d;
+  }
+  /* kalender bulan acara: digambar ulang hanya bila tanggalnya berubah */
+  var calEl = document.getElementById('cal'), calKunci = null;
+  function gambarKalender(tg) {
+    if (!calEl) return;
+    var kunci = tg ? tg.getFullYear() + '-' + tg.getMonth() + '-' + tg.getDate() : '';
+    if (kunci === calKunci) return;
+    calKunci = kunci;
+    calEl.hidden = !tg;
+    if (!tg) return;
+    var awal = new Date(tg.getFullYear(), tg.getMonth(), 1).getDay();
+    var jml = new Date(tg.getFullYear(), tg.getMonth() + 1, 0).getDate();
+    var h = '<p class="cal-h">' + NAMA_BULAN[tg.getMonth()] + ' ' + tg.getFullYear() + '</p><div class="cal-g">';
+    ['M', 'S', 'S', 'R', 'K', 'J', 'S'].forEach(function (w) { h += '<span class="w">' + w + '</span>'; });
+    for (var i = 0; i < awal; i++) h += '<span></span>';
+    for (var k = 1; k <= jml; k++) h += '<span' + (k === tg.getDate() ? ' class="on"' : '') + '>' + k + '</span>';
+    calEl.innerHTML = h + '</div>';
+  }
+  var cdD = $('#cdD'), cdH = $('#cdH'), cdM = $('#cdM'), cdS = $('#cdS');
+  function detak() {
+    var tg = tanggalTarget();
+    gambarKalender(tg);
+    if (!cdD) return;
+    var s = tg ? Math.max(0, Math.floor((tg - new Date()) / 1000)) : 0;
+    cdD.textContent = pad2(Math.floor(s / 86400)); cdH.textContent = pad2(Math.floor(s % 86400 / 3600));
+    cdM.textContent = pad2(Math.floor(s % 3600 / 60)); cdS.textContent = pad2(s % 60);
+  }
+  detak(); setInterval(detak, 1000);
+
+  /* ---------- SALIN: satu pendengar delegasi, data-copy dibaca SAAT diklik ---------- */
+  var toast = document.getElementById('toast');
+  function kabar(teks) {
+    if (!toast) return;
+    toast.textContent = teks; toast.classList.add('on');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('on'); }, 2200);
+  }
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest ? ev.target.closest('[data-copy-path]') : null;
+    if (!t) return;
+    var teks = t.getAttribute('data-copy') || '';
+    if (!teks) return;
+    ev.preventDefault();
+    var paksa = function () { var ta = document.createElement('textarea'); ta.value = teks; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e2) {} ta.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(teks).then(null, paksa);
+    else paksa();
+    kabar('Disalin: ' + (teks.length > 28 ? teks.slice(0, 28) + '…' : teks));
+  });
+
+  /* ---------- GALERI: kotak dari data-gallery-urls (runtime mengisi) ---------- */
+  var gal = document.getElementById('gal');
+  var galTerakhir = null;
+  function daftarGaleri() {
+    try { var a = JSON.parse((gal && gal.getAttribute('data-gallery-urls')) || '[]'); return Array.isArray(a) ? a.filter(Boolean) : []; }
+    catch (e) { return []; }
+  }
+  function gambarGaleri() {
+    if (!gal) return;
+    var url = daftarGaleri();
+    gal.replaceChildren();
+    var n = url.length || 5;   // kosong = kotak contoh
+    for (var i = 0; i < n; i++) {
+      var wrap = document.createElement('div'); wrap.className = 'gi';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'gal-item';
+      b.setAttribute('aria-label', 'Foto ' + (i + 1)); b.setAttribute('data-idx', i);
+      var ph = document.createElement('span'); ph.className = 'ph';
+      if (url[i]) { var im = document.createElement('img'); im.src = url[i]; im.alt = 'Foto ' + (i + 1); im.loading = 'lazy'; ph.appendChild(im); }
+      else ph.classList.add('empty');
+      b.appendChild(ph); wrap.appendChild(b); gal.appendChild(wrap);
+      tampilkan(wrap);   // yang sudah di layar langsung tampil
+    }
+  }
+  gambarGaleri();
+  galTerakhir = JSON.stringify(daftarGaleri());
+  window.__unicaGaleri = function () {
+    var kini = JSON.stringify(daftarGaleri());
+    if (kini === galTerakhir) return 0;
+    galTerakhir = kini; gambarGaleri();
+    return daftarGaleri().length;
+  };
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbIdx = 0;
+  function lbTampil(i) {
+    var u = daftarGaleri(); if (!u.length) return;
+    lbIdx = (i + u.length) % u.length; lbImg.src = u[lbIdx]; lb.classList.add('on');
+  }
+  if (gal) gal.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.gal-item'); if (!b) return;
+    lbTampil(+b.getAttribute('data-idx'));
+  });
+  if (lb) {
+    $('#lbX').onclick = function () { lb.classList.remove('on'); };
+    $('#lbP').onclick = function () { lbTampil(lbIdx - 1); };
+    $('#lbN').onclick = function () { lbTampil(lbIdx + 1); };
+    lb.addEventListener('click', function (ev) { if (ev.target === lb) lb.classList.remove('on'); });
+    document.addEventListener('keydown', function (ev) {
+      if (!lb.classList.contains('on')) return;
+      if (ev.key === 'Escape') lb.classList.remove('on');
+      else if (ev.key === 'ArrowLeft') lbTampil(lbIdx - 1);
+      else if (ev.key === 'ArrowRight') lbTampil(lbIdx + 1);
+    });
+  }
+
+  /* ---------- UCAPAN: gambar daftar dari data-wish-list (runtime mengisi) ---------- */
+  var wList = document.getElementById('wishes');
+  var wSaya = [];
+  try { wSaya = JSON.parse(localStorage.getItem('unica.wish.' + location.pathname) || '[]'); } catch (e) { wSaya = []; }
+  var ikonJam = '<svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>';
+  function semuaUcapan() {
+    var dariServer = [];
+    try { dariServer = JSON.parse((wList && wList.getAttribute('data-wish-list')) || '[]'); } catch (e) { dariServer = []; }
+    if (!Array.isArray(dariServer)) dariServer = [];
+    var data = dariServer.map(function (w) { return { i: w.i, n: w.n, m: w.m, t: w.t }; }).concat(wSaya);
+    return data.sort(function (a, b) { return (b.t || 0) - (a.t || 0); });
+  }
+  function gambarUcapan() {
+    if (!wList) return;
+    var rows = semuaUcapan();
+    wList.innerHTML = rows.length
+      ? rows.map(function (w) {
+          var waktu = w.t ? new Date(w.t).toLocaleString('id-ID', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+          return '<article class="wish"' + (w.i == null ? '' : ' data-path="wish.' + esc(w.i) + '.name"') + '><b>' + esc(w.n) + '</b><p>' + esc(w.m) + '</p>' + (waktu ? '<time>' + ikonJam + esc(waktu) + '</time>' : '') + '</article>';
+        }).join('')
+      : '<p class="note" style="text-align:center">Belum ada ucapan. Jadilah yang pertama.</p>';
+  }
+  gambarUcapan();
+  window.__unicaUcapan = gambarUcapan;
+  var wForm = document.getElementById('wishForm');
+  if (wForm) wForm.onsubmit = function (ev) {
+    ev.preventDefault();
+    var n = document.getElementById('wName').value.trim(), m = document.getElementById('wMsg').value.trim();
+    if (!n || !m) return;
+    wSaya.unshift({ n: n, m: m, t: Date.now() }); wSaya = wSaya.slice(0, 50);
+    try { localStorage.setItem('unica.wish.' + location.pathname, JSON.stringify(wSaya)); } catch (e) {}
+    gambarUcapan(); ev.target.reset();
+    var th = document.getElementById('wThanks'); if (th) { th.hidden = false; clearTimeout(th._t); th._t = setTimeout(function () { th.hidden = true; }, 4000); }
+  };
+
+  /* ---------- RSVP (lokal) ---------- */
+  var rForm = document.getElementById('rsvpForm');
+  if (rForm) rForm.onsubmit = function (ev) {
+    ev.preventDefault();
+    var rec = { n: $('#rName').value.trim(), h: $('#rHadir').value, j: $('#rJumlah').value, t: Date.now() };
+    if (!rec.n || !rec.h) return;
+    try { localStorage.setItem('unica.rsvp.' + location.pathname, JSON.stringify(rec)); } catch (e) {}
+    ev.target.reset();
+    var th = document.getElementById('rThanks'); if (th) { th.hidden = false; clearTimeout(th._t); th._t = setTimeout(function () { th.hidden = true; }, 5000); }
+  };
+
+  /* ---------- SOSIAL MEDIA: input = URL lengkap, tampilan = @username + ikon sesuai layanan ---------- */
+  var IKON_SOSIAL = [[/instagram\./i, 'i-ig'], [/facebook\.|fb\.com/i, 'i-fb'], [/tiktok\./i, 'i-tt'], [/twitter\.|(^|\/\/)(www\.)?x\.com/i, 'i-x'], [/youtube\.|youtu\.be/i, 'i-yt']];
+  window.__unicaSosial = function () {
+    $$('a[data-href][data-sosial="1"]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      var t = a.querySelector('span[data-field]');
+      var u = a.querySelector('.soc-ic use');
+      if (u) {
+        var ik = 'i-link';
+        for (var k = 0; k < IKON_SOSIAL.length; k++) if (IKON_SOSIAL[k][0].test(href)) { ik = IKON_SOSIAL[k][1]; break; }
+        u.setAttribute('href', '#' + ik);
+      }
+      if (!t || !href || href === '#') return;
+      var nama = '';
+      try { nama = (href.split('?')[0].split('#')[0].replace(/\/+$/, '').split('/').pop() || '').replace(/^@/, ''); } catch (e) {}
+      t.textContent = nama ? '@' + nama : href;
+    });
+  };
+  window.__unicaSosial();
+
+  /* ---------- VIDEO: nilai dibaca SAAT tombol ditekan + sampul thumbnail YouTube ---------- */
+  var vs = document.getElementById('vscreen'), vp = document.getElementById('vplay');
+  var vposter = vs ? vs.querySelector('.vposter') : null;
+  var posterAsli = vposter ? vposter.innerHTML : '';
+  function videoUrl() { return ((vs && vs.getAttribute('data-video-url')) || '').trim(); }
+  function idVideoYt(u) { var m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
+  function perbaruiPoster() {
+    if (!vposter) return;
+    var id = idVideoYt(videoUrl());
+    var src = id ? 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg' : '';
+    if (!src) { if (vposter.getAttribute('data-poster-isi') !== 'asli') { vposter.innerHTML = posterAsli; vposter.setAttribute('data-poster-isi', 'asli'); } return; }
+    if (vposter.getAttribute('data-poster-isi') === src) return;
+    var im = new Image(); im.src = src; im.alt = 'Sampul video';
+    vposter.replaceChildren(im); vposter.setAttribute('data-poster-isi', src);
+  }
+  perbaruiPoster();
+  window.__unicaVideoPoster = perbaruiPoster;
+  if (vp) vp.onclick = function () {
+    var url = videoUrl();
+    if (!url) { kabar('Video belum dipasang'); return; }
+    mainkanMusik(false);   // hentikan musik latar dulu
+    var id = idVideoYt(url), el;
+    if (id) {
+      el = document.createElement('iframe');
+      el.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
+      el.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; el.allowFullscreen = true;
+    } else { el = document.createElement('video'); el.src = url; el.controls = true; el.autoplay = true; el.playsInline = true; }
+    vs.replaceChildren(el);
+  };
+
+  /* ---------- MUSIK LATAR: sumber bunyi dari musik yang DIPILIH di editor ---------- */
+  /* musik.youtubeId MENANG atas musik.berkas. Nilai hanya dibaca di dalam __unicaMusik(K). */
+  var mAudio = document.getElementById('audio'), mTombol = document.getElementById('music');
+  var mYt = null, mSiap = false, mId = '', mMauPutar = false, mBerkas = '';
+  function muatYtApi(cb) {
+    if (window.YT && window.YT.Player) { cb(); return; }
+    window.onYouTubeIframeAPIReady = cb;
+    if (!window.__unicaYtSkrip) {
+      window.__unicaYtSkrip = document.createElement('script');
+      window.__unicaYtSkrip.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(window.__unicaYtSkrip);
+    }
+  }
+  function pasangYt(id) {
+    if (!id || mId === id) return;
+    mId = id;
+    muatYtApi(function () {
+      if (!mId) return;
+      if (mYt && mYt.loadVideoById) { mYt.loadVideoById(mId); if (!mMauPutar) mYt.pauseVideo(); return; }
+      mYt = new window.YT.Player('ytmusik', {
+        videoId: mId, width: 1, height: 1,
+        playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, loop: 1, playlist: mId, modestbranding: 1, playsinline: 1, rel: 0 },
+        events: {
+          onReady: function () { mSiap = true; if (mMauPutar) mYt.playVideo(); },
+          onStateChange: function (ev) { if (ev.data === 1 || ev.data === 2) mainkanMusik(ev.data === 1, true); }
+        }
+      });
+    });
+  }
+  function mainkanMusik(on, dariYT) {
+    mMauPutar = on;
+    if (!dariYT && mAudio) {
+      if (mBerkas) { if (on) mAudio.play().catch(function () {}); else mAudio.pause(); }
+      else if (mSiap && mYt) { if (on) mYt.playVideo(); else mYt.pauseVideo(); }
+    }
+    if (mTombol) { mTombol.classList.toggle('paused', !on); mTombol.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  }
+  window.__unicaMusik = function (km) {
+    var c = km || {};
+    var y = String(c['musik.youtubeId'] || ''), b = String(c['musik.berkas'] || '');
+    var berkas = y ? '' : b;   // YouTube menang atas berkas
+    if (berkas !== mBerkas) {
+      mBerkas = berkas;
+      if (berkas) { mAudio.src = berkas; mAudio.loop = true; }
+      else { mAudio.pause(); mAudio.removeAttribute('src'); mAudio.load(); }
+    }
+    if (y) pasangYt(y);
+    else if (mId) { mId = ''; if (mYt && mSiap) mYt.pauseVideo(); }
+    mainkanMusik(mMauPutar && !!(mBerkas || mId));   // status user dipertahankan
+  };
+  if (mTombol) mTombol.onclick = function () { mainkanMusik(mTombol.getAttribute('aria-pressed') !== 'true'); };
+})();
+
+/* ---------- ANIMASI-MASUK: tiap elemen section muncul bergiliran saat memasuki layar ---------- */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  var root = document.documentElement;
+  var SASARAN = 'h1,h2,h3,h4,p,small,.btn,a.soc,.photo,.polaroid,.pfoto,.cd-foto,.cd-photo,img,svg,figure,.vframe,.person,.ev,.st-item,.acc,.gift-box,.cd,.cal,.frm,.wishlist,.mcredit,.amp,.vgaris,.hgaris,.vname,.wtw,.fbb,.kamus,.btns,ul,ol,blockquote';
+  var LEWATI = '.ic,.gal,.gi,#gal,[data-wish-list] *,.frm *,.btn *,.mcredit *,.cal *,.cd *';
+  function sudahDipilih(el, akar) {
+    for (var p = el.parentElement; p && p !== akar; p = p.parentElement) if (p.classList.contains('ai') || p.classList.contains('ai-in') || p.hasAttribute('data-ai')) return true;
+    return false;
+  }
+  function jenis(el, i) {
+    var cs = getComputedStyle(el), tag = el.tagName;
+    if (el.matches('.person,.ev,.acc,.st-item')) return i % 2 ? 'ai-kanan' : 'ai-kiri';
+    if (el.matches('.photo,.polaroid,.pfoto,.cd-foto,.cd-photo,img,figure,.vframe')) return cs.clipPath === 'none' && i % 2 ? 'ai-tirai' : 'ai-zoom';
+    if (tag === 'svg' || el.matches('.amp,.vgaris,.hgaris')) return el.matches('.vgaris,.hgaris') ? 'ai-tirai' : 'ai-putar';
+    if (/^H[1-3]$/.test(tag) || el.matches('.vname,.wtw,.fbb')) return cs.filter === 'none' ? 'ai-judul' : 'ai-naik';
+    if (el.matches('.cd,.cal,.btns,.btn')) return 'ai-zoom';
+    return 'ai-naik';
+  }
+  var antre = [], jadwal = null;
+  function lepas() {
+    jadwal = null;
+    antre.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
+    antre.forEach(function (el, k) {
+      el.style.setProperty('--ai-d', Math.min(k, 9) * 0.12 + 's');
+      el.classList.remove('ai'); el.classList.add('ai-in');
+    });
+    antre = [];
+  }
+  /* masuk layar -> mainkan; keluar penuh dari layar -> siapkan lagi, jadi animasi berulang tiap kali digulir masuk */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting && e.target.classList.contains('ai') && antre.indexOf(e.target) < 0) antre.push(e.target);
+    });
+    if (antre.length && !jadwal) jadwal = setTimeout(lepas, 30);
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  var ioKeluar = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) return;
+      var el = e.target, k = antre.indexOf(el);
+      if (k >= 0) antre.splice(k, 1);
+      if (el.classList.contains('ai-in')) { el.classList.remove('ai-in'); el.classList.add('ai'); }
+    });
+  }, { threshold: 0 });
+  function siapkan(akar) {
+    var semua = akar.querySelectorAll(SASARAN), urut = 0;
+    for (var j = 0; j < semua.length; j++) {
+      var el = semua[j];
+      if (el.matches(LEWATI) || el.closest('#ornamen') || sudahDipilih(el, akar)) continue;
+      if (getComputedStyle(el).position === 'fixed') continue;
+      el.setAttribute('data-ai', '');
+      el.style.setProperty('--ai-n', jenis(el, urut++));
+      el.classList.add('ai');
+      io.observe(el); ioKeluar.observe(el);
+    }
+  }
+  root.classList.add('ani');
+  var sampul = document.getElementById('cover');
+  if (sampul && !sampul.classList.contains('open')) siapkan(sampul);
+  var mulai = false;
+  function mulaiMain() {
+    if (mulai) return; mulai = true;
+    var ss = document.querySelectorAll('[data-section]:not(#cover)');
+    for (var i = 0; i < ss.length; i++) siapkan(ss[i]);
+  }
+  if (!document.body.classList.contains('locked')) mulaiMain();
+  else new MutationObserver(function (m, o) {
+    if (!document.body.classList.contains('locked')) { o.disconnect(); setTimeout(mulaiMain, 250); }
+  }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>
